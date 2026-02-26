@@ -18,10 +18,10 @@ interface StripeProduct {
 export const revalidate = 3600 // Revalidate every hour
 
 async function getStripeProducts(): Promise<StripeProduct[]> {
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-    apiVersion: '2024-06-20'
-  });
+  const secretKey = process.env.STRIPE_SECRET_KEY?.trim();
+  if (!secretKey) return [];
 
+  const stripe = new Stripe(secretKey, { apiVersion: '2024-06-20' });
   const products = await stripe.products.list({
     active: true,
     expand: ['data.default_price']

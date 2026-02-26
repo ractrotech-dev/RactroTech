@@ -1,13 +1,17 @@
 import StripePricingTable from "@/components/StripePricingTable";
 import Image from "next/image"
 import { createClient } from '@/utils/supabase/server'
-import { createStripeCheckoutSession } from "@/utils/stripe/api";
+import { createStripeCheckoutSession, isStripeConfigured } from "@/utils/stripe/api";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+
 export default async function Subscribe() {
     const supabase = createClient()
     const {
         data: { user },
     } = await supabase.auth.getUser()
-    const checkoutSessionSecret = await createStripeCheckoutSession(user!.email!)
+    const checkoutSessionSecret = user ? await createStripeCheckoutSession(user.email!) : null
+    const stripeConfigured = isStripeConfigured() && checkoutSessionSecret
 
     return (
         <div className="flex flex-col min-h-screen bg-secondary">
@@ -20,7 +24,14 @@ export default async function Subscribe() {
                     <h1 className="font-bold text-xl md:text-3xl lg:text-4xl ">Pricing</h1>
                     <h1 className="pt-4 text-muted-foreground text-sm md:text-md lg:text-lg">Choose the right plan for your team! Cancel anytime!</h1>
                 </div>
-                <StripePricingTable checkoutSessionSecret={checkoutSessionSecret} />
+                {stripeConfigured ? (
+                    <StripePricingTable checkoutSessionSecret={checkoutSessionSecret} />
+                ) : (
+                    <div className="container flex flex-col items-center justify-center gap-4 py-12 text-center">
+                        <p className="text-muted-foreground max-w-md">Stripe is not configured. Add your Stripe keys to enable pricing and subscriptions.</p>
+                        <Link href="/dashboard"><Button>Go to Dashboard</Button></Link>
+                    </div>
+                )}
             </div>
         </div>
     )

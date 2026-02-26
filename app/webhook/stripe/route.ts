@@ -1,8 +1,12 @@
 import { db } from '@/utils/db/db'
 import { usersTable } from '@/utils/db/schema'
 import { eq } from "drizzle-orm";
+import { isStripeConfigured } from '@/utils/stripe/api';
 
 export async function POST(req: Request) {
+    if (!isStripeConfigured()) {
+        return new Response('Stripe not configured', { status: 200 });
+    }
     try {
         const event = await req.json()
 

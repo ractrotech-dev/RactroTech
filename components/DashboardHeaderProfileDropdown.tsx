@@ -17,7 +17,7 @@ import { generateStripeBillingPortalLink } from "@/utils/stripe/api"
 export default async function DashboardHeaderProfileDropdown() {
     const supabase = createClient()
     const { data: { user }, error } = await supabase.auth.getUser()
-    const billingPortalURL = await generateStripeBillingPortalLink(user!.email!)
+    const billingPortalURL = user ? await generateStripeBillingPortalLink(user.email!) : null
     return (
         <nav className="flex items-center">
             <Button variant="ghost" size="icon" className="mr-2">
@@ -46,12 +46,14 @@ export default async function DashboardHeaderProfileDropdown() {
                             <span>Settings</span>
                         </DropdownMenuItem>
                     </Link>
-                    <Link href="#">
+                    {billingPortalURL && (
+                    <Link href={billingPortalURL}>
                         <DropdownMenuItem>
                             <ReceiptText className="mr-2 h-4 w-4" />
-                            <Link href={billingPortalURL}>Billing</Link>
+                            <span>Billing</span>
                         </DropdownMenuItem>
                     </Link>
+                    )}
                     <Link href="#">
                         <DropdownMenuItem>
                             <HelpCircle className="mr-2 h-4 w-4" />
