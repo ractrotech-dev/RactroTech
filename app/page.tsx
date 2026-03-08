@@ -144,11 +144,13 @@ export default function LandingPage() {
       </div>
 
       <header className="fixed z-50 flex h-20 w-full items-center border-b border-white/5 bg-slate-950/60 px-6 backdrop-blur-md transition-all lg:px-12">
-        <Link className="group flex items-center justify-center gap-2" href="#">
-          <div className="rounded-xl bg-gradient-to-tr from-indigo-500 to-cyan-400 p-2 transition-transform group-hover:scale-105">
+        <Link className="group flex items-center justify-center gap-3" href="#">
+          <div className="rounded-xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-cyan-400 p-2 shadow-lg shadow-indigo-500/20 transition-all duration-300 group-hover:scale-110 group-hover:shadow-indigo-500/40">
             <Zap className="h-6 w-6 text-white" />
           </div>
-          <span className="text-xl font-bold tracking-tight text-white">RactroTech</span>
+          <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-cyan-400 bg-clip-text text-2xl font-extrabold tracking-tighter text-transparent transition-all duration-300 group-hover:from-cyan-400 group-hover:to-indigo-400">
+            RactroTech
+          </span>
         </Link>
         <nav className="ml-auto hidden gap-8 md:flex">
           <a
@@ -458,11 +460,13 @@ export default function LandingPage() {
       <footer className="relative z-10 w-full border-t border-white/10 bg-slate-950 px-6 py-12 text-slate-400 md:px-12">
         <div className="container mx-auto grid gap-8 md:grid-cols-2 lg:grid-cols-4 lg:gap-12">
           <div className="space-y-4">
-            <Link className="group flex items-center gap-2" href="#">
-              <div className="rounded-xl bg-gradient-to-tr from-indigo-500 to-cyan-400 p-2">
+            <Link className="group flex items-center gap-3" href="#">
+              <div className="rounded-xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-cyan-400 p-2 shadow-lg shadow-indigo-500/20 transition-all duration-300 group-hover:scale-110">
                 <Zap className="h-5 w-5 text-white" />
               </div>
-              <span className="text-xl font-bold text-white">RactroTech</span>
+              <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-cyan-400 bg-clip-text text-2xl font-extrabold tracking-tighter text-transparent transition-all duration-300 group-hover:from-cyan-400 group-hover:to-indigo-400">
+                RactroTech
+              </span>
             </Link>
             <p className="text-sm">
               We design and develop premium digital experiences. Crafting modern software solutions
