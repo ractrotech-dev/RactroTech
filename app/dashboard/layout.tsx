@@ -1,4 +1,4 @@
-import DashboardHeader from '@/components/DashboardHeader';
+import DashboardHeader from '@/components/dashboard/DashboardHeader';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { createClient } from '@/utils/supabase/server';

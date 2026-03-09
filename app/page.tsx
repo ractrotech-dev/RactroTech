@@ -130,7 +130,7 @@ const itemVariants = {
   visible: {
     y: 0,
     opacity: 1,
-    transition: { type: 'spring', stiffness: 100 },
+    transition: { type: 'spring' as const, stiffness: 100 },
   },
 };
 
@@ -329,9 +329,9 @@ export default function LandingPage() {
                     </span>
                   </h2>
                   <p className="max-w-[600px] leading-relaxed text-slate-400 md:text-lg">
-                    We don't just write code; we architect solutions. Our modern tech stack ensures
+                    {`We don't just write code; we architect solutions. Our modern tech stack ensures
                     your product is lightning fast, highly secure, and ready to handle massive scale
-                    from day one.
+                    from day one.`}
                   </p>
                 </div>
 
@@ -378,10 +378,10 @@ export default function LandingPage() {
                       <span className="text-pink-400">const</span>{' '}
                       <span className="text-yellow-300">RactroTech</span>{' '}
                       <span className="text-pink-400">=</span> {'{\n'}
-                      {'  '}mission: <span className="text-green-300">"Empower Businesses"</span>,\n
-                      {'  '}stack: [<span className="text-green-300">"Next.js"</span>,{' '}
-                      <span className="text-green-300">"AI"</span>,{' '}
-                      <span className="text-green-300">"Mobile"</span>],\n
+                      {'  '}mission: <span className="text-green-300">{"\""}Empower Businesses{"\""}</span>,\n
+                      {'  '}stack: [<span className="text-green-300">{"\""}Next.js{"\""}</span>,{' '}
+                      <span className="text-green-300">{"\""}AI{"\""}</span>,{' '}
+                      <span className="text-green-300">{"\""}Mobile{"\""}</span>],\n
                       {'  '}execute: <span className="text-purple-400">async</span>(idea) {'=>'}{' '}
                       {'{\n'}
                       {'    '}
@@ -433,8 +433,8 @@ export default function LandingPage() {
                   Ready to Build Something Amazing?
                 </h2>
                 <p className="text-lg text-indigo-100 md:text-xl">
-                  Stop dreaming. Start building. Contact us today to discuss your project, and let's
-                  turn your vision into incredible software.
+                  {`Stop dreaming. Start building. Contact us today to discuss your project, and let's
+                  turn your vision into incredible software.`}
                 </p>
                 <div className="flex flex-col items-center justify-center gap-4 pt-4 sm:flex-row">
                   <Button
