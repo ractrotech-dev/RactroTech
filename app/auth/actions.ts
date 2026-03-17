@@ -2,11 +2,6 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from "next/navigation"
 import { revalidatePath } from 'next/cache'
-import { createStripeCustomer } from '@/utils/stripe/api'
-import { db } from '@/utils/db/db'
-import { usersTable } from '@/utils/db/schema'
-import { eq } from 'drizzle-orm'
-
 
 const PUBLIC_URL = process.env.NEXT_PUBLIC_WEBSITE_URL || "http://localhost:3000"
 
@@ -54,13 +49,6 @@ export async function signup(currentState: { message: string }, formData: FormDa
         name: formData.get('name') as string,
     }
 
-    // Check if user exists in our database first
-    const existingDBUser = await db.select().from(usersTable).where(eq(usersTable.email, data.email))
-    
-    if (existingDBUser.length > 0) {
-        return { message: "An account with this email already exists. Please login instead." }
-    }
-
     const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
         email: data.email,
         password: data.password,
@@ -84,25 +72,8 @@ export async function signup(currentState: { message: string }, formData: FormDa
         return { message: "Failed to create user" }
     }
 
-    try {
-        // create Stripe Customer Record using signup response data
-        const stripeID = await createStripeCustomer(signUpData.user.id, signUpData.user.email!, data.name)
-        
-        // Create record in DB
-        await db.insert(usersTable).values({ 
-            id: signUpData.user.id,
-            name: data.name, 
-            email: signUpData.user.email!, 
-            stripe_id: stripeID, 
-            plan: 'none' 
-        })
-    } catch (err) {
-        console.error("Error in signup:", err instanceof Error ? err.message : "Unknown error")
-        return { message: "Failed to setup user account" }
-    }
-
     revalidatePath("/", "layout")
-    redirect("/subscribe")
+    redirect("/login")
 }
 
 
@@ -121,7 +92,7 @@ export async function loginUser(currentState: { message: string }, formData: For
     }
 
     revalidatePath('/', 'layout')
-    redirect('/dashboard')
+    redirect('/')
 }
 
 

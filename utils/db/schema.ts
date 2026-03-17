@@ -1,4 +1,6 @@
-import { integer, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
+import { integer, pgEnum, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
+
+export const userRoleEnum = pgEnum('user_role', ['admin', 'user']);
 
 export const usersTable = pgTable('users_table', {
     id: text('id').primaryKey(),
@@ -6,6 +8,7 @@ export const usersTable = pgTable('users_table', {
     email: text('email').notNull().unique(),
     plan: text('plan').notNull(),
     stripe_id: text('stripe_id').notNull(),
+    role: userRoleEnum('role').notNull().default('user'),
 });
 
 export type InsertUser = typeof usersTable.$inferInsert;
