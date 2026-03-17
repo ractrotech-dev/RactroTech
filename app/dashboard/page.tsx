@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 
 import { createClient } from '@/utils/supabase/server'
+import { DashboardShell } from '@/components/layout/DashboardShell'
 
 export default async function Dashboard() {
     const supabase = createClient()
@@ -12,9 +13,7 @@ export default async function Dashboard() {
 
     return (
         <main className="flex-1">
-            <div className="container">
-                Hello {data.user.email}
-            </div>
-        </main>)
-
+            <DashboardShell userEmail={data.user.email ?? ''} />
+        </main>
+    )
 }

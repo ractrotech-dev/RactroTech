@@ -39,7 +39,7 @@ export default async function DashboardLayout({
 
   return (
     <html lang="en">
-      <DashboardHeader />
+      {/* <DashboardHeader /> */}
       {children}
     </html>
   );

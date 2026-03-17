@@ -11,6 +11,7 @@ const navLinks = [
   { href: "#portfolio", label: "PORTFOLIO" },
   { href: "#about", label: "ABOUT" },
   { href: "#contact", label: "CONTACT" },
+  { href: "/components", label: "COMPONENTS" },
 ];
 
 type HeaderRoleState = "loading" | "guest" | "user" | "admin";
