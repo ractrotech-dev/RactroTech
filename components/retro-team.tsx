@@ -1,51 +1,51 @@
-import { FadeInView } from "@/components/fade-in-view";
+import { FadeInView } from '@/components/fade-in-view';
 
 const team = [
   {
     id: 1,
-    name: "ALEX JOHNSON",
-    role: "Founder & CEO",
-    bio: "15+ years in tech leadership",
+    name: 'ALEX JOHNSON',
+    role: 'Founder & CEO',
+    bio: '15+ years in tech leadership',
   },
   {
     id: 2,
-    name: "SARAH CHEN",
-    role: "CTO",
-    bio: "Full-stack architect & innovator",
+    name: 'SARAH CHEN',
+    role: 'CTO',
+    bio: 'Full-stack architect & innovator',
   },
   {
     id: 3,
-    name: "MIKE RODRIGUEZ",
-    role: "Design Director",
-    bio: "Award-winning UX/UI designer",
+    name: 'MIKE RODRIGUEZ',
+    role: 'Design Director',
+    bio: 'Award-winning UX/UI designer',
   },
   {
     id: 4,
-    name: "EMMA WILSON",
-    role: "Project Manager",
-    bio: "Expert in agile & lean methodology",
+    name: 'EMMA WILSON',
+    role: 'Project Manager',
+    bio: 'Expert in agile & lean methodology',
   },
 ];
 
 export function RetroTeam() {
   return (
-    <section className="bg-white border-b-4 border-black py-16">
+    <section className="border-b-4 border-black bg-white py-16">
       <FadeInView>
-        <div className="max-w-7xl mx-auto px-4">
-        <h2 className="retro-heading text-5xl text-center mb-12">MEET THE TEAM</h2>
+        <div className="mx-auto max-w-7xl px-4">
+          <h2 className="retro-heading mb-12 text-center text-5xl">MEET THE TEAM</h2>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {team.map((member) => (
-            <div key={member.id} className="retro-card p-6">
-              <div className="bg-gray-300 h-32 mb-4 border-2 border-black flex items-center justify-center">
-                <span className="font-black text-2xl">PHOTO</span>
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {team.map((member) => (
+              <div key={member.id} className="retro-card p-6">
+                <div className="mb-4 flex h-32 items-center justify-center border-2 border-black bg-gray-300">
+                  <span className="text-2xl font-black">PHOTO</span>
+                </div>
+                <h3 className="retro-heading mb-1 text-xl">{member.name}</h3>
+                <p className="mb-2 text-sm font-bold uppercase">{member.role}</p>
+                <p className="text-sm font-semibold">{member.bio}</p>
               </div>
-              <h3 className="retro-heading text-xl mb-1">{member.name}</h3>
-              <p className="font-bold text-sm uppercase mb-2">{member.role}</p>
-              <p className="font-semibold text-sm">{member.bio}</p>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
         </div>
       </FadeInView>
     </section>

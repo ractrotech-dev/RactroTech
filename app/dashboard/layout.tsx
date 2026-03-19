@@ -1,14 +1,14 @@
-import DashboardHeader from "@/components/DashboardHeader";
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import { createClient } from "@/utils/supabase/server";
-import { redirect } from "next/navigation";
+import DashboardHeader from '@/components/DashboardHeader';
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import { createClient } from '@/utils/supabase/server';
+import { redirect } from 'next/navigation';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: "SAAS Starter Kit",
-  description: "SAAS Starter Kit with Stripe, Supabase, Postgres",
+  title: 'RactroTech',
+  description: 'Welcome to RactroTech',
 };
 
 export default async function DashboardLayout({
@@ -23,18 +23,18 @@ export default async function DashboardLayout({
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return redirect("/login");
+    return redirect('/login');
   }
 
   // Read role from Supabase `users_table` (user_role column)
   const { data: profile, error } = await supabase
-    .from("users_table")
-    .select("role")
-    .eq("id", user.id)
+    .from('users_table')
+    .select('role')
+    .eq('id', user.id)
     .maybeSingle();
 
-  if (error || !profile || profile.role !== "admin") {
-    return redirect("/");
+  if (error || !profile || profile.role !== 'admin') {
+    return redirect('/');
   }
 
   return (

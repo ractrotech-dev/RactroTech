@@ -1,57 +1,58 @@
-import { FadeInView } from "@/components/fade-in-view";
+import { FadeInView } from '@/components/fade-in-view';
 
 const pillars = [
   {
-    number: "01",
-    title: "OUR MISSION",
-    body: "To empower businesses with innovative technology solutions that drive growth and success.",
+    number: '01',
+    title: 'OUR MISSION',
+    body: 'To empower businesses with innovative technology solutions that drive growth and success.',
   },
   {
-    number: "02",
-    title: "OUR VISION",
-    body: "To be the leading digital agency transforming ideas into reality.",
+    number: '02',
+    title: 'OUR VISION',
+    body: 'To be the leading digital agency transforming ideas into reality.',
   },
   {
-    number: "03",
-    title: "OUR APPROACH",
-    body: "Collaborative, innovative, and results-driven solutions tailored to your needs.",
+    number: '03',
+    title: 'OUR APPROACH',
+    body: 'Collaborative, innovative, and results-driven solutions tailored to your needs.',
   },
 ];
 
 export function RetroAbout() {
   return (
-    <section id="about" className="relative bg-white border-b-4 border-black py-20 md:py-28 overflow-hidden">
+    <section
+      id="about"
+      className="relative overflow-hidden border-b-4 border-black bg-white py-20 md:py-28"
+    >
       {/* Bold background accent */}
-      <div className="absolute left-0 top-0 bottom-0 w-full max-w-[min(50%,theme(maxWidth.7xl))] bg-yellow-400 border-r-4 border-black hidden lg:block" />
+      <div className="absolute bottom-0 left-0 top-0 hidden w-full max-w-[min(50%,theme(maxWidth.7xl))] border-r-4 border-black bg-yellow-400 lg:block" />
       <FadeInView>
-        <div className="relative max-w-7xl mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+        <div className="relative mx-auto max-w-7xl px-4">
+          <div className="grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
             {/* Left: Main story block */}
             <div className="relative">
-              <span className="absolute left-0 top-1/2 -translate-y-1/2 text-[clamp(4rem,10vw,8rem)] font-black text-black/5 leading-none uppercase tracking-tighter hidden lg:block pointer-events-none select-none -z-0">
+              <span className="pointer-events-none absolute left-0 top-1/2 -z-0 hidden -translate-y-1/2 select-none text-[clamp(4rem,10vw,8rem)] font-black uppercase leading-none tracking-tighter text-black/5 lg:block">
                 About
               </span>
-              <div className="retro-card p-8 md:p-10 border-8 bg-white relative z-10">
-                <span className="inline-block bg-black text-yellow-400 text-sm font-black uppercase tracking-widest px-3 py-1 border-2 border-black mb-6">
-                  Since 2010
+              <div className="retro-card relative z-10 border-8 bg-white p-8 md:p-10">
+                <span className="mb-6 inline-block border-2 border-black bg-black px-3 py-1 text-sm font-black uppercase tracking-widest text-yellow-400">
+                  Since 2026
                 </span>
-                <h2 className="retro-heading text-4xl md:text-5xl mb-6">
-                  About RactroTech
-                </h2>
-                <p className="text-lg font-semibold leading-relaxed mb-6">
-                  We&apos;ve been at the forefront of digital innovation, helping businesses transform
-                  their ideas into powerful digital solutions.
+                <h2 className="retro-heading mb-4 text-3xl md:text-4xl">About RactroTech</h2>
+                <p className="mb-6 text-lg font-semibold leading-relaxed">
+                  We’re a small team of developers focused on building real, working products not
+                  just designs or ideas.
                 </p>
-                <p className="font-semibold text-black/90 leading-relaxed mb-6">
-                  Our team of expert developers, designers, and strategists work collaboratively to
-                  deliver exceptional results that exceed expectations.
+                <p className="mb-6 font-semibold leading-relaxed text-black/90">
+                  We help turn concepts into websites, apps, and SaaS that actually ship and perform
+                  in the real world.
                 </p>
-                <p className="font-semibold text-black/90 leading-relaxed">
-                  We believe in building long-term partnerships with our clients, supporting their
-                  growth every step of the way.
+                <p className="font-semibold leading-relaxed text-black/90">
+                  No unnecessary processes, no fluff just clean execution, modern tech, and a focus
+                  on getting things live.
                 </p>
                 {/* Decorative corner */}
-                <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-yellow-400 border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]" />
+                <div className="absolute -bottom-4 -right-4 h-24 w-24 border-4 border-black bg-yellow-400 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]" />
               </div>
             </div>
 
@@ -60,15 +61,15 @@ export function RetroAbout() {
               {pillars.map((item, i) => (
                 <div
                   key={item.number}
-                  className={`retro-card p-6 md:p-8 border-4 flex gap-6 ${
-                    i === 1 ? "bg-yellow-400 border-black" : "bg-white"
+                  className={`retro-card flex gap-6 border-4 p-6 md:p-8 ${
+                    i === 1 ? 'border-black bg-yellow-400' : 'bg-white'
                   }`}
                 >
-                  <span className="text-4xl md:text-5xl font-black text-black/20 shrink-0">
+                  <span className="shrink-0 text-4xl font-black text-black/20 md:text-5xl">
                     {item.number}
                   </span>
                   <div>
-                    <h3 className="retro-heading text-xl md:text-2xl mb-2">{item.title}</h3>
+                    <h3 className="retro-heading mb-2 text-xl md:text-2xl">{item.title}</h3>
                     <p className="font-semibold leading-relaxed">{item.body}</p>
                   </div>
                 </div>
