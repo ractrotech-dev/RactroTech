@@ -7,9 +7,13 @@ import { motion, AnimatePresence } from "framer-motion";
 const navLinks = [
   { href: "#home", label: "HOME" },
   { href: "#services", label: "SERVICES" },
+  { href: "#components", label: "SERVICES" },
+  { href: "#services", label: "SERVICES" },
   { href: "#portfolio", label: "PORTFOLIO" },
   { href: "#about", label: "ABOUT" },
   { href: "#contact", label: "CONTACT" },
+  {href:"/components", label: "COMPONENTS"},
+  {template:"/template", label: "TEMPLATE"},
 ];
 
 export function RetroHeader() {

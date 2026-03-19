@@ -94,7 +94,8 @@ export async function signup(currentState: { message: string }, formData: FormDa
             name: data.name, 
             email: signUpData.user.email!, 
             stripe_id: stripeID, 
-            plan: 'none' 
+            plan: 'none',
+            role: 'user'
         })
     } catch (err) {
         console.error("Error in signup:", err instanceof Error ? err.message : "Unknown error")
