@@ -72,7 +72,7 @@ export function RetroPricing() {
               </ul>
 
               <Link
-                href={pkg.name === "ENTERPRISE" ? "/login" : "/signup"}
+                href="/signup"
                 className="retro-button w-full text-center block"
               >
                 {pkg.name === "ENTERPRISE" ? "GET QUOTE" : "GET STARTED"}

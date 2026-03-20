@@ -23,7 +23,7 @@ export default async function DashboardLayout({
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return redirect('/login');
+    return redirect('/signup');
   }
 
   // Read role from Supabase `users_table` (user_role column)

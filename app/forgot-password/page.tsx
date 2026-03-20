@@ -19,8 +19,8 @@ export default function ForgotPassword() {
                     <ForgotPasswordForm />
                 </CardContent>
                 <CardFooter className="flex-col text-center">
-                    <Link className="w-full text-sm text-muted-foreground " href="/login">
-                        Back to login
+                    <Link className="w-full text-sm text-muted-foreground " href="/signup">
+                        Back to signup
                     </Link>
                     <Link className="w-full text-sm text-muted-foreground" href="/signup">
                         Don&apos;t have an account? Signup

@@ -15,7 +15,7 @@ export default function ResetPasswordSuccess() {
                     </div>
 
                     <CardTitle className="text-2xl font-bold">Your password has been successfully reset!</CardTitle>
-                    <CardDescription>Login <Link href="/login">here</Link></CardDescription>
+                    <CardDescription>Go to <Link href="/signup">signup</Link></CardDescription>
                 </CardHeader>
             </Card>
         </div>

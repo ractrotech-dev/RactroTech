@@ -47,8 +47,8 @@ export async function updateSession(request: NextRequest) {
         !request.nextUrl.pathname.startsWith('/forgot-password') &&
         !(request.nextUrl.pathname === '/')
     ) {
-        // no user, potentially respond by redirecting the user to the login page
-        url.pathname = '/login'
+        // no user, redirect to signup page
+        url.pathname = '/signup'
         return NextResponse.redirect(url)
     }
     // If user is logged in, allow them to stay on home; do not auto-redirect

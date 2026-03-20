@@ -47,6 +47,8 @@ export async function signup(currentState: { message: string }, formData: FormDa
         email: formData.get('email') as string,
         password: formData.get('password') as string,
         name: formData.get('name') as string,
+        phone: formData.get('phone') as string,
+        address: formData.get('address') as string,
     }
 
     const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
@@ -56,14 +58,16 @@ export async function signup(currentState: { message: string }, formData: FormDa
             emailRedirectTo: `${PUBLIC_URL}/auth/callback`,
             data: {
                 email_confirm: process.env.NODE_ENV !== 'production',
-                full_name: data.name
+                full_name: data.name,
+                phone: data.phone,
+                address: data.address,
             }
         }
     })
 
     if (signUpError) {
         if (signUpError.message.includes("already registered")) {
-            return { message: "An account with this email already exists. Please login instead." }
+            return { message: "An account with this email already exists. Please use signup options again." }
         }
         return { message: signUpError.message }
     }
@@ -73,9 +77,8 @@ export async function signup(currentState: { message: string }, formData: FormDa
     }
 
     revalidatePath("/", "layout")
-    redirect("/login")
+    redirect("/")
 }
-
 
 export async function loginUser(currentState: { message: string }, formData: FormData) {
     const supabase = createClient()
@@ -99,7 +102,7 @@ export async function loginUser(currentState: { message: string }, formData: For
 export async function logout() {
     const supabase = createClient()
     const { error } = await supabase.auth.signOut()
-    redirect('/login')
+    redirect('/signup')
 }
 
 
@@ -131,4 +134,18 @@ export async function signInWithGithub() {
         redirect(data.url) // use the redirect API for your server framework
     }
 
+}
+
+export async function signInWithFacebook() {
+    const supabase = createClient()
+    const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'facebook',
+        options: {
+            redirectTo: `${PUBLIC_URL}/auth/callback`,
+        },
+    })
+
+    if (data.url) {
+        redirect(data.url)
+    }
 }
