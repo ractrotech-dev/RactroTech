@@ -2,6 +2,8 @@ import { db } from "@/utils/db/db";
 import { usersTable } from "@/utils/db/schema";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "Users | Admin | RactroTech",
   description: "Manage users",

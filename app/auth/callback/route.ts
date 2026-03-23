@@ -1,48 +1,54 @@
-import { NextResponse } from 'next/server'
-// The client you created from the Server-Side Auth instructions
-import { createClient } from '@/utils/supabase/server'
-import { createStripeCustomer } from '@/utils/stripe/api'
-import { db } from '@/utils/db/db'
-import { usersTable } from '@/utils/db/schema'
-import { eq } from "drizzle-orm";
+import { NextResponse } from "next/server";
+import { createClient } from "@/utils/supabase/server";
 
 export async function GET(request: Request) {
-    const { searchParams, origin } = new URL(request.url)
-    const code = searchParams.get('code')
-    // if "next" is in param, use it as the redirect URL
-    const next = searchParams.get('next') ?? '/'
+  const { searchParams, origin } = new URL(request.url);
+  const code = searchParams.get("code");
+  const next = searchParams.get("next") ?? "/";
 
-    if (code) {
-        const supabase = createClient()
-        const { error } = await supabase.auth.exchangeCodeForSession(code)
-        if (!error) {
-            const {
-                data: { user },
-            } = await supabase.auth.getUser()
+  if (code) {
+    const supabase = createClient();
+    const { error } = await supabase.auth.exchangeCodeForSession(code);
 
-            // check to see if user already exists in db
-            const checkUserInDB = await db.select().from(usersTable).where(eq(usersTable.email, user!.email!))
-            const isUserInDB = checkUserInDB.length > 0 ? true : false
-            if (!isUserInDB) {
-                // create Stripe customers
-                const stripeID = await createStripeCustomer(user!.id, user!.email!, user!.user_metadata.full_name)
-                // Create record in DB
-                await db.insert(usersTable).values({ id: user!.id, name: user!.user_metadata.full_name, email: user!.email!, stripe_id: stripeID, plan: 'none', role: 'user' })
-            }
+    if (!error) {
+      // We now have a session; ensure a row exists in public.users_table
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
 
-            const forwardedHost = request.headers.get('x-forwarded-host') // original origin before load balancer
-            const isLocalEnv = process.env.NODE_ENV === 'development'
-            if (isLocalEnv) {
-                // we can be sure that there is no load balancer in between, so no need to watch for X-Forwarded-Host
-                return NextResponse.redirect(`${origin}${next}`)
-            } else if (forwardedHost) {
-                return NextResponse.redirect(`https://${forwardedHost}${next}`)
-            } else {
-                return NextResponse.redirect(`${origin}${next}`)
-            }
+      if (user) {
+        // Check if user already exists in users_table
+        const { data: existing, error: selectError } = await supabase
+          .from("users_table")
+          .select("id")
+          .eq("id", user.id)
+          .maybeSingle();
+
+        if (!selectError && !existing) {
+          // Insert with sane defaults; stripe_id required but can be a placeholder for now
+          await supabase.from("users_table").insert({
+            id: user.id,
+            name: (user.user_metadata as any)?.full_name ?? user.email ?? "User",
+            email: user.email,
+            plan: "none",
+            stripe_id: "none",
+            role: "user",
+          });
         }
-    }
+      }
 
-    // return the user to an error page with instructions
-    return NextResponse.redirect(`${origin}/auth/auth-code-error`)
+      const forwardedHost = request.headers.get("x-forwarded-host");
+      const isLocalEnv = process.env.NODE_ENV === "development";
+
+      if (isLocalEnv) {
+        return NextResponse.redirect(`${origin}${next}`);
+      } else if (forwardedHost) {
+        return NextResponse.redirect(`https://${forwardedHost}${next}`);
+      } else {
+        return NextResponse.redirect(`${origin}${next}`);
+      }
+    }
+  }
+
+  return NextResponse.redirect(`${origin}/auth/auth-code-error`);
 }

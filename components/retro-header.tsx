@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { createClient as createSupabaseClient } from "@/utils/supabase/client";
 
 const navLinks = [
   { href: "#home", label: "HOME" },
@@ -12,9 +13,68 @@ const navLinks = [
   { href: "#portfolio", label: "PORTFOLIO" },
   { href: "#about", label: "ABOUT" },
   { href: "#contact", label: "CONTACT" },
-  {href:"/components", label: "COMPONENTS"},
-  {template:"/template", label: "TEMPLATE"},
+  { href: "/components", label: "COMPONENTS" },
 ];
+
+type HeaderRoleState = "loading" | "guest" | "user" | "admin";
+
+function HeaderCta({ variant = "desktop", onClick }: { variant?: "desktop" | "mobile"; onClick?: () => void }) {
+  const [roleState, setRoleState] = useState<HeaderRoleState>("loading");
+
+  useEffect(() => {
+    const supabase = createSupabaseClient();
+
+    const load = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) {
+        setRoleState("guest");
+        return;
+      }
+
+      const { data: profile } = await supabase
+        .from("users_table")
+        .select("role")
+        .eq("id", user.id)
+        .maybeSingle();
+
+      if (profile?.role === "admin") {
+        setRoleState("admin");
+      } else {
+        setRoleState("user");
+      }
+    };
+
+    load();
+  }, []);
+
+  // While loading or logged-in non-admin, hide CTA
+  if (roleState === "loading" || roleState === "user") {
+    return null;
+  }
+
+  const baseClasses =
+    variant === "desktop"
+      ? "retro-button whitespace-nowrap shrink-0"
+      : "retro-button text-center mt-2 py-3";
+
+  if (roleState === "guest") {
+    return (
+      <Link href="/login" onClick={onClick} className={baseClasses}>
+        GET STARTED
+      </Link>
+    );
+  }
+
+  // admin
+  return (
+    <Link href="/dashboard" onClick={onClick} className={baseClasses}>
+      GO TO DASHBOARD
+    </Link>
+  );
+}
 
 export function RetroHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -46,9 +106,7 @@ export function RetroHeader() {
                 {label}
               </a>
             ))}
-            <Link href="/login" className="retro-button whitespace-nowrap shrink-0">
-              GET STARTED
-            </Link>
+            <HeaderCta variant="desktop" />
           </nav>
 
           {/* Hamburger: visible on small screens only */}
@@ -95,13 +153,7 @@ export function RetroHeader() {
                   {label}
                 </a>
               ))}
-              <Link
-                href="/login"
-                onClick={() => setMenuOpen(false)}
-                className="retro-button text-center mt-2 py-3"
-              >
-                GET STARTED
-              </Link>
+              <HeaderCta variant="mobile" onClick={() => setMenuOpen(false)} />
             </nav>
           </motion.div>
         )}

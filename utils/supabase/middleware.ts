@@ -51,11 +51,7 @@ export async function updateSession(request: NextRequest) {
         url.pathname = '/login'
         return NextResponse.redirect(url)
     }
-    // // If user is logged in, redirect to dashboard
-    if (user && request.nextUrl.pathname === '/') {
-        url.pathname = '/dashboard'
-        return NextResponse.redirect(url)
-    }
+    // If user is logged in, allow them to stay on home; do not auto-redirect
     // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're
     // creating a new response object with NextResponse.next() make sure to:
     // 1. Pass the request in it, like so:

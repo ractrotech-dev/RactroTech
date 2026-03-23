@@ -1,13 +1,15 @@
 import { db } from "@/utils/db/db";
 import { usersTable } from "@/utils/db/schema";
-import { count } from "drizzle-orm";
+import { sql } from "drizzle-orm";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminDashboardPage() {
-  const [userCountRow] = await db
-    .select({ count: count() })
+  const userCountRows = await db
+    .select({ count: sql<number>`count(*)::int` })
     .from(usersTable);
-  const userCount = Number(userCountRow?.count ?? 0);
+  const userCount = Number(userCountRows[0]?.count ?? 0);
 
   const recentUsers = await db
     .select({

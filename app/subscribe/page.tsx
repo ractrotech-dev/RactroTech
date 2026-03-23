@@ -29,7 +29,7 @@ export default async function Subscribe() {
                 ) : (
                     <div className="container flex flex-col items-center justify-center gap-4 py-12 text-center">
                         <p className="text-muted-foreground max-w-md">Stripe is not configured. Add your Stripe keys to enable pricing and subscriptions.</p>
-                        <Link href="/dashboard"><Button>Go to Dashboard</Button></Link>
+                        <Link href="/"><Button>Go to Home</Button></Link>
                     </div>
                 )}
             </div>
