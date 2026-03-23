@@ -1,14 +1,14 @@
-import { RetroHeader } from "@/components/retro-header";
-import { RetroHero } from "@/components/retro-hero";
-import { RetroServices } from "@/components/retro-services";
-import { RetroAbout } from "@/components/retro-about";
-import { RetroWhyUs } from "@/components/retro-why-us";
-import { RetroPortfolio } from "@/components/retro-portfolio";
-import { RetroTeam } from "@/components/retro-team";
-import { RetroTestimonials } from "@/components/retro-testimonials";
-import { RetroPricing } from "@/components/retro-pricing";
-import { RetroCTA } from "@/components/retro-cta";
-import { RetroFooter } from "@/components/retro-footer";
+import { RetroHeader } from '@/components/retro-header';
+import { RetroHero } from '@/components/retro-hero';
+import { RetroServices } from '@/components/retro-services';
+import { RetroAbout } from '@/components/retro-about';
+import { RetroWhyUs } from '@/components/retro-why-us';
+import { RetroPortfolio } from '@/components/retro-portfolio';
+// import { RetroTeam } from "@/components/retro-team";
+import { RetroTestimonials } from '@/components/retro-testimonials';
+// import { RetroPricing } from "@/components/retro-pricing";
+import { RetroCTA } from '@/components/retro-cta';
+import { RetroFooter } from '@/components/retro-footer';
 
 export default function Home() {
   return (
@@ -19,9 +19,9 @@ export default function Home() {
       <RetroAbout />
       <RetroWhyUs />
       <RetroPortfolio />
-      <RetroTeam />
+      {/* <RetroTeam /> */}
       <RetroTestimonials />
-      <RetroPricing />
+      {/* <RetroPricing /> */}
       <RetroCTA />
       <RetroFooter />
     </main>
