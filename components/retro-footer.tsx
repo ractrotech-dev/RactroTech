@@ -198,11 +198,9 @@ export function RetroFooter() {
         <div className="mt-20 flex flex-col items-center justify-between gap-8 border-t-4 border-white/10 pt-10 md:flex-row">
           <div className="flex gap-4">
             {[
-              { icon: Facebook, href: '#' },
-              { icon: Twitter, href: '#' },
-              { icon: Linkedin, href: '#' },
-              { icon: Instagram, href: '#' },
-              { icon: Github, href: '#' },
+              { icon: Linkedin, href: 'https://www.linkedin.com/company/ractrotech/' },
+              { icon: Instagram, href: 'https://www.instagram.com/ractrotech/' },
+              // { icon: Github, href: 'https://github.com/ractrotech' },
             ].map((social, i) => (
               <Link
                 key={i}
