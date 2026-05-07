@@ -1,5 +1,6 @@
 import { signInWithFacebook, signInWithGithub, signInWithGoogle } from '@/app/auth/actions'
 import { Button } from "@/components/ui/button"
+import Image from 'next/image'
 
 const providerIcons = {
     google: "https://img.icons8.com/color/48/google-logo.png",
@@ -17,7 +18,7 @@ export default function ProviderSigninBlock() {
                 {isGoogleEnabled && (
                     <form action={signInWithGoogle} className="w-full">
                         <Button variant="outline" aria-label="Continue with Google" type="submit" className="h-9 w-full justify-start gap-2 border-2 border-black bg-white px-3 text-[10px] font-black uppercase tracking-wide transition-all duration-200 hover:-translate-y-0.5 hover:bg-yellow-50">
-                            <img src={providerIcons.google} alt="Google" className="h-4 w-4" />
+                            <Image src={providerIcons.google} alt="Google" width={16} height={16} className="h-4 w-4" />
                             Continue with Google
                         </Button>
                     </form>
@@ -25,7 +26,7 @@ export default function ProviderSigninBlock() {
                 {isFacebookEnabled && (
                     <form action={signInWithFacebook} className="w-full">
                         <Button variant="outline" aria-label="Continue with Facebook" type="submit" className="h-9 w-full justify-start gap-2 border-2 border-black bg-white px-3 text-[10px] font-black uppercase tracking-wide transition-all duration-200 hover:-translate-y-0.5 hover:bg-yellow-50">
-                            <img src={providerIcons.facebook} alt="Facebook" className="h-4 w-4" />
+                            <Image src={providerIcons.facebook} alt="Facebook" width={16} height={16} className="h-4 w-4" />
                             Continue with Facebook
                         </Button>
                     </form>
@@ -33,7 +34,7 @@ export default function ProviderSigninBlock() {
                 {isGithubEnabled && (
                     <form action={signInWithGithub} className="w-full">
                         <Button variant="outline" aria-label="Continue with Github" className="h-9 w-full justify-start gap-2 border-2 border-black bg-white px-3 text-[10px] font-black uppercase tracking-wide transition-all duration-200 hover:-translate-y-0.5 hover:bg-yellow-50">
-                            <img src={providerIcons.github} alt="Github" className="h-4 w-4" />
+                            <Image src={providerIcons.github} alt="Github" width={16} height={16} className="h-4 w-4" />
                             Continue with Github
                         </Button>
                     </form>

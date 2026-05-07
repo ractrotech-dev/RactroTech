@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { X, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { signInWithGoogle } from '@/app/auth/actions';
@@ -36,9 +37,11 @@ export default function Login({ searchParams }: { searchParams: { error?: string
               type="submit"
               className="flex h-12 w-full items-center justify-center gap-3 rounded-lg border border-gray-300 bg-white text-base font-medium text-gray-700 transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-black focus:ring-offset-1"
             >
-              <img
+              <Image
                 src="https://img.icons8.com/color/48/google-logo.png"
                 alt="Google"
+                width={20}
+                height={20}
                 className="h-5 w-5"
               />
               Continue with Google
