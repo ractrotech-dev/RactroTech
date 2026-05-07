@@ -3,6 +3,14 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import ForgotPasswordForm from '@/components/ForgotPasswordForm'
+import { constructMetadata } from '@/lib/seo';
+
+export const metadata = constructMetadata({
+  title: "Forgot Password",
+  description: "Reset your Ractrotech account password.",
+  canonicalUrl: "https://ractrotech.com/forgot-password",
+});
+
 export default function ForgotPassword() {
     return (
         <div className="flex items-center justify-center bg-muted min-h-screen" >

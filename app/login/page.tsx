@@ -3,7 +3,13 @@ import { X, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { signInWithGoogle } from '@/app/auth/actions';
 import LoginForm from '@/components/LoginForm';
+import { constructMetadata } from '@/lib/seo';
 
+export const metadata = constructMetadata({
+  title: "Login",
+  description: "Sign in to your Ractrotech account to access powerful web development tools and templates.",
+  canonicalUrl: "https://ractrotech.com/login",
+});
 export default function Login({ searchParams }: { searchParams: { error?: string } }) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4 font-sans text-gray-900">

@@ -4,12 +4,15 @@ import { Inter } from 'next/font/google';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 
+import { constructMetadata } from '@/lib/seo';
+
 const inter = Inter({ subsets: ['latin'] });
 
-export const metadata: Metadata = {
-  title: 'RactroTech',
-  description: 'Welcome to RactroTech',
-};
+export const metadata: Metadata = constructMetadata({
+  title: 'Dashboard',
+  description: 'Welcome to your RactroTech Dashboard',
+  noIndex: true,
+});
 
 export default async function DashboardLayout({
   children,

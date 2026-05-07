@@ -2,11 +2,13 @@ import { createClient } from "@/utils/supabase/server";
 import { getAdminUser } from "@/utils/admin";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { constructMetadata } from "@/lib/seo";
 
-export const metadata = {
-  title: "Admin | RactroTech",
-  description: "Admin dashboard",
-};
+export const metadata = constructMetadata({
+  title: "Admin Dashboard",
+  description: "RactroTech Admin Dashboard",
+  noIndex: true,
+});
 
 export default async function AdminLayout({
   children,

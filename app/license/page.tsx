@@ -1,8 +1,11 @@
 import { LegalLayout, LegalSection, LegalParagraph, LegalList } from '@/components/LegalLayout';
+import { constructMetadata } from '@/lib/seo';
 
-export const metadata = {
-  title: 'License - RactroTech',
-};
+export const metadata = constructMetadata({
+  title: "License",
+  description: "Review the licensing terms for using RactroTech templates, tools, and services.",
+  canonicalUrl: "https://ractrotech.com/license",
+});
 
 export default function LicensePage() {
   return (

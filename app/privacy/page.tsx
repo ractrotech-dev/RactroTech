@@ -1,8 +1,11 @@
 import { LegalLayout, LegalSection, LegalParagraph, LegalList } from '@/components/LegalLayout';
+import { constructMetadata } from '@/lib/seo';
 
-export const metadata = {
-  title: 'Privacy Policy - RactroTech',
-};
+export const metadata = constructMetadata({
+  title: "Privacy Policy",
+  description: "Read the RactroTech privacy policy to learn how we protect your data.",
+  canonicalUrl: "https://ractrotech.com/privacy",
+});
 
 export default function PrivacyPage() {
   return (

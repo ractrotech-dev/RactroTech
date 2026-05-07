@@ -1,8 +1,11 @@
 import { LegalLayout, LegalSection, LegalParagraph } from '@/components/LegalLayout';
+import { constructMetadata } from '@/lib/seo';
 
-export const metadata = {
-  title: 'Terms of Service - RactroTech',
-};
+export const metadata = constructMetadata({
+  title: "Terms of Service",
+  description: "Read the RactroTech Terms of Service to understand your rights and responsibilities when using our platform.",
+  canonicalUrl: "https://ractrotech.com/terms",
+});
 
 export default function TermsPage() {
   return (

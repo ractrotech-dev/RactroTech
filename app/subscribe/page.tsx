@@ -4,6 +4,13 @@ import { createClient } from '@/utils/supabase/server'
 import { createStripeCheckoutSession, isStripeConfigured } from "@/utils/stripe/api";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { constructMetadata } from '@/lib/seo';
+
+export const metadata = constructMetadata({
+  title: "Subscribe & Pricing",
+  description: "Choose the right RactroTech plan for your team and access premium web development tools.",
+  canonicalUrl: "https://ractrotech.com/subscribe",
+});
 
 export default async function Subscribe() {
     const supabase = createClient()

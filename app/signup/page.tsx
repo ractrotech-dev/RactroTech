@@ -10,7 +10,13 @@ import Link from 'next/link';
 import Image from 'next/image';
 import SignupForm from '@/components/SignupForm';
 import ProviderSigninBlock from '@/components/ProviderSigninBlock';
+import { constructMetadata } from '@/lib/seo';
 
+export const metadata = constructMetadata({
+  title: "Sign Up",
+  description: "Create a Ractrotech account in seconds and start experimenting with high-quality SaaS templates.",
+  canonicalUrl: "https://ractrotech.com/signup",
+});
 export default function Signup() {
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden border-b-4 border-black bg-yellow-400">
