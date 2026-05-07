@@ -35,10 +35,7 @@ export function ComponentsLibraryPage() {
   const [device, setDevice] = useState<Device>("desktop")
   const [isLoading, setIsLoading] = useState(true)
   const [categories, setCategories] = useState<Category[]>([])
-<<<<<<< HEAD
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
-=======
->>>>>>> 195679c216361875327392ded6957a124ca03670
 
   useEffect(() => {
     const loadComponents = async () => {
@@ -83,7 +80,6 @@ export function ComponentsLibraryPage() {
     loadComponents()
   }, [])
 
-<<<<<<< HEAD
   useEffect(() => {
     // Prevent body scroll when the mobile sidebar drawer is open.
     if (!mobileSidebarOpen) return
@@ -100,13 +96,6 @@ export function ComponentsLibraryPage() {
     // Prevent horizontal page overflow by constraining the preview frame to viewport width.
     if (device === "mobile") return "w-[375px] max-w-full"
     if (device === "tablet") return "w-[768px] max-w-full"
-=======
-  const activeComponent = components.find((c) => c.id === activeId) ?? null
-
-  const frameWidthClass = useMemo(() => {
-    if (device === "mobile") return "w-[375px]"
-    if (device === "tablet") return "w-[768px]"
->>>>>>> 195679c216361875327392ded6957a124ca03670
     return "w-full"
   }, [device])
 
@@ -130,11 +119,7 @@ export function ComponentsLibraryPage() {
   }, [activeComponent])
 
   return (
-<<<<<<< HEAD
     <section className="relative flex w-full border-b-4 border-black bg-yellow-400 overflow-x-hidden">
-=======
-    <section className="relative flex w-full border-b-4 border-black bg-yellow-400">
->>>>>>> 195679c216361875327392ded6957a124ca03670
       {/* subtle pattern background */}
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.04]"
@@ -143,7 +128,6 @@ export function ComponentsLibraryPage() {
         }}
       />
 
-<<<<<<< HEAD
       <div className="relative mx-auto flex w-full min-w-0 border-x-4 border-black bg-yellow-400">
         {/* Mobile sidebar overlay */}
         {mobileSidebarOpen && (
@@ -161,27 +145,16 @@ export function ComponentsLibraryPage() {
             "md:flex"
           )}
         >
-=======
-      <div className="relative mx-auto flex w-full  border-x-4 border-black bg-yellow-400">
-        {/* Sidebar */}
-        <aside className="flex w-64 flex-col border-r-4 border-black bg-yellow-300/60">
->>>>>>> 195679c216361875327392ded6957a124ca03670
           <div className="border-b-4 border-black px-4 py-4">
             <h1 className="text-sm font-black uppercase tracking-[0.2em] text-black">
               Components
             </h1>
 
-
-            
             <p className="mt-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-black/70">
               Browse by category
             </p>
           </div>
-<<<<<<< HEAD
           <div className="flex-1 min-h-0 overflow-y-auto px-2 py-3">
-=======
-          <div className="flex-1 overflow-y-auto px-2 py-3">
->>>>>>> 195679c216361875327392ded6957a124ca03670
           {isLoading ? (
             <p className="px-2 text-[11px] font-medium text-black/70">
               Loading components...
@@ -210,14 +183,10 @@ export function ComponentsLibraryPage() {
                           <button
                             key={component.id}
                             type="button"
-<<<<<<< HEAD
                             onClick={() => {
                               setActiveId(component.id)
                               setMobileSidebarOpen(false)
                             }}
-=======
-                            onClick={() => setActiveId(component.id)}
->>>>>>> 195679c216361875327392ded6957a124ca03670
                             className={cn(
                               "flex flex-col rounded border-2 border-transparent px-3 py-2 text-left text-[11px] font-semibold uppercase tracking-[0.14em] transition-colors",
                               isActive
@@ -254,14 +223,10 @@ export function ComponentsLibraryPage() {
                           <button
                             key={component.id}
                             type="button"
-<<<<<<< HEAD
                             onClick={() => {
                               setActiveId(component.id)
                               setMobileSidebarOpen(false)
                             }}
-=======
-                            onClick={() => setActiveId(component.id)}
->>>>>>> 195679c216361875327392ded6957a124ca03670
                             className={cn(
                               "flex flex-col rounded border-2 border-transparent px-3 py-2 text-left text-[11px] font-semibold uppercase tracking-[0.14em] transition-colors",
                               isActive
@@ -287,7 +252,6 @@ export function ComponentsLibraryPage() {
       </aside>
 
         {/* Main content */}
-<<<<<<< HEAD
         <section className="min-w-0 flex-1 bg-yellow-100/60">
           <div className="mx-auto flex max-w-7xl flex-col gap-6 px-6 py-8">
             {/* Mobile hamburger */}
@@ -310,10 +274,6 @@ export function ComponentsLibraryPage() {
               </button>
             </div>
 
-=======
-        <section className="flex-1 bg-yellow-100/60">
-          <div className="mx-auto flex max-w-7xl flex-col gap-6 px-6 py-8">
->>>>>>> 195679c216361875327392ded6957a124ca03670
             {!activeComponent ? (
               <p className="text-sm font-semibold uppercase tracking-[0.18em] text-black/80">
                 Select a component from the left to see its details, code, and preview.
@@ -368,11 +328,7 @@ export function ComponentsLibraryPage() {
 
                 {/* Preview */}
                 <Card className="flex flex-col border-4 border-black bg-yellow-50">
-<<<<<<< HEAD
                   <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b-4 border-black pb-3">
-=======
-                  <CardHeader className="flex flex-row items-center justify-between gap-3 border-b-4 border-black pb-3">
->>>>>>> 195679c216361875327392ded6957a124ca03670
                     <div>
                       <CardTitle className="text-sm font-black uppercase tracking-[0.24em] text-black">
                         Preview
@@ -381,13 +337,8 @@ export function ComponentsLibraryPage() {
                         Check responsiveness
                       </CardDescription>
                     </div>
-<<<<<<< HEAD
                     <div className="flex w-full sm:w-auto flex-wrap items-center gap-2 justify-start sm:justify-end min-w-0">
                       <div className="flex flex-wrap items-center gap-1 rounded-md border-2 border-black bg-yellow-100 p-0.5 max-w-full">
-=======
-                    <div className="flex items-center gap-2">
-                      <div className="inline-flex items-center gap-1 rounded-md border-2 border-black bg-yellow-100 p-0.5">
->>>>>>> 195679c216361875327392ded6957a124ca03670
                         {(["mobile", "tablet", "desktop"] as Device[]).map((value) => (
                           <Button
                             key={value}
@@ -395,11 +346,7 @@ export function ComponentsLibraryPage() {
                             variant="ghost"
                             size="sm"
                             className={cn(
-<<<<<<< HEAD
                               "h-7 px-1 sm:px-2 text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.12em]",
-=======
-                              "h-7 px-2 text-[11px] font-semibold uppercase tracking-[0.12em]",
->>>>>>> 195679c216361875327392ded6957a124ca03670
                               device === value
                                 ? "bg-black text-yellow-400"
                                 : "bg-transparent text-black hover:bg-black hover:text-yellow-400"
@@ -414,11 +361,7 @@ export function ComponentsLibraryPage() {
                         type="button"
                         size="sm"
                         variant="outline"
-<<<<<<< HEAD
                         className="border-2 border-black bg-yellow-100 text-[10px] sm:text-[11px] font-black uppercase tracking-[0.16em] text-black hover:bg-black hover:text-yellow-400"
-=======
-                        className="border-2 border-black bg-yellow-100 text-[11px] font-black uppercase tracking-[0.16em] text-black hover:bg-black hover:text-yellow-400"
->>>>>>> 195679c216361875327392ded6957a124ca03670
                         disabled={!srcDoc}
                         onClick={() => {
                           if (!srcDoc) return
@@ -432,19 +375,11 @@ export function ComponentsLibraryPage() {
                     </div>
                   </CardHeader>
                   <CardContent className="flex-1 pt-0">
-<<<<<<< HEAD
                     <div className="flex h-[360px] justify-center overflow-x-auto bg-yellow-100 p-4 min-w-0">
                       {srcDoc ? (
                         <div
                           className={cn(
                             "h-full max-h-full overflow-hidden max-w-full rounded-[1.25rem] border-4 border-black bg-black",
-=======
-                    <div className="flex h-[360px] justify-center overflow-x-auto bg-yellow-100 p-4">
-                      {srcDoc ? (
-                        <div
-                          className={cn(
-                            "h-full max-h-full overflow-hidden rounded-[1.25rem] border-4 border-black bg-black",
->>>>>>> 195679c216361875327392ded6957a124ca03670
                             frameWidthClass
                           )}
                         >
@@ -472,4 +407,3 @@ export function ComponentsLibraryPage() {
     </section>
   )
 }
-
