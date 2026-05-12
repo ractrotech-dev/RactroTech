@@ -9,9 +9,9 @@ import postgres from "postgres";
 //   those queries will fail then (which is expected).
 const databaseUrl = process.env.DATABASE_URL;
 
-if (!databaseUrl && process.env.NODE_ENV === "production") {
-  throw new Error("DATABASE_URL is not set in production");
-}
+// Do not throw here when DATABASE_URL is missing: Next/Vercel imports this module during
+// `next build` (e.g. via /auth/callback → auth-user-sync). Runtime DB calls will fail
+// if DATABASE_URL is unset in deployment env — set it in Vercel project settings.
 
 // Disable prepare as it is not supported for "Transaction" pool mode.
 const client = postgres(databaseUrl || "postgres://postgres:postgres@localhost:5432/postgres", { 
