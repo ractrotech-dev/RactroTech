@@ -15,6 +15,41 @@
       "when": 1772382954019,
       "tag": "0001_add_user_role",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1778185587176,
+      "tag": "0002_moaning_sauron",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1778186439237,
+      "tag": "0003_wandering_pandemic",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1778186589412,
+      "tag": "0004_fresh_kat_farrell",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1778400000000,
+      "tag": "0005_users_table_profile_columns",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1778500000000,
+      "tag": "0006_align_user_role_enum",
+      "breakpoints": true
     }
   ]
 }

@@ -6,9 +6,15 @@ export async function updateSession(request: NextRequest) {
         request,
     })
 
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    if (!supabaseUrl || !anonKey) {
+        return supabaseResponse
+    }
+
     const supabase = createServerClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        supabaseUrl,
+        anonKey,
         {
             cookies: {
                 getAll() {
@@ -39,16 +45,30 @@ export async function updateSession(request: NextRequest) {
         return supabaseResponse
     }
 
+    // Already signed in: skip the admin gate screen
+    if (user && request.nextUrl.pathname === '/admin/login') {
+        const dest = new URL('/admin', request.url)
+        const redirectResponse = NextResponse.redirect(dest)
+        supabaseResponse.cookies.getAll().forEach(({ name, value }) => {
+            redirectResponse.cookies.set(name, value)
+        })
+        return redirectResponse
+    }
+
     if (
         !user &&
         !request.nextUrl.pathname.startsWith('/login') &&
+        !request.nextUrl.pathname.startsWith('/admin/login') &&
         !request.nextUrl.pathname.startsWith('/auth') &&
         !request.nextUrl.pathname.startsWith('/signup') &&
         !request.nextUrl.pathname.startsWith('/forgot-password') &&
+        request.nextUrl.pathname !== '/manifest.webmanifest' &&
+        request.nextUrl.pathname !== '/robots.txt' &&
+        request.nextUrl.pathname !== '/sitemap.xml' &&
         !(request.nextUrl.pathname === '/')
     ) {
-        // no user, redirect to signup page
-        url.pathname = '/signup'
+        // no user, redirect to login page
+        url.pathname = request.nextUrl.pathname.startsWith('/admin') ? '/admin/login' : '/login'
         return NextResponse.redirect(url)
     }
     // If user is logged in, allow them to stay on home; do not auto-redirect

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/utils/supabase/server";
+import { ensureAuthUserInDb } from "@/utils/auth-user-sync";
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
@@ -17,24 +18,7 @@ export async function GET(request: Request) {
       } = await supabase.auth.getUser();
 
       if (user) {
-        // Check if user already exists in users_table
-        const { data: existing, error: selectError } = await supabase
-          .from("users_table")
-          .select("id")
-          .eq("id", user.id)
-          .maybeSingle();
-
-        if (!selectError && !existing) {
-          // Insert with sane defaults; stripe_id required but can be a placeholder for now
-          await supabase.from("users_table").insert({
-            id: user.id,
-            name: (user.user_metadata as any)?.full_name ?? user.email ?? "User",
-            email: user.email,
-            plan: "none",
-            stripe_id: "none",
-            role: "user",
-          });
-        }
+        await ensureAuthUserInDb(user);
       }
 
       const forwardedHost = request.headers.get("x-forwarded-host");

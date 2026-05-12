@@ -36,4 +36,11 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# Drizzle introspect output (`npm run db:pull`) — review then merge into utils/db/schema.ts
+/utils/db/introspected/
+
+# Local scratch / logs (do not commit)
+/dev-logs.txt
+/scratch/
+
 .vscode

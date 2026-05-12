@@ -25,6 +25,21 @@ export function RetroFooter() {
                 Building digital futures with a retro twist. We ship high-performance websites,
                 apps, and SaaS solutions for the modern web.
               </p>
+
+              <div className="flex gap-3">
+                <Link
+                  href="/login"
+                  className="inline-flex items-center justify-center border-2 border-white/30 px-6 py-2.5 text-xs font-black uppercase tracking-widest text-white transition-all duration-200 hover:-translate-y-0.5 hover:border-white hover:bg-white/10"
+                >
+                  Login
+                </Link>
+                <Link
+                  href="/signup"
+                  className="inline-flex items-center justify-center border-2 border-yellow-400 bg-yellow-400 px-6 py-2.5 text-xs font-black uppercase tracking-widest text-black transition-all duration-200 hover:-translate-y-0.5 hover:bg-yellow-300"
+                >
+                  Sign Up
+                </Link>
+              </div>
             </FadeInView>
           </div>
 
@@ -196,21 +211,40 @@ export function RetroFooter() {
 
         {/* Bottom Bar */}
         <div className="mt-20 flex flex-col items-center justify-between gap-8 border-t-4 border-white/10 pt-10 md:flex-row">
-          <div className="flex gap-4">
-            {[
-              { icon: Linkedin, href: 'https://www.linkedin.com/company/ractrotech/' },
-              { icon: Instagram, href: 'https://www.instagram.com/ractrotech/' },
-              // { icon: Github, href: 'https://github.com/ractrotech' },
-            ].map((social, i) => (
-              <Link
-                key={i}
-                href={social.href}
-                className="flex h-12 w-12 items-center justify-center border-4 border-white/20 bg-white/5 transition-all hover:-translate-y-1 hover:border-yellow-400 hover:text-yellow-400"
-              >
-                <social.icon size={20} />
-              </Link>
-            ))}
+          <div className="flex flex-wrap items-center gap-4">
+            <div className="flex gap-4">
+              {[
+                { icon: Linkedin, href: 'https://www.linkedin.com/company/ractrotech/' },
+                { icon: Instagram, href: 'https://www.instagram.com/ractrotech/' },
+              ].map((social, i) => (
+                <Link
+                  key={i}
+                  href={social.href}
+                  className="flex h-12 w-12 items-center justify-center border-4 border-white/20 bg-white/5 transition-all hover:-translate-y-1 hover:border-yellow-400 hover:text-yellow-400"
+                >
+                  <social.icon size={20} />
+                </Link>
+              ))}
+            </div>
+
+            <Link
+              href="/admin"
+              className="group relative flex items-center gap-3 border-4 border-white/20 bg-white/5 px-4 py-2.5 transition-all hover:-translate-y-1 hover:border-yellow-400"
+            >
+              <div className="flex flex-col">
+                <span className="text-[10px] font-black uppercase tracking-widest text-white group-hover:text-yellow-400">
+                  Staff Portal
+                </span>
+                <span className="text-[8px] font-bold uppercase tracking-tighter text-white/40">
+                  Admin Login
+                </span>
+              </div>
+              <span className="border-2 border-yellow-400 bg-yellow-400 px-1.5 py-0.5 text-[8px] font-black uppercase tracking-widest text-black">
+                BETA
+              </span>
+            </Link>
           </div>
+
 
           <div className="text-center md:text-right">
             <p className="font-black uppercase tracking-widest text-white">© 2026 RACTROTECH</p>

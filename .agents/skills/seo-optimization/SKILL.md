@@ -24,12 +24,12 @@ and any web content.
 
 When triggered, identify which of the four SEO modes applies (or combine them):
 
-| Mode | Trigger signals |
-|------|----------------|
-| **A. On-Page SEO** | "optimize my page", "fix my meta tags", paste of HTML/content |
-| **B. Content Writing & Optimization** | "write SEO content", "rewrite this", "improve my article" |
-| **C. Technical SEO Audit** | "audit my site", "why isn't Google indexing me", "check my SEO" |
-| **D. Keyword Research & Strategy** | "what keywords should I target", "keyword ideas for X" |
+| Mode                                  | Trigger signals                                                 |
+| ------------------------------------- | --------------------------------------------------------------- |
+| **A. On-Page SEO**                    | "optimize my page", "fix my meta tags", paste of HTML/content   |
+| **B. Content Writing & Optimization** | "write SEO content", "rewrite this", "improve my article"       |
+| **C. Technical SEO Audit**            | "audit my site", "why isn't Google indexing me", "check my SEO" |
+| **D. Keyword Research & Strategy**    | "what keywords should I target", "keyword ideas for X"          |
 
 Multiple modes can run in a single response. Always end with a **Priority Action List**.
 
@@ -38,6 +38,7 @@ Multiple modes can run in a single response. Always end with a **Priority Action
 ## MODE A — On-Page SEO
 
 Analyze and optimize the core on-page elements. For each element, give:
+
 - ✅ Current status (Good / Needs Work / Missing)
 - 💡 Specific recommendation
 - ✏️ Rewritten version (when applicable)
@@ -45,53 +46,63 @@ Analyze and optimize the core on-page elements. For each element, give:
 ### Elements to audit:
 
 **1. Title Tag**
+
 - Length: 50–60 characters
 - Primary keyword near the front
 - Unique, compelling, matches search intent
 - Format: `Primary Keyword – Secondary Keyword | Brand`
 
 **2. Meta Description**
+
 - Length: 150–160 characters
 - Includes primary keyword naturally
 - Has a clear call-to-action
 - Summarizes the page value
 
 **3. URL Slug**
+
 - Short, lowercase, hyphens only
 - Contains primary keyword
 - No stop words (the, a, and…) unless necessary
 
 **4. H1 Tag**
+
 - Exactly one H1 per page
 - Contains primary keyword
 - Matches search intent
 
 **5. Heading Hierarchy (H2–H6)**
+
 - Logical outline structure
 - Secondary/LSI keywords in H2s
 - No skipped heading levels
 
 **6. Keyword Usage**
+
 - Primary keyword in first 100 words
 - Keyword density: 1–2% (not stuffed)
 - LSI / semantic keywords present
 - Keywords in image alt text
 
 **7. Internal Links**
+
 - At least 2–3 internal links
 - Descriptive anchor text (not "click here")
 - Link to relevant related pages
 
 **8. Image Optimization**
+
 - Alt text present and descriptive
-- File names are keyword-relevant (not `IMG_001.jpg`)
+- File names are keyword-relevant (not `Image_001.jpg`)
 - Images compressed (flag if unknown)
 
 **9. Content Length**
+
 - Compare against typical top-ranking pages for the topic
 - Flag if significantly shorter than competitors
 
 **Output format for Mode A:**
+
 ```
 ## On-Page SEO Report
 
@@ -119,6 +130,7 @@ Analyze and optimize the core on-page elements. For each element, give:
 ## MODE B — Content Writing & Optimization
 
 ### For rewriting existing content:
+
 1. Identify the **target keyword** (ask user if not provided)
 2. Analyze the content for: thin content, keyword gaps, readability, structure
 3. Rewrite or enhance with:
@@ -131,13 +143,16 @@ Analyze and optimize the core on-page elements. For each element, give:
    - FAQ section if relevant (targets "People Also Ask" boxes)
 
 ### For writing new SEO content:
+
 Ask for (or infer from context):
+
 - Target keyword
 - Content type (blog post, product page, landing page)
 - Word count target
 - Audience / tone
 
 Then produce a full piece with:
+
 ```
 [SEO-Optimized Title]
 [Meta Description]
@@ -152,6 +167,7 @@ Then produce a full piece with:
 ```
 
 ### Readability standards:
+
 - Flesch Reading Ease: aim for 60–70 (plain language)
 - Avg sentence length: under 20 words
 - Avoid passive voice where possible
@@ -166,37 +182,44 @@ When the user provides a URL or describes their site, audit these areas:
 ### Core Technical Checks
 
 **Crawlability & Indexation**
+
 - Is robots.txt blocking important pages?
 - Is there a sitemap.xml? Is it submitted to Google Search Console?
 - Are canonical tags correct? (no self-referencing issues, no duplicate canonicals)
 - Are there noindex tags where they shouldn't be?
 
 **Page Speed**
+
 - Flag Core Web Vitals: LCP, FID/INP, CLS
 - Recommend: image compression, lazy loading, minify CSS/JS, use CDN
 - Tool recommendation: Google PageSpeed Insights, GTmetrix
 
 **Mobile-Friendliness**
+
 - Responsive design check
 - Font size / tap target size
 - No intrusive interstitials
 
 **HTTPS & Security**
+
 - Site served over HTTPS?
 - No mixed content warnings?
 
 **Structured Data / Schema Markup**
+
 - Is schema present? (Article, Product, FAQ, BreadcrumbList, etc.)
 - Validate with Google's Rich Results Test
 - Recommend schema types relevant to content type
 
 **Core SEO Architecture**
+
 - Flat URL structure (max 3 clicks from homepage)
 - Pagination handled correctly (rel=next/prev or canonical)
 - Hreflang tags if multilingual
 - Duplicate content issues (www vs non-www, trailing slashes)
 
 **Output format for Mode C:**
+
 ```
 ## Technical SEO Audit
 
@@ -219,32 +242,39 @@ When the user provides a URL or describes their site, audit these areas:
 ## MODE D — Keyword Research & Strategy
 
 ### Step 1: Seed Keyword Expansion
+
 Given a topic or seed keyword, generate:
+
 - 5–10 **primary keyword** candidates (high intent, moderate-high volume)
 - 10–15 **long-tail keywords** (lower competition, high intent)
 - 5–8 **LSI / semantic keywords** (related terms Google associates with the topic)
 - 3–5 **question keywords** (who/what/how/why — targets featured snippets)
 
 ### Step 2: Keyword Classification
+
 Group keywords by **search intent**:
 
-| Intent | Description | Example |
-|--------|-------------|---------|
-| Informational | User wants to learn | "how to do SEO" |
-| Navigational | User wants a specific site | "Ahrefs login" |
-| Commercial | User is researching before buying | "best SEO tools" |
-| Transactional | User is ready to buy/act | "buy SEO course" |
+| Intent        | Description                       | Example          |
+| ------------- | --------------------------------- | ---------------- |
+| Informational | User wants to learn               | "how to do SEO"  |
+| Navigational  | User wants a specific site        | "Ahrefs login"   |
+| Commercial    | User is researching before buying | "best SEO tools" |
+| Transactional | User is ready to buy/act          | "buy SEO course" |
 
 ### Step 3: Keyword Prioritization Matrix
+
 Score each keyword on:
+
 - **Search Volume**: High / Medium / Low
 - **Competition**: High / Medium / Low
 - **Business Relevance**: High / Medium / Low
 - **Quick Win Potential**: Yes / No (existing page can be optimized)
 
 ### Step 4: Content Gap Analysis
+
 Identify topics the user should cover but hasn't yet.
 Suggest a **content cluster** structure:
+
 ```
 Pillar Page: [Broad topic]
 ├── Cluster 1: [Subtopic A]
@@ -254,6 +284,7 @@ Pillar Page: [Broad topic]
 ```
 
 **Output format for Mode D:**
+
 ```
 ## Keyword Research Report
 

@@ -5,6 +5,8 @@ import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 
 import { constructMetadata } from '@/lib/seo';
+import { ensureAuthUserInDb } from '@/utils/auth-user-sync';
+import { ADMIN_ROLES, type AdminRole } from '@/utils/admin-roles';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -25,18 +27,20 @@ export default async function DashboardLayout({
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) {
+  if (!user?.email) {
     return redirect('/signup');
   }
 
-  // Read role from Supabase `users_table` (user_role column)
+  await ensureAuthUserInDb(user);
+
   const { data: profile, error } = await supabase
     .from('users_table')
     .select('role')
     .eq('id', user.id)
     .maybeSingle();
 
-  if (error || !profile || profile.role !== 'admin') {
+  const role = profile?.role as AdminRole | undefined;
+  if (error || !role || !ADMIN_ROLES.includes(role)) {
     return redirect('/');
   }
 
