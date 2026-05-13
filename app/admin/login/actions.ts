@@ -4,7 +4,7 @@ import { createClient } from '@/utils/supabase/server'
 import { ensureAuthUserInDb } from '@/utils/auth-user-sync'
 import { redirect } from 'next/navigation'
 
-const PUBLIC_URL = process.env.NEXT_PUBLIC_WEBSITE_URL || 'http://localhost:3000'
+const PUBLIC_URL = process.env.NEXT_PUBLIC_WEBSITE_URL || 'https://www.ractrotech.com'
 
 export async function loginAdminUser(
   currentState: { message: string } | undefined,

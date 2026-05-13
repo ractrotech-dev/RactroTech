@@ -3,7 +3,7 @@ import { createClient } from '@/utils/supabase/server'
 import { redirect } from "next/navigation"
 import { revalidatePath } from 'next/cache'
 
-const PUBLIC_URL = process.env.NEXT_PUBLIC_WEBSITE_URL || "http://localhost:3000"
+const PUBLIC_URL = process.env.NEXT_PUBLIC_WEBSITE_URL || "https://www.ractrotech.com"
 
 export async function resetPassword(currentState: { message: string }, formData: FormData) {
     const supabase = createClient()

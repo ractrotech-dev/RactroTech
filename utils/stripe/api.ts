@@ -8,7 +8,7 @@ export const stripe = isStripeConfigured()
   ? new Stripe(STRIPE_SECRET_KEY!, { apiVersion: "2024-06-20" })
   : null;
 
-const PUBLIC_URL = process.env.NEXT_PUBLIC_WEBSITE_URL || "http://localhost:3000";
+const PUBLIC_URL = process.env.NEXT_PUBLIC_WEBSITE_URL || "https://www.ractrotech.com";
 
 /** Placeholder stripe_id when Stripe is not configured (schema requires a value). */
 export const STRIPE_DISABLED_PLACEHOLDER = "no-stripe";
