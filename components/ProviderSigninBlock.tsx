@@ -3,9 +3,9 @@ import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 
 const providerIcons = {
-  google: 'https://Image.icons8.com/color/48/google-logo.png',
-  facebook: 'https://Image.icons8.com/color/48/facebook-new.png',
-  github: 'https://Image.icons8.com/ios-filled/50/000000/github.png',
+  google: 'https://img.icons8.com/color/48/google-logo.png',
+  facebook: 'https://img.icons8.com/color/48/facebook-new.png',
+  github: 'https://img.icons8.com/ios-filled/50/000000/github.png',
 };
 
 export default function ProviderSigninBlock() {

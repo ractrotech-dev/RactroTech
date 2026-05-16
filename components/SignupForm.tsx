@@ -12,13 +12,13 @@ function SignupSubmitButton() {
   const { pending } = useFormStatus();
 
   return (
-    <Button 
-      className="mt-6 w-full border-4 border-black bg-black py-6 text-sm font-black uppercase tracking-widest text-yellow-400 transition-all hover:-translate-y-1 hover:bg-black/90 active:translate-y-0" 
-      type="submit" 
-      aria-disabled={pending} 
+    <Button
+      className="w-full mt-6 border-2 border-black bg-black py-6 text-sm font-black uppercase tracking-widest text-yellow-400 transition-all hover:-translate-y-1 hover:bg-black/90 active:translate-y-0"
+      type="submit"
+      aria-disabled={pending}
       disabled={pending}
     >
-      {pending ? 'Creating account...' : 'Create Account'}
+      {pending ? "Creating account..." : "Submit Signup"}
     </Button>
   );
 }
@@ -39,7 +39,6 @@ export default function SignupForm() {
     for (let i = 0; i < 14; i++) {
       newPass += chars.charAt(Math.floor(Math.random() * chars.length));
     }
-    // Ensure it's strong by forcing some chars if needed (simplified)
     setPassword(newPass);
     if (!showPassword) setShowPassword(true);
   };
@@ -74,67 +73,101 @@ export default function SignupForm() {
   };
 
   return (
-    <form action={formAction} className="space-y-4">
-      <div className="grid gap-2">
-        <Label htmlFor="name" className="text-xs font-black uppercase tracking-wider text-black/60">Full Name</Label>
-        <Input 
-          id="name" 
-          type="text" 
-          placeholder="John Doe" 
-          name="name" 
-          required 
-          className="border-2 border-black/20 focus:border-black focus:ring-0"
-        />
-      </div>
-      
-      <div className="grid gap-2">
-        <Label htmlFor="email" className="text-xs font-black uppercase tracking-wider text-black/60">Email Address</Label>
-        <Input 
-          id="email" 
-          type="email" 
-          placeholder="m@example.com" 
-          name="email" 
-          required 
-          className="border-2 border-black/20 focus:border-black focus:ring-0"
+    <form action={formAction} className="space-y-3">
+      <div className="retro-card border-2 bg-white p-2 transition-colors hover:bg-yellow-50">
+        <Label htmlFor="name" className="mb-1 block text-[9px] font-black uppercase tracking-wide text-black/40">
+          01. Full Name
+        </Label>
+        <Input
+          id="name"
+          type="text"
+          placeholder="NAME..."
+          name="name"
+          required
+          className="h-auto w-full border-0 border-b-2 border-black/10 bg-transparent px-0 py-0.5 text-base font-bold uppercase tracking-tight text-black shadow-none outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
         />
       </div>
 
-      <div className="grid gap-2">
-        <div className="flex items-center justify-between">
-          <Label htmlFor="password" className="text-xs font-black uppercase tracking-wider text-black/60">Password</Label>
+      <div className="retro-card border-2 bg-white p-2 transition-colors hover:bg-yellow-50">
+        <Label htmlFor="phone" className="mb-1 block text-[9px] font-black uppercase tracking-wide text-black/40">
+          02. Phone Number
+        </Label>
+        <Input
+          id="phone"
+          type="tel"
+          placeholder="NUMBER..."
+          name="phone"
+          required
+          className="h-auto w-full border-0 border-b-2 border-black/10 bg-transparent px-0 py-0.5 text-base font-bold uppercase tracking-tight text-black shadow-none outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+        />
+      </div>
+
+      <div className="retro-card border-2 bg-white p-2 transition-colors hover:bg-yellow-50">
+        <Label htmlFor="email" className="mb-1 block text-[9px] font-black uppercase tracking-wide text-black/40">
+          03. Email Address
+        </Label>
+        <Input
+          id="email"
+          type="email"
+          placeholder="EMAIL@COMPANY.COM"
+          name="email"
+          required
+          className="h-auto w-full border-0 border-b-2 border-black/10 bg-transparent px-0 py-0.5 text-base font-bold uppercase tracking-tight text-black shadow-none outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+        />
+      </div>
+
+      <div className="retro-card border-2 bg-white p-2 transition-colors hover:bg-yellow-50">
+        <Label htmlFor="address" className="mb-1 block text-[9px] font-black uppercase tracking-wide text-black/40">
+          04. Address
+        </Label>
+        <Input
+          id="address"
+          type="text"
+          placeholder="STREET, CITY..."
+          name="address"
+          required
+          className="h-auto w-full border-0 border-b-2 border-black/10 bg-transparent px-0 py-0.5 text-base font-bold uppercase tracking-tight text-black shadow-none outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+        />
+      </div>
+
+      <div className="retro-card border-2 bg-white p-2 transition-colors hover:bg-yellow-50">
+        <div className="flex items-center justify-between mb-1">
+          <Label htmlFor="password" className="block text-[9px] font-black uppercase tracking-wide text-black/40">
+            05. Password
+          </Label>
           <button
             type="button"
             onClick={generatePassword}
-            className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-blue-600 hover:text-blue-800"
+            className="flex items-center gap-1 text-[9px] font-black uppercase tracking-wider text-blue-600 hover:text-blue-800"
           >
-            <RefreshCw size={10} className="animate-hover" />
-            Suggest Strong
+            <RefreshCw size={10} />
+            Suggest
           </button>
         </div>
         
         <div className="relative">
-          <Input 
-            id="password" 
-            type={showPassword ? "text" : "password"} 
-            name="password" 
+          <Input
+            id="password"
+            type={showPassword ? "text" : "password"}
+            name="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required 
-            className="border-2 border-black/20 pr-10 focus:border-black focus:ring-0"
+            required
+            className="h-auto w-full border-0 border-b-2 border-black/10 bg-transparent px-0 py-0.5 pr-8 text-base font-bold uppercase tracking-tight text-black shadow-none outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
           />
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-black/40 hover:text-black"
+            className="absolute right-0 top-1/2 -translate-y-1/2 text-black/40 hover:text-black"
           >
-            {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+            {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
           </button>
         </div>
 
         {/* Strength Meter */}
         {password && (
-          <div className="mt-1 space-y-1.5">
-            <div className="flex h-1.5 w-full gap-1 overflow-hidden rounded-full bg-gray-100">
+          <div className="mt-2 space-y-1">
+            <div className="flex h-1 w-full gap-0.5 overflow-hidden rounded-full bg-black/5">
               {[1, 2, 3, 4, 5].map((i) => (
                 <div 
                   key={i}
@@ -142,7 +175,7 @@ export default function SignupForm() {
                 />
               ))}
             </div>
-            <div className={`flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest ${strength > 2 ? (strength > 4 ? 'text-emerald-600' : 'text-yellow-600') : 'text-red-600'}`}>
+            <div className={`flex items-center gap-1 text-[8px] font-black uppercase tracking-widest ${strength > 2 ? (strength > 4 ? 'text-emerald-600' : 'text-yellow-600') : 'text-red-600'}`}>
               <StrengthIcon />
               {strengthText()}
             </div>
