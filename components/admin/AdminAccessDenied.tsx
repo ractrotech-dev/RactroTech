@@ -7,25 +7,14 @@ export default function AdminAccessDenied({ email }: { email: string }) {
         <p className="text-[10px] font-black uppercase tracking-[0.3em] text-black/40">Admin</p>
         <h1 className="mt-2 text-2xl font-black uppercase tracking-tight text-black">Access not granted</h1>
         <p className="mt-4 text-sm font-semibold leading-relaxed text-black/70">
-          You are signed in as <span className="font-bold text-black">{email}</span>, but this account does not
-          have an admin role in the database yet, so /admin cannot load.
+          You are signed in as <span className="font-bold text-black">{email}</span>, but this account is not
+          authorized for the admin dashboard.
         </p>
-        <ul className="mt-6 list-inside list-disc space-y-2 text-xs font-bold text-black/60">
-          <li>
-            Add your email to <code className="font-mono text-[11px] text-black">ADMIN_BOOTSTRAP_EMAILS</code> in{' '}
-            <code className="font-mono text-[11px] text-black">.env</code>, then sign out and sign in again (syncs
-            role to <code className="font-mono">super_admin</code>).
-          </li>
-          <li>
-            Or set <code className="font-mono text-[11px] text-black">role</code> on your row in{' '}
-            <code className="font-mono text-[11px] text-black">users_table</code> to admin, manager, developer, or
-            super_admin (Supabase SQL editor).
-          </li>
-          <li className="marker:text-amber-600">
-            Local only: <code className="font-mono text-[11px] text-black">ADMIN_DEV_ACCESS_EMAILS</code> (comma
-            list) while <code className="font-mono text-[11px] text-black">NODE_ENV=development</code>.
-          </li>
-        </ul>
+        <p className="mt-3 text-sm font-medium leading-relaxed text-black/60">
+          If you should have access, contact your RactroTech administrator. Otherwise sign out and sign in with an
+          approved account.
+        </p>
+
         <div className="mt-8 flex flex-wrap gap-3">
           <Link
             href="/"
@@ -34,10 +23,10 @@ export default function AdminAccessDenied({ email }: { email: string }) {
             Back to site
           </Link>
           <Link
-            href="/admin/login"
+            href="/auth/admin-sign-out"
             className="border-4 border-black bg-white px-5 py-2.5 text-[10px] font-black uppercase tracking-wider text-black transition-transform hover:-translate-y-0.5"
           >
-            Switch account
+            Sign out & try another account
           </Link>
         </div>
       </div>

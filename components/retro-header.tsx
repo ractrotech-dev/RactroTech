@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { createClient as createSupabaseClient } from '@/utils/supabase/client';
 
 const navLinks = [
+  { href: '/blog', label: 'JOURNAL' },
   // { href: '#product', label: 'PRODUCT' },
   { href: '/components', label: 'COMPONENTS' },
   { href: '/templates', label: 'TEMPLATES' },

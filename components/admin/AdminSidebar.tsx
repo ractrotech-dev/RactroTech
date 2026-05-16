@@ -19,6 +19,7 @@ import {
   UserCircle,
   FolderOpen,
   Shield,
+  MessageSquare,
 } from 'lucide-react';
 import type { AdminRole } from '@/utils/admin-roles';
 import { getRoleLabel, getRoleBadgeClasses } from '@/utils/admin-roles';
@@ -92,6 +93,11 @@ const navGroups: { title: string; items: NavItem[] }[] = [
         label: 'Media',
         href: '/admin/media',
         icon: FolderOpen,
+      },
+      {
+        label: 'Reviews',
+        href: '/admin/reviews',
+        icon: MessageSquare,
       },
     ],
   },

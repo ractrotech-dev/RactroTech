@@ -29,6 +29,11 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
+    /* Journal / blog (paper tone + subtle rule lines) */
+    --journal-bg: 43 42% 96%;
+    --journal-line: 40 15% 75%;
+    --journal-surface: 0 0% 100%;
+    --journal-ink-muted: 220 9% 40%;
   }
 
   .dark {
@@ -88,5 +93,20 @@
 
   .retro-heading {
     @apply font-black uppercase tracking-widest text-xl;
+  }
+
+  .journal-shell {
+    background-color: hsl(var(--journal-bg));
+    background-image: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 10px,
+      hsl(var(--journal-line) / 0.35) 10px,
+      hsl(var(--journal-line) / 0.35) 11px
+    );
+  }
+
+  .journal-prose {
+    @apply text-[15px] font-medium leading-[1.75] text-foreground/90 md:text-base;
   }
 }

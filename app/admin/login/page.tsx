@@ -20,7 +20,22 @@ export const metadata = constructMetadata({
   canonicalUrl: 'https://ractrotech.com/admin/login',
 })
 
-export default function AdminLoginPage() {
+type AdminLoginPageProps = {
+  searchParams: { error?: string }
+}
+
+export default function AdminLoginPage({ searchParams }: AdminLoginPageProps) {
+  const raw = typeof searchParams.error === 'string' ? searchParams.error : ''
+  let errorMessage: string | undefined
+  try {
+    errorMessage = raw ? decodeURIComponent(raw) : undefined
+  } catch {
+    errorMessage = undefined
+  }
+  if (errorMessage && errorMessage.length > 500) {
+    errorMessage = errorMessage.slice(0, 500)
+  }
+
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden border-b-4 border-black bg-yellow-400">
       <div
@@ -83,7 +98,7 @@ export default function AdminLoginPage() {
             </CardHeader>
 
             <CardContent className="grid gap-4 pt-4">
-              <AdminLoginForm />
+              <AdminLoginForm errorMessage={errorMessage} />
 
               <div className="relative my-2">
                 <div className="absolute inset-0 flex items-center">

@@ -1,6 +1,6 @@
 import { db } from "@/utils/db/db";
 import { projectEnquiriesTable, inquiryNotesTable, usersTable } from "@/utils/db/schema";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, sql } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import { Mail, Phone, Calendar, Tag, MessageSquare } from "lucide-react";
 import PageHeader from "@/components/admin/PageHeader";
@@ -25,7 +25,10 @@ export default async function InquiryDetailPage({ params }: { params: { id: stri
         author_name: usersTable.name,
       })
       .from(inquiryNotesTable)
-      .leftJoin(usersTable, eq(inquiryNotesTable.author_id, usersTable.id))
+      .leftJoin(
+        usersTable,
+        sql`${inquiryNotesTable.author_id} = (${usersTable.id})::text`,
+      )
       .where(eq(inquiryNotesTable.inquiry_id, params.id))
       .orderBy(desc(inquiryNotesTable.created_at));
   } catch { /* table may not exist */ }

@@ -163,6 +163,14 @@ export function RetroFooter() {
                       Support
                     </Link>
                   </li>
+                  <li>
+                    <Link
+                      href="/review"
+                      className="font-bold text-gray-400 underline-offset-4 transition-colors hover:text-white hover:underline"
+                    >
+                      Leave a review
+                    </Link>
+                  </li>
                 </ul>
               </motion.div>
 

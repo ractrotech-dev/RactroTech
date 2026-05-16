@@ -232,6 +232,23 @@ export const siteSettingsTable = pgTable('site_settings', {
 export type InsertSiteSettings = typeof siteSettingsTable.$inferInsert;
 export type SelectSiteSettings = typeof siteSettingsTable.$inferSelect;
 
+// ─── Client reviews / testimonials ────────────────────────────────────────────
+export const reviewsTable = pgTable('reviews', {
+  id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
+  full_name: text('full_name').notNull(),
+  company_name: text('company_name').notNull(),
+  project_type: text('project_type').notNull(),
+  rating: integer('rating').notNull(),
+  review_text: text('review_text').notNull(),
+  image_url: text('image_url'),
+  permission_granted: boolean('permission_granted').notNull().default(false),
+  approved: boolean('approved').notNull().default(false),
+  created_at: timestamp('created_at').notNull().defaultNow(),
+});
+
+export type InsertReview = typeof reviewsTable.$inferInsert;
+export type SelectReview = typeof reviewsTable.$inferSelect;
+
 // ─── CMS Tables (Blog / Portfolio) ───────────────────────────────────────────
 export const postsTable = pgTable('posts', {
   id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),

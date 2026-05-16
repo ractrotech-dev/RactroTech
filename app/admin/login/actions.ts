@@ -6,10 +6,7 @@ import { redirect } from 'next/navigation'
 
 const PUBLIC_URL = process.env.NEXT_PUBLIC_WEBSITE_URL || 'https://www.ractrotech.com'
 
-export async function loginAdminUser(
-  currentState: { message: string } | undefined,
-  formData: FormData,
-) {
+export async function loginAdminUser(formData: FormData) {
   const supabase = createClient()
 
   const data = {
@@ -19,7 +16,7 @@ export async function loginAdminUser(
 
   const { data: signInData, error } = await supabase.auth.signInWithPassword(data)
   if (error) {
-    return { message: error.message }
+    redirect(`/admin/login?error=${encodeURIComponent(error.message)}`)
   }
 
   if (signInData?.user) {

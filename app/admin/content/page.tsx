@@ -1,12 +1,14 @@
 import { db } from "@/utils/db/db";
 import { postsTable, usersTable } from "@/utils/db/schema";
-import { desc, eq } from "drizzle-orm";
+import { desc, sql } from "drizzle-orm";
 import { FileText, Plus, Edit, Trash2, Eye, Calendar, User } from "lucide-react";
 import PageHeader from "@/components/admin/PageHeader";
 import MiniStat from "@/components/admin/MiniStat";
 import StatusBadge from "@/components/admin/StatusBadge";
 import EmptyState from "@/components/admin/EmptyState";
+import DatabaseError from "@/components/admin/DatabaseError";
 import Link from "next/link";
+import { deletePostForm } from "@/app/admin/actions";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Content | Admin | RactroTech", description: "Manage blog posts and portfolio" };
@@ -24,9 +26,14 @@ export default async function AdminContentPage() {
         author_name: usersTable.name,
       })
       .from(postsTable)
-      .leftJoin(usersTable, eq(postsTable.author_id, usersTable.id))
+      .leftJoin(
+        usersTable,
+        sql`${postsTable.author_id} = (${usersTable.id})::text`,
+      )
       .orderBy(desc(postsTable.created_at));
-  } catch { /* table may not exist yet */ }
+  } catch (e: unknown) {
+    return <DatabaseError message={e instanceof Error ? e.message : "Could not load posts"} />;
+  }
 
   const totalCount = posts.length;
   const publishedCount = posts.filter(p => p.status === 'published').length;
@@ -89,12 +96,19 @@ export default async function AdminContentPage() {
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex justify-end gap-1.5">
-                        <Link href={`/admin/content/${post.id}`} className="border-2 border-black p-1 hover:bg-black hover:text-white transition-colors">
+                        <Link href={`/admin/content/${post.id}`} className="border-2 border-black p-1 transition-colors hover:bg-black hover:text-white">
                           <Edit size={12} />
                         </Link>
-                        <button className="border-2 border-black p-1 hover:bg-red-500 hover:text-white transition-colors">
-                          <Trash2 size={12} />
-                        </button>
+                        <form action={deletePostForm}>
+                          <input type="hidden" name="id" value={post.id} />
+                          <button
+                            type="submit"
+                            className="border-2 border-black p-1 transition-colors hover:bg-red-500 hover:text-white"
+                            aria-label="Delete post"
+                          >
+                            <Trash2 size={12} />
+                          </button>
+                        </form>
                       </div>
                     </td>
                   </tr>

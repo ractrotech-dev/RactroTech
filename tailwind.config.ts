@@ -52,6 +52,12 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        journal: {
+          bg: "hsl(var(--journal-bg))",
+          line: "hsl(var(--journal-line))",
+          surface: "hsl(var(--journal-surface))",
+          ink: "hsl(var(--journal-ink-muted))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

@@ -1,14 +1,11 @@
 import DashboardHeader from '@/components/DashboardHeader';
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 
 import { constructMetadata } from '@/lib/seo';
 import { ensureAuthUserInDb } from '@/utils/auth-user-sync';
 import { ADMIN_ROLES, type AdminRole } from '@/utils/admin-roles';
-
-const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = constructMetadata({
   title: 'Dashboard',
@@ -45,9 +42,9 @@ export default async function DashboardLayout({
   }
 
   return (
-    <html lang="en">
-      {/* <DashboardHeader /> */}
-      {children}
-    </html>
+    <div className="flex min-h-screen flex-col">
+      <DashboardHeader />
+      <div className="flex flex-1 flex-col">{children}</div>
+    </div>
   );
 }

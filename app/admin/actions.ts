@@ -14,6 +14,8 @@ import {
   siteSettingsTable,
   notificationsTable,
   activityLogsTable,
+  reviewsTable,
+  type SelectPost,
 } from '@/utils/db/schema';
 import { eq, desc, ilike, or, sql } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
@@ -289,6 +291,18 @@ export async function searchAdminEntities(query: string) {
 
 // ─── Content / CMS Actions ───────────────────────────────────────────────────
 
+function normalizePostSlug(slug: string, title: string): string {
+  const raw = (slug || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  if (raw) return raw.slice(0, 180);
+  const fromTitle = title
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+  if (fromTitle) return fromTitle.slice(0, 180);
+  return `post-${crypto.randomUUID().slice(0, 10)}`;
+}
+
 export async function createPost(data: {
   title: string;
   slug: string;
@@ -298,14 +312,33 @@ export async function createPost(data: {
   tags?: string;
 }) {
   const admin = await requireAdmin();
-  const [post] = await db.insert(postsTable).values({
-    ...data,
+  const title = (data.title || '').trim() || 'Untitled';
+  let slug = normalizePostSlug(data.slug, title);
+
+  const baseValues = {
+    title,
+    slug,
+    content: data.content || '',
+    excerpt: data.excerpt?.trim() || null,
+    category: data.category?.trim() || null,
+    tags: data.tags?.trim() || null,
     author_id: admin.id,
-    status: 'draft',
-  }).returning();
+    status: 'draft' as const,
+  };
+
+  let post: SelectPost | undefined;
+  try {
+    ;[post] = await db.insert(postsTable).values(baseValues).returning();
+  } catch {
+    slug = `${slug}-${crypto.randomUUID().slice(0, 8)}`;
+    ;[post] = await db.insert(postsTable).values({ ...baseValues, slug }).returning();
+  }
+
+  if (!post) throw new Error('Failed to create post');
 
   await logActivity(admin.id, 'Created blog post', 'post', post.id);
   revalidatePath('/admin/content');
+  revalidatePath('/blog');
   return post;
 }
 
@@ -319,20 +352,37 @@ export async function updatePost(id: string, data: Partial<{
   status: 'draft' | 'published' | 'archived';
 }>) {
   const admin = await requireAdmin();
-  const updateData: any = { ...data, updated_at: new Date() };
+  const updateData: Record<string, unknown> = { updated_at: new Date() };
+  (Object.keys(data) as (keyof typeof data)[]).forEach((key) => {
+    const v = data[key];
+    if (v !== undefined) (updateData as Record<string, unknown>)[key as string] = v as unknown;
+  });
+  if (typeof data.slug === 'string') {
+    updateData.slug = normalizePostSlug(data.slug, String(data.title || ''));
+  }
   if (data.status === 'published') updateData.published_at = new Date();
 
-  await db.update(postsTable).set(updateData).where(eq(postsTable.id, id));
+  await db.update(postsTable).set(updateData as any).where(eq(postsTable.id, id));
   await logActivity(admin.id, `Updated post: ${data.title || id}`, 'post', id);
   revalidatePath('/admin/content');
   revalidatePath(`/admin/content/${id}`);
+  revalidatePath('/blog');
 }
 
 export async function deletePost(id: string) {
   const admin = await requireAdmin();
+  const [row] = await db.select({ slug: postsTable.slug }).from(postsTable).where(eq(postsTable.id, id));
   await db.delete(postsTable).where(eq(postsTable.id, id));
   await logActivity(admin.id, 'Deleted post', 'post', id);
   revalidatePath('/admin/content');
+  revalidatePath('/blog');
+  if (row?.slug) revalidatePath(`/blog/${row.slug}`);
+}
+
+export async function deletePostForm(formData: FormData) {
+  const id = String(formData.get('id') ?? '').trim();
+  if (!id) return;
+  await deletePost(id);
 }
 
 // ─── Media Actions ────────────────────────────────────────────────────────────
@@ -385,6 +435,28 @@ export async function updateSiteSettings(data: any) {
   await requireAdmin();
   await db.update(siteSettingsTable).set({ ...data, updated_at: new Date() }).where(eq(siteSettingsTable.id, 'global'));
   revalidatePath('/admin/settings');
+}
+
+// ─── Client reviews / testimonials ────────────────────────────────────────────
+
+/**
+ * Form action for admin review rows: hidden `id`, submit button `cmd` = approve | delete.
+ */
+export async function moderateReviewForm(formData: FormData) {
+  const admin = await requireAdmin();
+  const id = String(formData.get('id') ?? '').trim();
+  const cmd = String(formData.get('cmd') ?? '').trim();
+  if (!id || (cmd !== 'approve' && cmd !== 'delete')) return;
+
+  if (cmd === 'approve') {
+    await db.update(reviewsTable).set({ approved: true }).where(eq(reviewsTable.id, id));
+    await logActivity(admin.id, 'Approved client review', 'review', id);
+  } else {
+    await db.delete(reviewsTable).where(eq(reviewsTable.id, id));
+    await logActivity(admin.id, 'Rejected/deleted client review', 'review', id);
+  }
+  revalidatePath('/admin/reviews');
+  revalidatePath('/');
 }
 
 // ─── Audit Actions ────────────────────────────────────────────────────────────

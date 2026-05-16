@@ -8,6 +8,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/signup",
     "/forgot-password",
     "/start-project",
+    "/review",
     "/subscribe",
     "/privacy",
     "/terms",

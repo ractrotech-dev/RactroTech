@@ -1,6 +1,41 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
+/** Paths that must work without a Supabase session (marketing, legal, public forms). */
+function isPublicPath(pathname: string): boolean {
+    if (pathname === '/') return true
+    if (
+        pathname === '/manifest.webmanifest' ||
+        pathname === '/robots.txt' ||
+        pathname === '/sitemap.xml'
+    ) {
+        return true
+    }
+
+    const prefixes = [
+        '/login',
+        '/signup',
+        '/auth',
+        '/forgot-password',
+        '/admin/login',
+        '/review',
+        '/start-project',
+        '/components',
+        '/templates',
+        '/services',
+        '/contact',
+        '/about',
+        '/cookies',
+        '/privacy',
+        '/terms',
+        '/license',
+        '/subscribe',
+        '/blog',
+    ] as const
+
+    return prefixes.some((p) => pathname === p || pathname.startsWith(`${p}/`))
+}
+
 export async function updateSession(request: NextRequest) {
     let supabaseResponse = NextResponse.next({
         request,
@@ -55,18 +90,7 @@ export async function updateSession(request: NextRequest) {
         return redirectResponse
     }
 
-    if (
-        !user &&
-        !request.nextUrl.pathname.startsWith('/login') &&
-        !request.nextUrl.pathname.startsWith('/admin/login') &&
-        !request.nextUrl.pathname.startsWith('/auth') &&
-        !request.nextUrl.pathname.startsWith('/signup') &&
-        !request.nextUrl.pathname.startsWith('/forgot-password') &&
-        request.nextUrl.pathname !== '/manifest.webmanifest' &&
-        request.nextUrl.pathname !== '/robots.txt' &&
-        request.nextUrl.pathname !== '/sitemap.xml' &&
-        !(request.nextUrl.pathname === '/')
-    ) {
+    if (!user && !isPublicPath(request.nextUrl.pathname)) {
         // no user, redirect to login page
         url.pathname = request.nextUrl.pathname.startsWith('/admin') ? '/admin/login' : '/login'
         return NextResponse.redirect(url)
