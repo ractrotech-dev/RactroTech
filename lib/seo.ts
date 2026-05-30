@@ -26,14 +26,12 @@ export function constructMetadata({
   title = siteConfig.name,
   description = siteConfig.description,
   image = siteConfig.ogImage,
-  icons = "/favicon.ico",
   noIndex = false,
   canonicalUrl,
 }: {
   title?: string;
   description?: string;
   image?: string;
-  icons?: string;
   noIndex?: boolean;
   canonicalUrl?: string;
 } = {}): Metadata {
@@ -74,7 +72,6 @@ export function constructMetadata({
       images: [image],
       creator: "@ractrotech", // Replace with actual handle
     },
-    icons,
     metadataBase: new URL(siteConfig.url),
     alternates: {
       canonical: canonicalUrl || siteConfig.url,
