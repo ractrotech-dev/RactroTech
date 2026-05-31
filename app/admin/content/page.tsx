@@ -46,7 +46,7 @@ export default async function AdminContentPage() {
         subtitle={`${totalCount} total posts`}
         backHref="/admin"
         actions={
-          <Link href="/admin/content/new" className="flex items-center gap-2 border-2 border-black bg-yellow-400 px-4 py-2 text-[10px] font-black uppercase tracking-widest transition-all hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <Link href="/admin/content/new" className="flex items-center gap-2 border-2 border-black bg-yellow-400 px-4 py-2 text-[10px] font-black tracking-widest transition-all hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <Plus size={14} /> New Post
           </Link>
         }
@@ -60,7 +60,7 @@ export default async function AdminContentPage() {
 
       <div className="border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
         <div className="border-b-4 border-black px-5 py-3">
-          <h2 className="text-xs font-black uppercase tracking-[0.2em]">All Posts</h2>
+          <h2 className="text-xs font-black tracking-[0.2em]">All Posts</h2>
         </div>
         {posts.length === 0 ? (
           <EmptyState icon={FileText} title="No posts yet" description="Start by creating your first blog post or case study." />
@@ -69,12 +69,12 @@ export default async function AdminContentPage() {
             <table className="w-full text-left text-sm">
               <thead>
                 <tr className="border-b-2 border-black/10 bg-gray-50">
-                  <th className="px-4 py-3 text-[10px] font-black uppercase tracking-wider text-black/50">Post</th>
-                  <th className="px-4 py-3 text-[10px] font-black uppercase tracking-wider text-black/50">Category</th>
-                  <th className="px-4 py-3 text-[10px] font-black uppercase tracking-wider text-black/50">Author</th>
-                  <th className="px-4 py-3 text-[10px] font-black uppercase tracking-wider text-black/50">Status</th>
-                  <th className="px-4 py-3 text-[10px] font-black uppercase tracking-wider text-black/50">Date</th>
-                  <th className="px-4 py-3 text-[10px] font-black uppercase tracking-wider text-black/50 text-right">Actions</th>
+                  <th className="px-4 py-3 text-[10px] font-black tracking-wider text-black/50">Post</th>
+                  <th className="px-4 py-3 text-[10px] font-black tracking-wider text-black/50">Category</th>
+                  <th className="px-4 py-3 text-[10px] font-black tracking-wider text-black/50">Author</th>
+                  <th className="px-4 py-3 text-[10px] font-black tracking-wider text-black/50">Status</th>
+                  <th className="px-4 py-3 text-[10px] font-black tracking-wider text-black/50">Date</th>
+                  <th className="px-4 py-3 text-[10px] font-black tracking-wider text-black/50 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -84,7 +84,7 @@ export default async function AdminContentPage() {
                       <p className="text-xs font-bold truncate max-w-[200px]">{post.title}</p>
                     </td>
                     <td className="px-4 py-3">
-                      <span className="text-[10px] font-black uppercase tracking-wider text-black/40">{post.category || 'Uncategorized'}</span>
+                      <span className="text-[10px] font-black tracking-wider text-black/40">{post.category || 'Uncategorized'}</span>
                     </td>
                     <td className="px-4 py-3 flex items-center gap-2">
                       <div className="flex h-5 w-5 items-center justify-center border border-black bg-gray-100 text-[8px] font-black">{post.author_name?.charAt(0) || <User size={10} />}</div>

@@ -54,24 +54,24 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
       {/* Project meta grid */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-          <p className="text-[9px] font-black uppercase tracking-[0.2em] text-black/40">Status</p>
+          <p className="text-[9px] font-black tracking-[0.2em] text-black/40">Status</p>
           <div className="mt-2"><StatusBadge status={project.status} /></div>
         </div>
         <div className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-          <p className="text-[9px] font-black uppercase tracking-[0.2em] text-black/40">Progress</p>
+          <p className="text-[9px] font-black tracking-[0.2em] text-black/40">Progress</p>
           <div className="mt-2"><ProgressBar value={project.progress} showPercentage /></div>
         </div>
         <div className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <div className="flex items-center gap-2">
             <DollarSign size={14} className="text-black/40" />
-            <p className="text-[9px] font-black uppercase tracking-[0.2em] text-black/40">Budget</p>
+            <p className="text-[9px] font-black tracking-[0.2em] text-black/40">Budget</p>
           </div>
           <p className="mt-1 text-2xl font-black">{project.budget ? `$${Number(project.budget).toLocaleString()}` : '—'}</p>
         </div>
         <div className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <div className="flex items-center gap-2">
             <Calendar size={14} className="text-black/40" />
-            <p className="text-[9px] font-black uppercase tracking-[0.2em] text-black/40">Due Date</p>
+            <p className="text-[9px] font-black tracking-[0.2em] text-black/40">Due Date</p>
           </div>
           <p className="mt-1 text-sm font-bold">{project.due_date ? new Date(project.due_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : 'Not set'}</p>
         </div>
@@ -85,11 +85,11 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
             <div className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
               <div className="flex items-center gap-2 mb-3">
                 <Code2 size={14} />
-                <h3 className="text-xs font-black uppercase tracking-[0.2em]">Tech Stack</h3>
+                <h3 className="text-xs font-black tracking-[0.2em]">Tech Stack</h3>
               </div>
               <div className="flex flex-wrap gap-2">
                 {project.tech_stack.split(',').map((tech: string) => (
-                  <span key={tech} className="border-2 border-black bg-yellow-400 px-2.5 py-1 text-[9px] font-black uppercase">{tech.trim()}</span>
+                  <span key={tech} className="border-2 border-black bg-yellow-400 px-2.5 py-1 text-[9px] font-black">{tech.trim()}</span>
                 ))}
               </div>
             </div>
@@ -98,7 +98,7 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
           {/* Task Board */}
           <div className="border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <div className="border-b-4 border-black px-5 py-3">
-              <h3 className="text-xs font-black uppercase tracking-[0.2em]">Tasks ({tasks.length})</h3>
+              <h3 className="text-xs font-black tracking-[0.2em]">Tasks ({tasks.length})</h3>
             </div>
             {tasks.length === 0 ? (
               <div className="p-8 text-center text-xs font-bold text-black/25">No tasks yet</div>
@@ -106,7 +106,7 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
               <div className="grid gap-0 sm:grid-cols-3">
                 {/* To Do */}
                 <div className="border-r border-black/10 p-4">
-                  <p className="mb-3 text-[9px] font-black uppercase tracking-wider text-black/30">To Do ({todoTasks.length})</p>
+                  <p className="mb-3 text-[9px] font-black tracking-wider text-black/30">To Do ({todoTasks.length})</p>
                   <div className="space-y-2">
                     {todoTasks.map(t => (
                       <div key={t.id} className="border-2 border-black/20 bg-gray-50 p-3">
@@ -118,7 +118,7 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
                 </div>
                 {/* In Progress */}
                 <div className="border-r border-black/10 p-4">
-                  <p className="mb-3 text-[9px] font-black uppercase tracking-wider text-yellow-600">In Progress ({inProgressTasks.length})</p>
+                  <p className="mb-3 text-[9px] font-black tracking-wider text-yellow-600">In Progress ({inProgressTasks.length})</p>
                   <div className="space-y-2">
                     {inProgressTasks.map(t => (
                       <div key={t.id} className="border-2 border-yellow-400 bg-yellow-50 p-3">
@@ -130,7 +130,7 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
                 </div>
                 {/* Done */}
                 <div className="p-4">
-                  <p className="mb-3 text-[9px] font-black uppercase tracking-wider text-emerald-600">Done ({doneTasks.length})</p>
+                  <p className="mb-3 text-[9px] font-black tracking-wider text-emerald-600">Done ({doneTasks.length})</p>
                   <div className="space-y-2">
                     {doneTasks.map(t => (
                       <div key={t.id} className="border-2 border-emerald-300 bg-emerald-50 p-3">
@@ -148,7 +148,7 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
         <div className="space-y-4">
           {/* Links */}
           <div className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <h3 className="mb-3 text-xs font-black uppercase tracking-[0.2em]">Links</h3>
+            <h3 className="mb-3 text-xs font-black tracking-[0.2em]">Links</h3>
             <div className="space-y-2">
               {project.live_url ? (
                 <a href={project.live_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs font-bold text-blue-600 hover:underline">
@@ -165,7 +165,7 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
 
           {/* Client */}
           <div className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <h3 className="mb-3 text-xs font-black uppercase tracking-[0.2em]">Client</h3>
+            <h3 className="mb-3 text-xs font-black tracking-[0.2em]">Client</h3>
             {client ? (
               <div className="flex items-center gap-3">
                 <div className="flex h-8 w-8 items-center justify-center border-2 border-black bg-yellow-400 text-[10px] font-black">{client.name.charAt(0)}</div>
@@ -182,7 +182,7 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
 
           {/* Milestones */}
           <div className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <h3 className="mb-3 text-xs font-black uppercase tracking-[0.2em]">Milestones</h3>
+            <h3 className="mb-3 text-xs font-black tracking-[0.2em]">Milestones</h3>
             {milestones.length === 0 ? (
               <p className="text-[10px] font-semibold text-black/25">No milestones</p>
             ) : (

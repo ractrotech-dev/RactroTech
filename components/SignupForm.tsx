@@ -13,7 +13,7 @@ function SignupSubmitButton() {
 
   return (
     <Button
-      className="w-full mt-6 border-2 border-black bg-black py-6 text-sm font-black uppercase tracking-widest text-yellow-400 transition-all hover:-translate-y-1 hover:bg-black/90 active:translate-y-0"
+      className="w-full mt-6 border-2 border-black bg-black py-6 text-sm font-black tracking-widest text-yellow-400 transition-all hover:-translate-y-1 hover:bg-black/90 active:translate-y-0"
       type="submit"
       aria-disabled={pending}
       disabled={pending}
@@ -75,7 +75,7 @@ export default function SignupForm() {
   return (
     <form action={formAction} className="space-y-3">
       <div className="retro-card border-2 bg-white p-2 transition-colors hover:bg-yellow-50">
-        <Label htmlFor="name" className="mb-1 block text-[9px] font-black uppercase tracking-wide text-black/40">
+        <Label htmlFor="name" className="mb-1 block text-[9px] font-black tracking-wide text-black/40">
           01. Full Name
         </Label>
         <Input
@@ -84,12 +84,12 @@ export default function SignupForm() {
           placeholder="NAME..."
           name="name"
           required
-          className="h-auto w-full border-0 border-b-2 border-black/10 bg-transparent px-0 py-0.5 text-base font-bold uppercase tracking-tight text-black shadow-none outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+          className="h-auto w-full border-0 border-b-2 border-black/10 bg-transparent px-0 py-0.5 text-base font-bold tracking-tight text-black shadow-none outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
         />
       </div>
 
       <div className="retro-card border-2 bg-white p-2 transition-colors hover:bg-yellow-50">
-        <Label htmlFor="phone" className="mb-1 block text-[9px] font-black uppercase tracking-wide text-black/40">
+        <Label htmlFor="phone" className="mb-1 block text-[9px] font-black tracking-wide text-black/40">
           02. Phone Number
         </Label>
         <Input
@@ -98,12 +98,12 @@ export default function SignupForm() {
           placeholder="NUMBER..."
           name="phone"
           required
-          className="h-auto w-full border-0 border-b-2 border-black/10 bg-transparent px-0 py-0.5 text-base font-bold uppercase tracking-tight text-black shadow-none outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+          className="h-auto w-full border-0 border-b-2 border-black/10 bg-transparent px-0 py-0.5 text-base font-bold tracking-tight text-black shadow-none outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
         />
       </div>
 
       <div className="retro-card border-2 bg-white p-2 transition-colors hover:bg-yellow-50">
-        <Label htmlFor="email" className="mb-1 block text-[9px] font-black uppercase tracking-wide text-black/40">
+        <Label htmlFor="email" className="mb-1 block text-[9px] font-black tracking-wide text-black/40">
           03. Email Address
         </Label>
         <Input
@@ -112,12 +112,12 @@ export default function SignupForm() {
           placeholder="EMAIL@COMPANY.COM"
           name="email"
           required
-          className="h-auto w-full border-0 border-b-2 border-black/10 bg-transparent px-0 py-0.5 text-base font-bold uppercase tracking-tight text-black shadow-none outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+          className="h-auto w-full border-0 border-b-2 border-black/10 bg-transparent px-0 py-0.5 text-base font-bold tracking-tight text-black shadow-none outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
         />
       </div>
 
       <div className="retro-card border-2 bg-white p-2 transition-colors hover:bg-yellow-50">
-        <Label htmlFor="address" className="mb-1 block text-[9px] font-black uppercase tracking-wide text-black/40">
+        <Label htmlFor="address" className="mb-1 block text-[9px] font-black tracking-wide text-black/40">
           04. Address
         </Label>
         <Input
@@ -126,19 +126,19 @@ export default function SignupForm() {
           placeholder="STREET, CITY..."
           name="address"
           required
-          className="h-auto w-full border-0 border-b-2 border-black/10 bg-transparent px-0 py-0.5 text-base font-bold uppercase tracking-tight text-black shadow-none outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+          className="h-auto w-full border-0 border-b-2 border-black/10 bg-transparent px-0 py-0.5 text-base font-bold tracking-tight text-black shadow-none outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
         />
       </div>
 
       <div className="retro-card border-2 bg-white p-2 transition-colors hover:bg-yellow-50">
         <div className="flex items-center justify-between mb-1">
-          <Label htmlFor="password" className="block text-[9px] font-black uppercase tracking-wide text-black/40">
+          <Label htmlFor="password" className="block text-[9px] font-black tracking-wide text-black/40">
             05. Password
           </Label>
           <button
             type="button"
             onClick={generatePassword}
-            className="flex items-center gap-1 text-[9px] font-black uppercase tracking-wider text-blue-600 hover:text-blue-800"
+            className="flex items-center gap-1 text-[9px] font-black tracking-wider text-blue-600 hover:text-blue-800"
           >
             <RefreshCw size={10} />
             Suggest
@@ -153,7 +153,7 @@ export default function SignupForm() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="h-auto w-full border-0 border-b-2 border-black/10 bg-transparent px-0 py-0.5 pr-8 text-base font-bold uppercase tracking-tight text-black shadow-none outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+            className="h-auto w-full border-0 border-b-2 border-black/10 bg-transparent px-0 py-0.5 pr-8 text-base font-bold tracking-tight text-black shadow-none outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
           />
           <button
             type="button"
@@ -175,7 +175,7 @@ export default function SignupForm() {
                 />
               ))}
             </div>
-            <div className={`flex items-center gap-1 text-[8px] font-black uppercase tracking-widest ${strength > 2 ? (strength > 4 ? 'text-emerald-600' : 'text-yellow-600') : 'text-red-600'}`}>
+            <div className={`flex items-center gap-1 text-[8px] font-black tracking-widest ${strength > 2 ? (strength > 4 ? 'text-emerald-600' : 'text-yellow-600') : 'text-red-600'}`}>
               <StrengthIcon />
               {strengthText()}
             </div>

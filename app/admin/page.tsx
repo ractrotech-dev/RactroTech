@@ -36,11 +36,11 @@ export default async function AdminDashboardPage() {
         <div className="pointer-events-none absolute -bottom-16 left-10 h-56 w-56 rounded-full bg-blue-500/20 blur-3xl" />
         <div className="relative flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-2xl space-y-3">
-            <p className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.35em] text-yellow-400">
+            <p className="flex items-center gap-2 text-[10px] font-black tracking-[0.35em] text-yellow-400">
               <Sparkles size={14} className="shrink-0" />
               RactroTech Control
             </p>
-            <h1 className="text-3xl font-black uppercase tracking-tight md:text-4xl">
+            <h1 className="text-3xl font-black tracking-tight md:text-4xl">
               Operations dashboard
             </h1>
             <p className="text-sm font-semibold leading-relaxed text-white/70">
@@ -49,15 +49,15 @@ export default async function AdminDashboardPage() {
             </p>
           </div>
           <div className="flex flex-wrap gap-2 lg:justify-end">
-            <span className="inline-flex items-center gap-2 border-2 border-yellow-400/50 bg-white/5 px-3 py-2 text-[10px] font-black uppercase tracking-wider backdrop-blur-sm">
+            <span className="inline-flex items-center gap-2 border-2 border-yellow-400/50 bg-white/5 px-3 py-2 text-[10px] font-black tracking-wider backdrop-blur-sm">
               <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
               Database live
             </span>
-            <span className="inline-flex items-center gap-2 border-2 border-white/20 bg-white/5 px-3 py-2 text-[10px] font-black uppercase tracking-wider text-white/80 backdrop-blur-sm">
+            <span className="inline-flex items-center gap-2 border-2 border-white/20 bg-white/5 px-3 py-2 text-[10px] font-black tracking-wider text-white/80 backdrop-blur-sm">
               <ShieldCheck size={14} />
               RBAC enforced
             </span>
-            <span className="inline-flex items-center gap-2 border-2 border-white/20 bg-white/5 px-3 py-2 text-[10px] font-black uppercase tracking-wider text-white/80 backdrop-blur-sm">
+            <span className="inline-flex items-center gap-2 border-2 border-white/20 bg-white/5 px-3 py-2 text-[10px] font-black tracking-wider text-white/80 backdrop-blur-sm">
               <Gauge size={14} />
               Force dynamic
             </span>
@@ -70,7 +70,7 @@ export default async function AdminDashboardPage() {
           role="status"
           className="border-4 border-amber-500 bg-amber-50 px-4 py-3 text-xs font-bold text-amber-950 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
         >
-          <p className="font-black uppercase tracking-wider text-amber-900/80">Partial data load</p>
+          <p className="font-black tracking-wider text-amber-900/80">Partial data load</p>
           <p className="mt-1 text-[11px] font-semibold leading-snug text-amber-950/90">
             Some widgets fell back to safe defaults. First issue: {partialErrors[0]}
           </p>
@@ -136,10 +136,10 @@ export default async function AdminDashboardPage() {
         <div className="space-y-4">
           <div className="border-4 border-black bg-white/90 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] backdrop-blur-sm">
             <div className="flex flex-wrap items-center justify-between gap-3 border-b-4 border-black px-5 py-3">
-              <h3 className="text-xs font-black uppercase tracking-[0.2em]">Latest accounts</h3>
+              <h3 className="text-xs font-black tracking-[0.2em]">Latest accounts</h3>
               <Link
                 href="/admin/users"
-                className="text-[10px] font-black uppercase tracking-wider text-black/40 underline-offset-2 hover:text-black hover:underline"
+                className="text-[10px] font-black tracking-wider text-black/40 underline-offset-2 hover:text-black hover:underline"
               >
                 Manage users
               </Link>
@@ -148,16 +148,16 @@ export default async function AdminDashboardPage() {
               <table className="w-full text-left text-sm">
                 <thead>
                   <tr className="border-b-2 border-black/10 bg-neutral-50/90">
-                    <th className="px-4 py-2.5 text-[10px] font-black uppercase tracking-wider text-black/45">
+                    <th className="px-4 py-2.5 text-[10px] font-black tracking-wider text-black/45">
                       Name
                     </th>
-                    <th className="px-4 py-2.5 text-[10px] font-black uppercase tracking-wider text-black/45">
+                    <th className="px-4 py-2.5 text-[10px] font-black tracking-wider text-black/45">
                       Email
                     </th>
-                    <th className="px-4 py-2.5 text-[10px] font-black uppercase tracking-wider text-black/45">
+                    <th className="px-4 py-2.5 text-[10px] font-black tracking-wider text-black/45">
                       Plan
                     </th>
-                    <th className="px-4 py-2.5 text-[10px] font-black uppercase tracking-wider text-black/45">
+                    <th className="px-4 py-2.5 text-[10px] font-black tracking-wider text-black/45">
                       Role
                     </th>
                   </tr>
@@ -178,13 +178,13 @@ export default async function AdminDashboardPage() {
                         <td className="px-4 py-2.5 text-xs font-bold">{u.name}</td>
                         <td className="px-4 py-2.5 text-xs font-semibold text-black/60">{u.email}</td>
                         <td className="px-4 py-2.5">
-                          <span className="border-2 border-black bg-yellow-400 px-2 py-0.5 text-[9px] font-black uppercase">
+                          <span className="border-2 border-black bg-yellow-400 px-2 py-0.5 text-[9px] font-black">
                             {u.plan}
                           </span>
                         </td>
                         <td className="px-4 py-2.5">
                           <span
-                            className={`border-2 px-2 py-0.5 text-[9px] font-black uppercase ${
+                            className={`border-2 px-2 py-0.5 text-[9px] font-black ${
                               u.role === 'admin' || u.role === 'super_admin'
                                 ? 'border-black bg-black text-white'
                                 : 'border-black/30 bg-neutral-100 text-black/60'
@@ -208,7 +208,7 @@ export default async function AdminDashboardPage() {
             >
               <Inbox size={18} className="text-black/70 group-hover:text-black" />
               <div>
-                <p className="text-[10px] font-black uppercase tracking-wider text-black/40">Pipeline</p>
+                <p className="text-[10px] font-black tracking-wider text-black/40">Pipeline</p>
                 <p className="text-xs font-bold">Review inquiries</p>
               </div>
             </Link>
@@ -218,7 +218,7 @@ export default async function AdminDashboardPage() {
             >
               <Activity size={18} className="text-black/70 group-hover:text-black" />
               <div>
-                <p className="text-[10px] font-black uppercase tracking-wider text-black/40">CMS</p>
+                <p className="text-[10px] font-black tracking-wider text-black/40">CMS</p>
                 <p className="text-xs font-bold">Posts & SEO drafts</p>
               </div>
             </Link>

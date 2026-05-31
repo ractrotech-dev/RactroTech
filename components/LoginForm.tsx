@@ -10,7 +10,7 @@ function LoginSubmitButton() {
 
   return (
     <Button
-      className="w-full mt-3 border-2 border-black bg-black py-4 text-sm font-black uppercase tracking-wide text-yellow-400 hover:bg-black/95"
+      className="w-full mt-3 border-2 border-black bg-black py-4 text-sm font-black tracking-wide text-yellow-400 hover:bg-black/95"
       type="submit"
       aria-disabled={pending}
       disabled={pending}
@@ -29,7 +29,7 @@ export default function LoginForm() {
   return (
     <form action={formAction} className="space-y-2.5">
       <div className="retro-card border-2 bg-white p-2 transition-colors hover:bg-yellow-50">
-        <Label htmlFor="email" className="mb-1 block text-[9px] font-black uppercase tracking-wide text-black/40">
+        <Label htmlFor="email" className="mb-1 block text-[9px] font-black tracking-wide text-black/40">
           01. Email
         </Label>
         <Input
@@ -38,11 +38,11 @@ export default function LoginForm() {
           placeholder="EMAIL@COMPANY.COM"
           name="email"
           required
-          className="h-auto w-full border-0 border-b-2 border-black/10 bg-transparent px-0 py-0.5 text-base font-bold uppercase tracking-tight text-black shadow-none outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+          className="h-auto w-full border-0 border-b-2 border-black/10 bg-transparent px-0 py-0.5 text-base font-bold tracking-tight text-black shadow-none outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
         />
       </div>
       <div className="retro-card border-2 bg-white p-2 transition-colors hover:bg-yellow-50">
-        <Label htmlFor="password" className="mb-1 block text-[9px] font-black uppercase tracking-wide text-black/40">
+        <Label htmlFor="password" className="mb-1 block text-[9px] font-black tracking-wide text-black/40">
           02. Password
         </Label>
         <Input
@@ -50,7 +50,7 @@ export default function LoginForm() {
           type="password"
           name="password"
           required
-          className="h-auto w-full border-0 border-b-2 border-black/10 bg-transparent px-0 py-0.5 text-base font-bold uppercase tracking-tight text-black shadow-none outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+          className="h-auto w-full border-0 border-b-2 border-black/10 bg-transparent px-0 py-0.5 text-base font-bold tracking-tight text-black shadow-none outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
         />
       </div>
 

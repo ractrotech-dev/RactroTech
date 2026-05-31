@@ -46,14 +46,14 @@ export default function InquiryActions({ inquiryId, currentStatus, currentPriori
     <div className="space-y-4">
       {/* Status control */}
       <div>
-        <p className="mb-2 text-[9px] font-black uppercase tracking-[0.2em] text-black/40">Status</p>
+        <p className="mb-2 text-[9px] font-black tracking-[0.2em] text-black/40">Status</p>
         <div className="flex flex-wrap gap-1.5">
           {statuses.map((s) => (
             <button
               key={s}
               onClick={() => handleStatusChange(s)}
               disabled={isPending || s === currentStatus}
-              className={`border-2 px-2.5 py-1 text-[9px] font-black uppercase tracking-wider transition-all ${
+              className={`border-2 px-2.5 py-1 text-[9px] font-black tracking-wider transition-all ${
                 s === currentStatus
                   ? statusColors[s]
                   : 'border-black/10 bg-white text-black/30 hover:border-black hover:bg-black hover:text-white'
@@ -67,14 +67,14 @@ export default function InquiryActions({ inquiryId, currentStatus, currentPriori
 
       {/* Priority control */}
       <div>
-        <p className="mb-2 text-[9px] font-black uppercase tracking-[0.2em] text-black/40">Priority</p>
+        <p className="mb-2 text-[9px] font-black tracking-[0.2em] text-black/40">Priority</p>
         <div className="flex flex-wrap gap-1.5">
           {priorities.map((p) => (
             <button
               key={p}
               onClick={() => handlePriorityChange(p)}
               disabled={isPending || p === currentPriority}
-              className={`border-2 px-2.5 py-1 text-[9px] font-black uppercase tracking-wider transition-all ${
+              className={`border-2 px-2.5 py-1 text-[9px] font-black tracking-wider transition-all ${
                 p === currentPriority
                   ? priorityColors[p]
                   : 'border-black/10 bg-white text-black/30 hover:border-black hover:bg-black hover:text-white'
@@ -87,7 +87,7 @@ export default function InquiryActions({ inquiryId, currentStatus, currentPriori
       </div>
 
       {isPending && (
-        <p className="text-[9px] font-bold uppercase tracking-wider text-yellow-600 animate-pulse">
+        <p className="text-[9px] font-bold tracking-wider text-yellow-600 animate-pulse">
           Updating...
         </p>
       )}

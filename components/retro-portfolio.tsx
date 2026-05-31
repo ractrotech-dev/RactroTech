@@ -56,7 +56,7 @@ export function RetroPortfolio() {
               <p className="font-semibold flex-1">{project.description}</p>
               <button
                 type="button"
-                className="mt-4 w-full px-4 py-2 border-2 border-black font-bold uppercase bg-white hover:bg-gray-100"
+                className="mt-4 w-full px-4 py-2 border-2 border-black font-bold bg-white hover:bg-gray-100"
               >
                 VIEW PROJECT
               </button>

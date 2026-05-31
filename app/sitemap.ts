@@ -4,6 +4,13 @@ import { siteConfig } from "@/lib/seo";
 export default function sitemap(): MetadataRoute.Sitemap {
   const routes = [
     "",
+    "/about",
+    "/services",
+    "/contact",
+    "/templates",
+    "/components",
+    "/components/new",
+    "/blog",
     "/login",
     "/signup",
     "/forgot-password",
@@ -13,6 +20,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/privacy",
     "/terms",
     "/license",
+    "/cookies",
   ].map((route) => ({
     url: `${siteConfig.url}${route}`,
     lastModified: new Date().toISOString().split("T")[0],

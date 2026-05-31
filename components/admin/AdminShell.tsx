@@ -1,33 +1,30 @@
-'use client';
+'use client'
 
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import type { AdminRole } from '@/utils/admin-roles';
-import AdminSidebar from './AdminSidebar';
-import AdminHeader from './AdminHeader';
+import { useState } from 'react'
+import { motion } from 'framer-motion'
+import type { AdminRole } from '@/utils/admin-roles'
+import AdminSidebar from '@/components/admin/AdminSidebar'
+import AdminHeader from '@/components/admin/AdminHeader'
+import { Sheet, SheetContent } from '@/components/ui/sheet'
+import { useIsMdUp } from '@/hooks/use-media-query'
 
 interface AdminShellProps {
-  children: React.ReactNode;
-  adminEmail: string;
-  adminRole?: AdminRole;
+  children: React.ReactNode
+  adminEmail: string
+  adminRole?: AdminRole
 }
 
-export default function AdminShell({ children, adminEmail, adminRole = 'admin' }: AdminShellProps) {
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isMdUp, setIsMdUp] = useState(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia('(min-width: 768px)');
-    const sync = () => setIsMdUp(mq.matches);
-    sync();
-    mq.addEventListener('change', sync);
-    return () => mq.removeEventListener('change', sync);
-  }, []);
+export default function AdminShell({
+  children,
+  adminEmail,
+  adminRole = 'admin',
+}: AdminShellProps) {
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const isMdUp = useIsMdUp()
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-neutral-100 via-white to-amber-50/40">
-      {/* Desktop sidebar */}
+    <div className="min-h-screen bg-gradient-to-br from-neutral-100 via-white to-amber-50/40 dark:from-neutral-950 dark:via-neutral-900 dark:to-neutral-950">
       <div className="hidden md:block">
         <AdminSidebar
           collapsed={sidebarCollapsed}
@@ -37,36 +34,17 @@ export default function AdminShell({ children, adminEmail, adminRole = 'admin' }
         />
       </div>
 
-      {/* Mobile sidebar overlay */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setMobileMenuOpen(false)}
-              className="fixed inset-0 z-40 bg-black/60 md:hidden"
-            />
-            <motion.div
-              initial={{ x: -280 }}
-              animate={{ x: 0 }}
-              exit={{ x: -280 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-              className="fixed left-0 top-0 z-50 md:hidden"
-            >
-              <AdminSidebar
-                collapsed={false}
-                onToggle={() => setMobileMenuOpen(false)}
-                adminEmail={adminEmail}
-                adminRole={adminRole}
-              />
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+      <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+        <SheetContent side="left" className="w-[280px] p-0 md:hidden">
+          <AdminSidebar
+            collapsed={false}
+            onToggle={() => setMobileMenuOpen(false)}
+            adminEmail={adminEmail}
+            adminRole={adminRole}
+          />
+        </SheetContent>
+      </Sheet>
 
-      {/* Main content area */}
       <motion.div
         initial={false}
         animate={{
@@ -83,5 +61,5 @@ export default function AdminShell({ children, adminEmail, adminRole = 'admin' }
         <main className="flex-1 p-4 md:p-6 lg:p-8">{children}</main>
       </motion.div>
     </div>
-  );
+  )
 }

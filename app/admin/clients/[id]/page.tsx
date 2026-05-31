@@ -42,33 +42,33 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
         <div className="space-y-6">
           {/* Client Profile Card */}
           <div className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <h2 className="mb-4 text-xs font-black uppercase tracking-[0.2em]">Contact Details</h2>
+            <h2 className="mb-4 text-xs font-black tracking-[0.2em]">Contact Details</h2>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="flex items-center gap-3">
                 <div className="flex h-9 w-9 items-center justify-center border-2 border-black bg-blue-400"><Mail size={14} /></div>
                 <div>
-                  <p className="text-[9px] font-black uppercase tracking-wider text-black/40">Email</p>
+                  <p className="text-[9px] font-black tracking-wider text-black/40">Email</p>
                   <p className="text-sm font-bold">{client.email}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
                 <div className="flex h-9 w-9 items-center justify-center border-2 border-black bg-emerald-400"><Phone size={14} /></div>
                 <div>
-                  <p className="text-[9px] font-black uppercase tracking-wider text-black/40">Phone</p>
+                  <p className="text-[9px] font-black tracking-wider text-black/40">Phone</p>
                   <p className="text-sm font-bold">{client.phone || '—'}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
                 <div className="flex h-9 w-9 items-center justify-center border-2 border-black bg-yellow-400"><Building2 size={14} /></div>
                 <div>
-                  <p className="text-[9px] font-black uppercase tracking-wider text-black/40">Company</p>
+                  <p className="text-[9px] font-black tracking-wider text-black/40">Company</p>
                   <p className="text-sm font-bold">{client.company || '—'}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
                 <div className="flex h-9 w-9 items-center justify-center border-2 border-black bg-purple-400"><Calendar size={14} /></div>
                 <div>
-                  <p className="text-[9px] font-black uppercase tracking-wider text-black/40">Client Since</p>
+                  <p className="text-[9px] font-black tracking-wider text-black/40">Client Since</p>
                   <p className="text-sm font-bold">{new Date(client.created_at).toLocaleDateString()}</p>
                 </div>
               </div>
@@ -80,9 +80,9 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
             <div className="flex items-center justify-between border-b-4 border-black px-5 py-3">
               <div className="flex items-center gap-2">
                 <FolderKanban size={14} />
-                <h2 className="text-xs font-black uppercase tracking-[0.2em]">Projects ({projects.length})</h2>
+                <h2 className="text-xs font-black tracking-[0.2em]">Projects ({projects.length})</h2>
               </div>
-              <Link href="/admin/projects" className="text-[10px] font-black uppercase underline decoration-2 underline-offset-2">Manage All</Link>
+              <Link href="/admin/projects" className="text-[10px] font-black underline decoration-2 underline-offset-2">Manage All</Link>
             </div>
             <div className="p-0">
               {projects.length === 0 ? (
@@ -111,7 +111,7 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
           {/* Notes Section */}
           {client.notes && (
             <div className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-              <h2 className="mb-3 text-xs font-black uppercase tracking-[0.2em]">Client Notes</h2>
+              <h2 className="mb-3 text-xs font-black tracking-[0.2em]">Client Notes</h2>
               <p className="text-sm font-semibold leading-relaxed text-black/70 italic">&quot;{client.notes}&quot;</p>
             </div>
           )}
@@ -120,7 +120,7 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
         {/* Sidebar */}
         <div className="space-y-4">
           <div className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <h3 className="mb-4 text-xs font-black uppercase tracking-[0.2em]">Status Management</h3>
+            <h3 className="mb-4 text-xs font-black tracking-[0.2em]">Status Management</h3>
             <ClientActions clientId={client.id} currentStatus={client.status} />
           </div>
 
@@ -128,10 +128,10 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
             <div className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
               <div className="flex items-center gap-2 mb-3">
                 <MessageSquare size={14} />
-                <h3 className="text-xs font-black uppercase tracking-[0.2em]">Original Inquiry</h3>
+                <h3 className="text-xs font-black tracking-[0.2em]">Original Inquiry</h3>
               </div>
               <p className="text-[10px] font-bold text-black/40 mb-3 line-clamp-3">&quot;{inquiry.description}&quot;</p>
-              <Link href={`/admin/inquiries/${inquiry.id}`} className="flex items-center justify-center w-full border-2 border-black py-2 text-[9px] font-black uppercase tracking-widest hover:bg-black hover:text-white transition-all">
+              <Link href={`/admin/inquiries/${inquiry.id}`} className="flex items-center justify-center w-full border-2 border-black py-2 text-[9px] font-black tracking-widest hover:bg-black hover:text-white transition-all">
                 View Original
               </Link>
             </div>

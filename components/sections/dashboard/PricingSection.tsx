@@ -2,7 +2,7 @@ export function PricingSection() {
   return (
     <div className="space-y-4">
       <header className="space-y-1">
-        <p className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
+        <p className="text-xs font-medium tracking-[0.16em] text-muted-foreground">
           Billing
         </p>
         <h1 className="text-xl font-semibold tracking-tight text-foreground">
@@ -15,7 +15,7 @@ export function PricingSection() {
 
       <div className="grid gap-4 md:grid-cols-3">
         <div className="rounded-xl border border-border bg-card p-4 text-sm">
-          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+          <p className="text-xs font-semibold tracking-[0.16em] text-muted-foreground">
             Current plan
           </p>
           <p className="mt-2 text-base font-semibold text-foreground">

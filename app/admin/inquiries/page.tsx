@@ -39,7 +39,7 @@ export default async function AdminInquiriesPage() {
 
         <div className="border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <div className="border-b-4 border-black px-5 py-3">
-            <h2 className="text-xs font-black uppercase tracking-[0.2em]">All Inquiries</h2>
+            <h2 className="text-xs font-black tracking-[0.2em]">All Inquiries</h2>
           </div>
           <div className="overflow-x-auto">
             {inquiries.length === 0 ? (
@@ -49,7 +49,7 @@ export default async function AdminInquiriesPage() {
                 <thead>
                   <tr className="border-b-2 border-black/10 bg-gray-50">
                     {['Name', 'Phone', 'Email', 'Type', 'Priority', 'Status', 'Date'].map((h) => (
-                      <th key={h} className="px-4 py-3 text-[10px] font-black uppercase tracking-wider text-black/50">{h}</th>
+                      <th key={h} className="px-4 py-3 text-[10px] font-black tracking-wider text-black/50">{h}</th>
                     ))}
                   </tr>
                 </thead>
@@ -65,7 +65,7 @@ export default async function AdminInquiriesPage() {
                       <td className="px-4 py-3 text-xs font-semibold text-black/60">{inq.phone}</td>
                       <td className="px-4 py-3 text-xs font-semibold text-black/60">{inq.email || '—'}</td>
                       <td className="px-4 py-3">
-                        <span className="border-2 border-black bg-yellow-400 px-2 py-0.5 text-[9px] font-black uppercase">{inq.project_type}</span>
+                        <span className="border-2 border-black bg-yellow-400 px-2 py-0.5 text-[9px] font-black">{inq.project_type}</span>
                       </td>
                       <td className="px-4 py-3"><StatusBadge status={inq.priority || 'medium'} /></td>
                       <td className="px-4 py-3"><StatusBadge status={inq.status || 'new'} /></td>

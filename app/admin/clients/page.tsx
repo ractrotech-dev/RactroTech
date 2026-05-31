@@ -26,7 +26,7 @@ export default async function AdminClientsPage() {
     <div className="space-y-6">
       <PageHeader title="Clients" subtitle={`${totalCount} total clients`} backHref="/admin"
         actions={
-          <button className="flex items-center gap-2 border-2 border-black bg-yellow-400 px-4 py-2 text-[10px] font-black uppercase tracking-widest transition-all hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <button className="flex items-center gap-2 border-2 border-black bg-yellow-400 px-4 py-2 text-[10px] font-black tracking-widest transition-all hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <Plus size={14} /> Add Client
           </button>
         }
@@ -40,7 +40,7 @@ export default async function AdminClientsPage() {
 
       <div className="border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
         <div className="border-b-4 border-black px-5 py-3">
-          <h2 className="text-xs font-black uppercase tracking-[0.2em]">All Clients</h2>
+          <h2 className="text-xs font-black tracking-[0.2em]">All Clients</h2>
         </div>
         {clients.length === 0 ? (
           <EmptyState icon={UserCircle} title="No clients yet" description="Add your first client to start managing relationships." />
@@ -50,7 +50,7 @@ export default async function AdminClientsPage() {
               <thead>
                 <tr className="border-b-2 border-black/10 bg-gray-50">
                   {['Client', 'Company', 'Email', 'Status', 'Joined'].map((h) => (
-                    <th key={h} className="px-4 py-3 text-[10px] font-black uppercase tracking-wider text-black/50">{h}</th>
+                    <th key={h} className="px-4 py-3 text-[10px] font-black tracking-wider text-black/50">{h}</th>
                   ))}
                 </tr>
               </thead>

@@ -56,7 +56,7 @@ export default function NotificationItem({ notification, iconMap, colorMap }: No
           {notification.message}
         </p>
         <div className="mt-2 flex items-center gap-3">
-          <span className="text-[9px] font-black uppercase tracking-[0.2em] text-black/25">
+          <span className="text-[9px] font-black tracking-[0.2em] text-black/25">
             {notification.created_at ? new Date(notification.created_at).toLocaleDateString('en-US', {
               month: 'short',
               day: 'numeric',
@@ -68,7 +68,7 @@ export default function NotificationItem({ notification, iconMap, colorMap }: No
             <a
               href={notification.action_url}
               onClick={(e) => e.stopPropagation()}
-              className="text-[9px] font-black uppercase tracking-widest text-blue-600 hover:underline"
+              className="text-[9px] font-black tracking-widest text-blue-600 hover:underline"
             >
               View Details →
             </a>

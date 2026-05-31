@@ -83,12 +83,12 @@ export default async function AdminProjectsPage() {
       {/* Projects table */}
       <div className="border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
         <div className="flex items-center justify-between border-b-4 border-black px-5 py-3">
-          <h2 className="text-xs font-black uppercase tracking-[0.2em]">All Projects</h2>
+          <h2 className="text-xs font-black tracking-[0.2em]">All Projects</h2>
           <div className="flex gap-2">
             {['all', 'planning', 'in_progress', 'completed'].map((filter) => (
               <button
                 key={filter}
-                className="border border-black/20 px-2 py-0.5 text-[8px] font-black uppercase tracking-wider text-black/40 transition-colors hover:border-black hover:bg-black hover:text-white"
+                className="border border-black/20 px-2 py-0.5 text-[8px] font-black tracking-wider text-black/40 transition-colors hover:border-black hover:bg-black hover:text-white"
               >
                 {filter.replace('_', ' ')}
               </button>
@@ -106,22 +106,22 @@ export default async function AdminProjectsPage() {
             <table className="w-full text-left text-sm">
               <thead>
                 <tr className="border-b-2 border-black/10 bg-gray-50">
-                  <th className="px-4 py-3 text-[10px] font-black uppercase tracking-wider text-black/50">
+                  <th className="px-4 py-3 text-[10px] font-black tracking-wider text-black/50">
                     Project
                   </th>
-                  <th className="px-4 py-3 text-[10px] font-black uppercase tracking-wider text-black/50">
+                  <th className="px-4 py-3 text-[10px] font-black tracking-wider text-black/50">
                     Status
                   </th>
-                  <th className="px-4 py-3 text-[10px] font-black uppercase tracking-wider text-black/50">
+                  <th className="px-4 py-3 text-[10px] font-black tracking-wider text-black/50">
                     Progress
                   </th>
-                  <th className="px-4 py-3 text-[10px] font-black uppercase tracking-wider text-black/50">
+                  <th className="px-4 py-3 text-[10px] font-black tracking-wider text-black/50">
                     Due Date
                   </th>
-                  <th className="px-4 py-3 text-[10px] font-black uppercase tracking-wider text-black/50">
+                  <th className="px-4 py-3 text-[10px] font-black tracking-wider text-black/50">
                     Budget
                   </th>
-                  <th className="px-4 py-3 text-[10px] font-black uppercase tracking-wider text-black/50">
+                  <th className="px-4 py-3 text-[10px] font-black tracking-wider text-black/50">
                     Actions
                   </th>
                 </tr>
@@ -163,7 +163,7 @@ export default async function AdminProjectsPage() {
                       {project.budget ? `$${Number(project.budget).toLocaleString()}` : '—'}
                     </td>
                     <td className="px-4 py-3">
-                      <Link href={`/admin/projects/${project.id}`} className="border border-black/20 px-2 py-0.5 text-[9px] font-black uppercase tracking-wider text-black/40 transition-colors hover:border-black hover:bg-black hover:text-white">
+                      <Link href={`/admin/projects/${project.id}`} className="border border-black/20 px-2 py-0.5 text-[9px] font-black tracking-wider text-black/40 transition-colors hover:border-black hover:bg-black hover:text-white">
                         View
                       </Link>
                     </td>

@@ -26,9 +26,9 @@ export default function MiniChart({ data, title, subtitle, color = '#facc15' }: 
     <div className="relative overflow-hidden border-4 border-black bg-white/90 p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] backdrop-blur-sm">
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white via-yellow-50/20 to-transparent" />
       <div className="relative mb-4">
-        <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-black/50">{title}</h3>
+        <h3 className="text-[10px] font-black tracking-[0.2em] text-black/50">{title}</h3>
         {subtitle ? (
-          <p className="mt-1 text-[9px] font-semibold uppercase leading-snug tracking-wider text-black/35">
+          <p className="mt-1 text-[9px] font-semibold leading-snug tracking-wider text-black/35">
             {subtitle}
           </p>
         ) : null}

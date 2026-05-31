@@ -7,6 +7,8 @@ const config = {
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
+    './providers/**/*.{ts,tsx}',
+    './hooks/**/*.{ts,tsx}',
   ],
   prefix: "",
   theme: {
@@ -36,6 +38,14 @@ const config = {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
         },
+        success: {
+          DEFAULT: "hsl(var(--success))",
+          foreground: "hsl(var(--success-foreground))",
+        },
+        warning: {
+          DEFAULT: "hsl(var(--warning))",
+          foreground: "hsl(var(--warning-foreground))",
+        },
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
@@ -58,11 +68,28 @@ const config = {
           surface: "hsl(var(--journal-surface))",
           ink: "hsl(var(--journal-ink-muted))",
         },
+        rt: {
+          surface: "rgb(var(--rt-surface) / <alpha-value>)",
+          foreground: "rgb(var(--rt-foreground) / <alpha-value>)",
+          muted: "rgb(var(--rt-muted) / <alpha-value>)",
+          accent: "rgb(var(--rt-accent) / <alpha-value>)",
+        },
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        lg: "var(--radius-lg)",
+        md: "var(--radius-md)",
+        sm: "var(--radius-sm)",
+        xl: "var(--radius-xl)",
+      },
+      spacing: {
+        "ds-1": "var(--space-1)",
+        "ds-2": "var(--space-2)",
+        "ds-3": "var(--space-3)",
+        "ds-4": "var(--space-4)",
+        "ds-6": "var(--space-6)",
+        "ds-8": "var(--space-8)",
+        "ds-12": "var(--space-12)",
+        "ds-16": "var(--space-16)",
       },
       keyframes: {
         "accordion-down": {

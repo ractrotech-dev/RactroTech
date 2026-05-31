@@ -29,7 +29,7 @@ export default function AuthCard({ mode }: AuthCardProps) {
         <div className="retro-card relative z-10 w-full max-w-2xl border-4 bg-zinc-100 p-4 md:p-6">
           <Link
             href="/"
-            className="mb-4 inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest opacity-50 hover:underline"
+            className="mb-4 inline-flex items-center gap-2 text-[10px] font-black tracking-widest opacity-50 hover:underline"
           >
             <ArrowLeft className="h-3 w-3" />
             Back to Home
@@ -56,7 +56,7 @@ export default function AuthCard({ mode }: AuthCardProps) {
             />
             <Link
               href="/login"
-              className={`relative z-10 px-3 py-1.5 text-center text-[11px] font-black uppercase tracking-wide transition-colors ${
+              className={`relative z-10 px-3 py-1.5 text-center text-[11px] font-black tracking-wide transition-colors ${
                 isLogin ? "text-yellow-400" : "text-black"
               }`}
             >
@@ -64,7 +64,7 @@ export default function AuthCard({ mode }: AuthCardProps) {
             </Link>
             <Link
               href="/signup"
-              className={`relative z-10 px-3 py-1.5 text-center text-[11px] font-black uppercase tracking-wide transition-colors ${
+              className={`relative z-10 px-3 py-1.5 text-center text-[11px] font-black tracking-wide transition-colors ${
                 isLogin ? "text-black" : "text-yellow-400"
               }`}
             >
@@ -84,7 +84,7 @@ export default function AuthCard({ mode }: AuthCardProps) {
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t border-black/20" />
               </div>
-              <div className="relative flex justify-center text-[9px] uppercase tracking-[0.15em]">
+              <div className="relative flex justify-center text-[9px] tracking-[0.15em]">
                 <span className="bg-white px-3 text-black/70 font-bold">Continue with</span>
               </div>
             </div>
@@ -93,7 +93,7 @@ export default function AuthCard({ mode }: AuthCardProps) {
           </motion.div>
 
           <div className="mt-4 border-t border-black/10 pt-3 text-center">
-            <h2 className="text-[10px] font-black uppercase tracking-[0.3em] opacity-30">RACTROTECH</h2>
+            <h2 className="text-[10px] font-black tracking-[0.3em] opacity-30">RACTROTECH</h2>
           </div>
         </div>
       </div>

@@ -20,11 +20,11 @@ export default function PageHeader({
   return (
     <div className="flex flex-wrap items-center justify-between gap-4">
       <div>
-        <h1 className="text-2xl font-black uppercase tracking-wider md:text-3xl">
+        <h1 className="text-2xl font-black tracking-wider md:text-3xl">
           {title}
         </h1>
         {subtitle && (
-          <p className="mt-1 text-xs font-bold uppercase tracking-wider text-black/40">
+          <p className="mt-1 text-xs font-bold tracking-wider text-black/40">
             {subtitle}
           </p>
         )}
@@ -34,7 +34,7 @@ export default function PageHeader({
         {backHref && (
           <Link
             href={backHref}
-            className="border-2 border-black px-4 py-2 text-[10px] font-black uppercase tracking-widest transition-all hover:-translate-y-0.5 hover:bg-black hover:text-white"
+            className="border-2 border-black px-4 py-2 text-[10px] font-black tracking-widest transition-all hover:-translate-y-0.5 hover:bg-black hover:text-white"
           >
             {backLabel}
           </Link>

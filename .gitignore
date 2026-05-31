@@ -43,4 +43,9 @@ next-env.d.ts
 /dev-logs.txt
 /scratch/
 
+# Generated component library output (seed to Supabase instead)
+/scripts/component-library/generated/
+/scripts/component-library/manifests/
+/scripts/component-library/catalog/last-run.json
+
 .vscode

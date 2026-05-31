@@ -38,14 +38,14 @@ export function RetroWhyUs() {
       <FadeInView>
         <div className="relative max-w-7xl mx-auto px-4 md:px-8">
           <div className="text-center mb-14">
-            <p className="text-sm font-black uppercase tracking-[0.3em] text-black/60 mb-3">
-              The difference
+            <p className="text-sm font-black tracking-[0.3em] text-black/60 mb-3">
+              THE DIFFERENCE
             </p>
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-black uppercase tracking-tight text-black mb-4">
-              Why choose RactroTech?
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight text-black mb-4">
+              WHY CHOOSE <span className="text-black-500">RACTROTECH</span>?
             </h2>
             <p className="text-lg font-semibold text-black/80 max-w-xl mx-auto">
-              We don’t just deliver projects—we deliver outcomes that move the needle.
+              We don't just deliver projects, we deliver outcomes that move the needle.
             </p>
           </div>
 
@@ -89,8 +89,8 @@ export function RetroWhyUs() {
 
           {/* Bottom strip */}
           <div className="mt-14 py-4 px-6 bg-black border-4 border-black text-center">
-            <p className="text-yellow-400 font-black uppercase tracking-widest text-sm md:text-base">
-              Trusted by startups and enterprises alike
+            <p className="text-yellow-400 font-black tracking-widest text-sm md:text-base">
+              TRUSTED BY STARTUPS AND ENTERPRISES ALIKE
             </p>
           </div>
         </div>

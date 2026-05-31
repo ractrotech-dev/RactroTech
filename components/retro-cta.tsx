@@ -45,8 +45,8 @@ export function RetroCTA() {
               </Link>
             </div>
 
-            <p className="mt-12 text-xs font-bold uppercase tracking-[0.2em] text-gray-500">
-              No fluff. No delays. Just high-quality code.
+            <p className="mt-12 text-xs font-bold tracking-[0.2em] text-gray-500">
+              NO FLUFF. NO DELAYS. JUST HIGH-QUALITY CODE.
             </p>
           </div>
         </div>

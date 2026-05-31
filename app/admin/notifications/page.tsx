@@ -33,7 +33,7 @@ export default async function AdminNotificationsPage() {
 
       <div className="border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
         <div className="flex items-center justify-between border-b-4 border-black px-5 py-4">
-          <h2 className="text-xs font-black uppercase tracking-[0.2em]">Notification Center</h2>
+          <h2 className="text-xs font-black tracking-[0.2em]">Notification Center</h2>
           {unreadCount > 0 && <MarkAllReadButton />}
         </div>
 

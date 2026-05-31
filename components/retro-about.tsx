@@ -31,11 +31,11 @@ export function RetroAbout() {
           <div className="grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
             {/* Left: Main story block */}
             <div className="relative">
-              <span className="pointer-events-none absolute left-0 top-1/2 -z-0 hidden -translate-y-1/2 select-none text-[clamp(4rem,10vw,8rem)] font-black uppercase leading-none tracking-tighter text-black/5 lg:block">
+              <span className="pointer-events-none absolute left-0 top-1/2 -z-0 hidden -translate-y-1/2 select-none text-[clamp(4rem,10vw,8rem)] font-black leading-none tracking-tighter text-black/5 lg:block">
                 About
               </span>
               <div className="retro-card relative z-10 border-8 bg-white p-8 md:p-10">
-                <span className="mb-6 inline-block border-2 border-black bg-black px-3 py-1 text-sm font-black uppercase tracking-widest text-yellow-400">
+                <span className="mb-6 inline-block border-2 border-black bg-black px-3 py-1 text-sm font-black tracking-widest text-yellow-400">
                   Since 2026
                 </span>
                 <h2 className="retro-heading mb-4 text-3xl md:text-4xl">About RactroTech</h2>

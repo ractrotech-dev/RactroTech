@@ -38,14 +38,14 @@ export default function SettingsForm({ settings }: SettingsFormProps) {
                 <Globe size={20} />
               </div>
               <div>
-                <h3 className="text-xs font-black uppercase tracking-[0.2em]">General Configuration</h3>
+                <h3 className="text-xs font-black tracking-[0.2em]">General Configuration</h3>
                 <p className="text-[10px] font-bold text-black/40">Core identity of the platform</p>
               </div>
             </div>
 
             <div className="space-y-4">
               <div>
-                <label className="mb-1.5 block text-[9px] font-black uppercase tracking-[0.2em] text-black/50">Site Name</label>
+                <label className="mb-1.5 block text-[9px] font-black tracking-[0.2em] text-black/50">Site Name</label>
                 <input
                   type="text"
                   value={formData.site_name}
@@ -54,7 +54,7 @@ export default function SettingsForm({ settings }: SettingsFormProps) {
                 />
               </div>
               <div>
-                <label className="mb-1.5 block text-[9px] font-black uppercase tracking-[0.2em] text-black/50">Site Description</label>
+                <label className="mb-1.5 block text-[9px] font-black tracking-[0.2em] text-black/50">Site Description</label>
                 <textarea
                   value={formData.site_description || ''}
                   onChange={(e) => setFormData({ ...formData, site_description: e.target.value })}
@@ -71,14 +71,14 @@ export default function SettingsForm({ settings }: SettingsFormProps) {
                 <Shield size={20} />
               </div>
               <div>
-                <h3 className="text-xs font-black uppercase tracking-[0.2em]">System Status</h3>
+                <h3 className="text-xs font-black tracking-[0.2em]">System Status</h3>
                 <p className="text-[10px] font-bold text-black/40">Maintenance and availability</p>
               </div>
             </div>
 
             <div className="flex items-center justify-between border-2 border-black p-4 bg-gray-50">
               <div>
-                <p className="text-[10px] font-black uppercase tracking-wider">Maintenance Mode</p>
+                <p className="text-[10px] font-black tracking-wider">Maintenance Mode</p>
                 <p className="text-[9px] font-bold text-black/40">If enabled, the public site will show a &quot;Coming Soon&quot; page.</p>
               </div>
               <button
@@ -100,14 +100,14 @@ export default function SettingsForm({ settings }: SettingsFormProps) {
                 <Mail size={20} />
               </div>
               <div>
-                <h3 className="text-xs font-black uppercase tracking-[0.2em]">Contact & Support</h3>
+                <h3 className="text-xs font-black tracking-[0.2em]">Contact & Support</h3>
                 <p className="text-[10px] font-bold text-black/40">Public facing contact info</p>
               </div>
             </div>
 
             <div className="space-y-4">
               <div>
-                <label className="mb-1.5 block text-[9px] font-black uppercase tracking-[0.2em] text-black/50">Support Email</label>
+                <label className="mb-1.5 block text-[9px] font-black tracking-[0.2em] text-black/50">Support Email</label>
                 <input
                   type="email"
                   value={formData.contact_email || ''}
@@ -116,7 +116,7 @@ export default function SettingsForm({ settings }: SettingsFormProps) {
                 />
               </div>
               <div>
-                <label className="mb-1.5 block text-[9px] font-black uppercase tracking-[0.2em] text-black/50">Footer Text</label>
+                <label className="mb-1.5 block text-[9px] font-black tracking-[0.2em] text-black/50">Footer Text</label>
                 <input
                   type="text"
                   value={formData.footer_text || ''}
@@ -133,7 +133,7 @@ export default function SettingsForm({ settings }: SettingsFormProps) {
                 <Share2 size={20} />
               </div>
               <div>
-                <h3 className="text-xs font-black uppercase tracking-[0.2em]">Social Connectivity</h3>
+                <h3 className="text-xs font-black tracking-[0.2em]">Social Connectivity</h3>
                 <p className="text-[10px] font-bold text-black/40">Manage your online presence</p>
               </div>
             </div>
@@ -143,7 +143,7 @@ export default function SettingsForm({ settings }: SettingsFormProps) {
                  <Info size={14} className="mr-2" />
                  Social link mapping is currently managed via global constants.
                </div>
-               <button type="button" className="w-full border-2 border-black py-2 text-[9px] font-black uppercase tracking-widest hover:bg-black hover:text-white transition-all">
+               <button type="button" className="w-full border-2 border-black py-2 text-[9px] font-black tracking-widest hover:bg-black hover:text-white transition-all">
                  Configure Integrations
                </button>
             </div>
@@ -155,7 +155,7 @@ export default function SettingsForm({ settings }: SettingsFormProps) {
         <button
           type="submit"
           disabled={isPending}
-          className="flex items-center gap-2 border-4 border-black bg-yellow-400 px-8 py-3 text-xs font-black uppercase tracking-widest transition-all hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] disabled:opacity-50"
+          className="flex items-center gap-2 border-4 border-black bg-yellow-400 px-8 py-3 text-xs font-black tracking-widest transition-all hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] disabled:opacity-50"
         >
           <Save size={16} />
           {isPending ? 'Updating Settings...' : 'Save All Changes'}

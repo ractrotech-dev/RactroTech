@@ -40,11 +40,11 @@ export default function ProjectMedia({ projectId, assets }: ProjectMediaProps) {
   return (
     <div className="border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
       <div className="flex items-center justify-between border-b-4 border-black px-5 py-3">
-        <h3 className="text-xs font-black uppercase tracking-[0.2em]">Project Assets</h3>
+        <h3 className="text-xs font-black tracking-[0.2em]">Project Assets</h3>
         <button
           onClick={handleUpload}
           disabled={isPending}
-          className="flex items-center gap-2 border-2 border-black bg-yellow-400 px-3 py-1 text-[9px] font-black uppercase tracking-widest transition-all hover:-translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+          className="flex items-center gap-2 border-2 border-black bg-yellow-400 px-3 py-1 text-[9px] font-black tracking-widest transition-all hover:-translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
         >
           <Upload size={12} /> Upload
         </button>
@@ -62,7 +62,7 @@ export default function ProjectMedia({ projectId, assets }: ProjectMediaProps) {
                 {asset.type?.startsWith('image/') ? <ImageIcon size={14} /> : <File size={14} />}
               </div>
               <div className="min-w-0 flex-1">
-                <p className="truncate text-[11px] font-black uppercase tracking-wider">{asset.name}</p>
+                <p className="truncate text-[11px] font-black tracking-wider">{asset.name}</p>
                 <p className="text-[9px] font-bold text-black/40">{(asset.size / 1024).toFixed(1)} KB • {new Date(asset.created_at).toLocaleDateString()}</p>
               </div>
               <div className="flex gap-1.5">

@@ -69,7 +69,7 @@ export function ReviewForm({ googleReviewUrl }: ReviewFormProps) {
               href={googleReviewUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-4 inline-flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-widest text-black/50 underline decoration-2 underline-offset-4 hover:text-black"
+              className="mt-4 inline-flex items-center justify-center gap-2 text-[10px] font-black tracking-widest text-black/50 underline decoration-2 underline-offset-4 hover:text-black"
             >
               Also rate us on Google
               <ExternalLink className="h-3 w-3" aria-hidden />
@@ -86,7 +86,7 @@ export function ReviewForm({ googleReviewUrl }: ReviewFormProps) {
           className="space-y-3"
         >
           {error ? (
-            <p className="border-2 border-red-500 bg-red-50 px-3 py-2 text-center text-[10px] font-black uppercase tracking-widest text-red-600">
+            <p className="border-2 border-red-500 bg-red-50 px-3 py-2 text-center text-[10px] font-black tracking-widest text-red-600">
               {error}
             </p>
           ) : null}
@@ -95,7 +95,7 @@ export function ReviewForm({ googleReviewUrl }: ReviewFormProps) {
             <div className="retro-card border-2 bg-white p-2 transition-colors hover:bg-yellow-50">
               <label
                 htmlFor="fullName"
-                className="mb-1 block text-[8px] font-black uppercase tracking-widest text-black/40"
+                className="mb-1 block text-[8px] font-black tracking-widest text-black/40"
               >
                 01. FULL NAME
               </label>
@@ -114,7 +114,7 @@ export function ReviewForm({ googleReviewUrl }: ReviewFormProps) {
             <div className="retro-card border-2 bg-white p-2 transition-colors hover:bg-yellow-50">
               <label
                 htmlFor="companyName"
-                className="mb-1 block text-[8px] font-black uppercase tracking-widest text-black/40"
+                className="mb-1 block text-[8px] font-black tracking-widest text-black/40"
               >
                 02. COMPANY / BRAND
               </label>
@@ -134,7 +134,7 @@ export function ReviewForm({ googleReviewUrl }: ReviewFormProps) {
           <div className="retro-card border-2 bg-white p-2 transition-colors hover:bg-yellow-50">
             <label
               htmlFor="projectType"
-              className="mb-1 block text-[8px] font-black uppercase tracking-widest text-black/40"
+              className="mb-1 block text-[8px] font-black tracking-widest text-black/40"
             >
               03. PROJECT TYPE
             </label>
@@ -157,7 +157,7 @@ export function ReviewForm({ googleReviewUrl }: ReviewFormProps) {
           </div>
 
           <div className="retro-card border-2 bg-white p-2 transition-colors hover:bg-yellow-50">
-            <span className="mb-2 block text-[8px] font-black uppercase tracking-widest text-black/40">
+            <span className="mb-2 block text-[8px] font-black tracking-widest text-black/40">
               04. RATING
             </span>
             <StarRatingInput
@@ -175,7 +175,7 @@ export function ReviewForm({ googleReviewUrl }: ReviewFormProps) {
           <div className="retro-card border-2 bg-white p-2 transition-colors hover:bg-yellow-50">
             <label
               htmlFor="reviewText"
-              className="mb-1 block text-[8px] font-black uppercase tracking-widest text-black/40"
+              className="mb-1 block text-[8px] font-black tracking-widest text-black/40"
             >
               05. YOUR REVIEW
             </label>
@@ -194,7 +194,7 @@ export function ReviewForm({ googleReviewUrl }: ReviewFormProps) {
           <div className="retro-card border-2 bg-white p-2 transition-colors hover:bg-yellow-50">
             <label
               htmlFor="image"
-              className="mb-1 block text-[8px] font-black uppercase tracking-widest text-black/40"
+              className="mb-1 block text-[8px] font-black tracking-widest text-black/40"
             >
               06. LOGO OR PHOTO <span className="font-bold opacity-50">(OPTIONAL)</span>
             </label>
@@ -205,7 +205,7 @@ export function ReviewForm({ googleReviewUrl }: ReviewFormProps) {
               accept="image/jpeg,image/png,image/webp,image/gif"
               className="w-full cursor-pointer text-xs font-bold file:mr-3 file:border-2 file:border-black file:bg-yellow-400 file:px-3 file:py-1.5 file:text-[10px] file:font-black file:uppercase"
             />
-            <p className="mt-1 text-[9px] font-bold uppercase tracking-wide text-black/35">
+            <p className="mt-1 text-[9px] font-bold tracking-wide text-black/35">
               JPG, PNG, WEBP, GIF · MAX 2MB
             </p>
           </div>
@@ -244,7 +244,7 @@ export function ReviewForm({ googleReviewUrl }: ReviewFormProps) {
           </button>
 
           <div className="border-t border-black/5 pt-4 text-center">
-            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-black/25">RACTROTECH</p>
+            <p className="text-[10px] font-black tracking-[0.3em] text-black/25">RACTROTECH</p>
           </div>
         </motion.form>
       )}

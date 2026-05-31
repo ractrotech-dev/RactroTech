@@ -10,28 +10,20 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { buildSrcDoc, getFrameWidthClass } from "@/components/sections/components/build-src-doc"
+import { LIBRARY_INDUSTRIES, LIBRARY_STYLES } from "@/lib/component-library/constants"
+import { saveCustomComponent } from "@/lib/component-library/save-custom-component"
+import { STARTER_SNIPPETS } from "@/lib/component-library/starter-snippets"
 import { cn } from "@/lib/utils"
 import { createClient } from "@/utils/supabase/client"
-
-type Device = "mobile" | "tablet" | "desktop"
+import type { PreviewDevice } from "@/components/sections/components/types"
 
 type Category = {
   id: string
   name: string
 }
 
-const DEFAULT_SNIPPET = `<div class="flex items-center justify-center min-h-screen bg-slate-950">
-  <div class="max-w-sm w-full rounded-2xl bg-slate-900/60 border border-slate-800 p-6 shadow-xl">
-    <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sky-400 mb-2">Component</p>
-    <h2 class="text-lg font-semibold text-slate-50 mb-1">Starter card</h2>
-    <p class="text-sm text-slate-400 mb-4">
-      Paste any Tailwind + HTML/JSX-like markup here to preview how it responds to different device sizes.
-    </p>
-    <button class="inline-flex items-center justify-center rounded-md bg-sky-500 px-3 py-1.5 text-xs font-medium text-white hover:bg-sky-400 transition-colors">
-      Primary action
-    </button>
-  </div>
-</div>`
+const DEFAULT_SNIPPET = STARTER_SNIPPETS[0].code
 
 export function AddComponentEditor() {
   const [componentId, setComponentId] = useState<string | null>(null)
@@ -40,7 +32,7 @@ export function AddComponentEditor() {
     "A minimal card layout with a title, body, and primary action."
   )
   const [code, setCode] = useState(DEFAULT_SNIPPET)
-  const [device, setDevice] = useState<Device>("desktop")
+  const [device, setDevice] = useState<PreviewDevice>("desktop")
   const [isSaving, setIsSaving] = useState(false)
   const [categories, setCategories] = useState<Category[]>([])
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(
@@ -48,31 +40,14 @@ export function AddComponentEditor() {
   )
   const [newCategoryName, setNewCategoryName] = useState("")
   const [isAddingCategory, setIsAddingCategory] = useState(false)
+  const [styleVariant, setStyleVariant] = useState<string>("minimal")
+  const [industryVariant, setIndustryVariant] = useState<string>("saas")
+  const [difficulty, setDifficulty] = useState<string>("beginner")
+  const [tagsInput, setTagsInput] = useState("custom, ractrotech")
+  const [supportsDarkMode, setSupportsDarkMode] = useState(true)
 
-  const frameWidthClass = useMemo(() => {
-    if (device === "mobile") return "w-[375px]"
-    if (device === "tablet") return "w-[768px]"
-    return "w-full"
-  }, [device])
-
-  const srcDoc = useMemo(
-    () =>
-      `<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
-    <style>
-      html, body { margin: 0; padding: 0; height: 100%; }
-    </style>
-  </head>
-  <body>
-    ${code}
-  </body>
-</html>`,
-    [code]
-  )
+  const frameWidthClass = useMemo(() => getFrameWidthClass(device), [device])
+  const srcDoc = useMemo(() => buildSrcDoc(code), [code])
 
   // Load categories once
   useEffect(() => {
@@ -133,42 +108,34 @@ export function AddComponentEditor() {
     try {
       setIsSaving(true)
       const supabase = createClient()
-      if (componentId) {
-        const { error } = await supabase
-          .from("components")
-          .update({ title, description, code, category_id: selectedCategoryId })
-          .eq("id", componentId)
+      const tags = tagsInput
+        .split(",")
+        .map((t) => t.trim())
+        .filter(Boolean)
+      const result = await saveCustomComponent(supabase, {
+        title,
+        description,
+        code,
+        categoryId: selectedCategoryId,
+        categoryName: categories.find((c) => c.id === selectedCategoryId)?.name,
+        styleVariant,
+        industryVariant,
+        difficulty,
+        tags,
+        supportsDarkMode,
+        componentId,
+      })
 
-        if (error) {
-          console.error(error)
-          alert("Failed to update component. Please try again.")
-          return
-        }
-        alert("Component updated successfully.")
-      } else {
-        const { data, error } = await supabase
-          .from("components")
-          .insert({
-            title,
-            description,
-            code,
-            category_id: selectedCategoryId,
-          })
-          .select("id")
-          .maybeSingle()
-
-        if (error) {
-          console.error(error)
-          alert("Failed to save component. Please try again.")
-          return
-        }
-
-        if (data?.id) {
-          setComponentId(String(data.id))
-        }
-
-        alert("Component saved successfully.")
+      if (!result.ok) {
+        alert(result.message)
+        return
       }
+
+      if (!componentId) {
+        setComponentId(result.id)
+      }
+
+      alert(componentId ? "Component updated successfully." : "Component saved successfully.")
     } finally {
       setIsSaving(false)
     }
@@ -177,7 +144,7 @@ export function AddComponentEditor() {
   return (
     <div className="space-y-6">
       <header className="space-y-1">
-        <p className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
+        <p className="text-xs font-medium tracking-[0.16em] text-muted-foreground">
           Builder
         </p>
         <h1 className="text-xl font-semibold tracking-tight text-foreground">
@@ -213,7 +180,7 @@ export function AddComponentEditor() {
               />
             </div>
             <div className="space-y-2">
-              <p className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
+              <p className="text-xs font-medium tracking-[0.16em] text-muted-foreground">
                 Category
               </p>
               <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
@@ -253,9 +220,67 @@ export function AddComponentEditor() {
                 </div>
               </div>
             </div>
+            <div className="grid gap-3 sm:grid-cols-2">
+              <div>
+                <p className="mb-1 text-xs font-medium text-muted-foreground">Style variant</p>
+                <select
+                  className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
+                  value={styleVariant}
+                  onChange={(e) => setStyleVariant(e.target.value)}
+                >
+                  {LIBRARY_STYLES.map((style) => (
+                    <option key={style} value={style}>
+                      {style}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <p className="mb-1 text-xs font-medium text-muted-foreground">Industry</p>
+                <select
+                  className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
+                  value={industryVariant}
+                  onChange={(e) => setIndustryVariant(e.target.value)}
+                >
+                  {LIBRARY_INDUSTRIES.map((industry) => (
+                    <option key={industry} value={industry}>
+                      {industry}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <p className="mb-1 text-xs font-medium text-muted-foreground">Difficulty</p>
+                <select
+                  className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
+                  value={difficulty}
+                  onChange={(e) => setDifficulty(e.target.value)}
+                >
+                  <option value="beginner">Beginner</option>
+                  <option value="intermediate">Intermediate</option>
+                  <option value="advanced">Advanced</option>
+                </select>
+              </div>
+              <div>
+                <p className="mb-1 text-xs font-medium text-muted-foreground">Tags (comma-separated)</p>
+                <input
+                  className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
+                  value={tagsInput}
+                  onChange={(e) => setTagsInput(e.target.value)}
+                />
+              </div>
+            </div>
+            <label className="flex items-center gap-2 text-sm">
+              <input
+                type="checkbox"
+                checked={supportsDarkMode}
+                onChange={(e) => setSupportsDarkMode(e.target.checked)}
+              />
+              Supports dark mode preview
+            </label>
           </CardHeader>
           <CardContent className="flex-1 pt-0">
-            <p className="mb-2 text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
+            <p className="mb-2 text-xs font-medium tracking-[0.16em] text-muted-foreground">
               Code
             </p>
             <textarea
@@ -277,7 +302,7 @@ export function AddComponentEditor() {
             </div>
             <div className="flex items-center gap-2">
               <div className="inline-flex items-center gap-1 rounded-md border border-border bg-muted/60 p-0.5">
-                {(["mobile", "tablet", "desktop"] as Device[]).map((value) => (
+                {(["mobile", "tablet", "desktop"] as PreviewDevice[]).map((value) => (
                   <Button
                     key={value}
                     type="button"

@@ -35,7 +35,7 @@ export default function InquiryNoteForm({ inquiryId }: NoteFormProps) {
       <button
         type="submit"
         disabled={isPending || !content.trim()}
-        className="flex items-center gap-1.5 border-2 border-black bg-yellow-400 px-4 py-2 text-[10px] font-black uppercase tracking-widest transition-all hover:-translate-y-0.5 disabled:opacity-50"
+        className="flex items-center gap-1.5 border-2 border-black bg-yellow-400 px-4 py-2 text-[10px] font-black tracking-widest transition-all hover:-translate-y-0.5 disabled:opacity-50"
       >
         <Send size={12} />
         Send

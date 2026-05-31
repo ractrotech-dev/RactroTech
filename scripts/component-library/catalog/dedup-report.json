@@ -1,0 +1,44 @@
+{
+  "totalComponents": 81,
+  "uniqueComponents": 81,
+  "duplicatesFound": 0,
+  "nearDuplicatesFlagged": 5,
+  "similarPairs": 1,
+  "componentsToDelete": 0,
+  "replacementsRequired": 0,
+  "clustersFound": 0,
+  "generatedAt": "2026-05-30T20:16:15.903Z",
+  "flaggedForManualReview": [
+    {
+      "id": "ca27746b-2f8b-4e5b-9abe-4616defa7aeb",
+      "title": "Forms · forgot-password (corporate)",
+      "score": 76,
+      "comparedTo": "72de15ba-e35f-4c62-b9c4-3e3244943144"
+    },
+    {
+      "id": "18ccefe8-e536-453d-b00e-84271dfb323a",
+      "title": "Dashboards · analytics (minimal)",
+      "score": 79,
+      "comparedTo": "88f44548-18d0-4465-bad5-0c4176327ef8"
+    },
+    {
+      "id": "d820f4cc-d3d3-4be0-b12f-fb4e3d33eedd",
+      "title": "Notifications · toast (modern)",
+      "score": 77,
+      "comparedTo": "5211ec4b-b6e2-45d2-baa6-e67ec0fea0f6"
+    },
+    {
+      "id": "29f91991-92bc-4bec-9051-13ebb2d6a032",
+      "title": "Buttons · social-login replacement (corporate)",
+      "score": 80,
+      "comparedTo": "b434610a-064c-4f13-a10f-8e1b2e243153"
+    },
+    {
+      "id": "5755cc12-60cd-43e1-9004-8ea5aaf0cffc",
+      "title": "Pricing · three-tier replacement (glassmorphism)",
+      "score": 85,
+      "comparedTo": "81c3c7f7-7b17-4f07-a335-cbdd8cb366a9"
+    }
+  ],
+  "sampleClusters": []
+}

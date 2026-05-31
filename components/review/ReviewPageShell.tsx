@@ -33,7 +33,7 @@ export function ReviewPageShell({ googleReviewUrl }: ReviewPageShellProps) {
           >
             <Link
               href="/"
-              className="mb-4 inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-black/50 hover:underline"
+              className="mb-4 inline-flex items-center gap-2 text-[10px] font-black tracking-widest text-black/50 hover:underline"
             >
               <ArrowLeft className="h-3 w-3" />
               Back to Home
@@ -56,8 +56,8 @@ export function ReviewPageShell({ googleReviewUrl }: ReviewPageShellProps) {
               transition={{ duration: 0.35, delay: 0.1 }}
               className="retro-card border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
             >
-              <p className="text-[10px] font-black uppercase tracking-[0.25em] text-black/40">Google</p>
-              <p className="mt-2 text-sm font-black uppercase tracking-tight text-black">Prefer Google?</p>
+              <p className="text-[10px] font-black tracking-[0.25em] text-black/40">Google</p>
+              <p className="mt-2 text-sm font-black tracking-tight text-black">Prefer Google?</p>
               <p className="mt-2 text-xs font-bold leading-relaxed text-black/55">
                 Leave a public star rating on our Google Business profile (opens in a new tab). You can do this
                 with or without the form above.

@@ -39,7 +39,7 @@ export default async function AdminAuditPage() {
           />
         </div>
         <div className="flex gap-2">
-          <button className="flex items-center gap-2 border-2 border-black bg-white px-3 py-2 text-[10px] font-black uppercase tracking-widest hover:bg-gray-50 transition-all">
+          <button className="flex items-center gap-2 border-2 border-black bg-white px-3 py-2 text-[10px] font-black tracking-widest hover:bg-gray-50 transition-all">
             <Filter size={14} /> All Entities
           </button>
         </div>
@@ -48,7 +48,7 @@ export default async function AdminAuditPage() {
       <div className="border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
         <div className="border-b-4 border-black px-5 py-3 flex items-center gap-2">
           <History size={14} className="text-black/40" />
-          <h2 className="text-xs font-black uppercase tracking-[0.2em]">Activity History</h2>
+          <h2 className="text-xs font-black tracking-[0.2em]">Activity History</h2>
         </div>
         
         {logs.length === 0 ? (
@@ -58,11 +58,11 @@ export default async function AdminAuditPage() {
             <table className="w-full text-left text-sm">
               <thead>
                 <tr className="border-b-2 border-black/10 bg-gray-50">
-                  <th className="px-4 py-3 text-[10px] font-black uppercase tracking-wider text-black/50">Timestamp</th>
-                  <th className="px-4 py-3 text-[10px] font-black uppercase tracking-wider text-black/50">Admin</th>
-                  <th className="px-4 py-3 text-[10px] font-black uppercase tracking-wider text-black/50">Action</th>
-                  <th className="px-4 py-3 text-[10px] font-black uppercase tracking-wider text-black/50">Entity</th>
-                  <th className="px-4 py-3 text-[10px] font-black uppercase tracking-wider text-black/50">IP Address</th>
+                  <th className="px-4 py-3 text-[10px] font-black tracking-wider text-black/50">Timestamp</th>
+                  <th className="px-4 py-3 text-[10px] font-black tracking-wider text-black/50">Admin</th>
+                  <th className="px-4 py-3 text-[10px] font-black tracking-wider text-black/50">Action</th>
+                  <th className="px-4 py-3 text-[10px] font-black tracking-wider text-black/50">Entity</th>
+                  <th className="px-4 py-3 text-[10px] font-black tracking-wider text-black/50">IP Address</th>
                 </tr>
               </thead>
               <tbody className="divide-y border-black/5">
@@ -73,17 +73,17 @@ export default async function AdminAuditPage() {
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
-                        <div className="flex h-5 w-5 items-center justify-center border border-black bg-gray-100 text-[8px] font-black uppercase">
+                        <div className="flex h-5 w-5 items-center justify-center border border-black bg-gray-100 text-[8px] font-black">
                           {userMap.get(log.user_id || '')?.charAt(0) || <User size={10} />}
                         </div>
                         <span className="text-[10px] font-bold">{userMap.get(log.user_id || '') || 'System'}</span>
                       </div>
                     </td>
                     <td className="px-4 py-3">
-                      <span className="text-xs font-black uppercase tracking-tight">{log.action}</span>
+                      <span className="text-xs font-black tracking-tight">{log.action}</span>
                     </td>
                     <td className="px-4 py-3">
-                      <span className="border-2 border-black bg-white px-2 py-0.5 text-[8px] font-black uppercase tracking-wider">
+                      <span className="border-2 border-black bg-white px-2 py-0.5 text-[8px] font-black tracking-wider">
                         {log.entity_type}
                       </span>
                     </td>

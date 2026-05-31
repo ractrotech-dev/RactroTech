@@ -32,7 +32,7 @@ export default async function AdminUsersPage() {
 
       <div className="border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
         <div className="border-b-4 border-black px-5 py-3">
-          <h2 className="text-xs font-black uppercase tracking-[0.2em]">All Users</h2>
+          <h2 className="text-xs font-black tracking-[0.2em]">All Users</h2>
         </div>
         {users.length === 0 ? (
           <EmptyState icon={Users} title="No users yet" />
@@ -42,7 +42,7 @@ export default async function AdminUsersPage() {
               <thead>
                 <tr className="border-b-2 border-black/10 bg-gray-50">
                   {['Name', 'Email', 'Plan', 'Role', 'ID'].map((h) => (
-                    <th key={h} className="px-4 py-3 text-[10px] font-black uppercase tracking-wider text-black/50">{h}</th>
+                    <th key={h} className="px-4 py-3 text-[10px] font-black tracking-wider text-black/50">{h}</th>
                   ))}
                 </tr>
               </thead>
@@ -51,7 +51,7 @@ export default async function AdminUsersPage() {
                   <tr key={u.id} className="border-b border-black/5 transition-colors hover:bg-yellow-50">
                     <td className="px-4 py-3 text-xs font-bold">{u.name}</td>
                     <td className="px-4 py-3 text-xs font-semibold text-black/60">{u.email}</td>
-                    <td className="px-4 py-3"><span className="border-2 border-black bg-yellow-400 px-2 py-0.5 text-[9px] font-black uppercase">{u.plan}</span></td>
+                    <td className="px-4 py-3"><span className="border-2 border-black bg-yellow-400 px-2 py-0.5 text-[9px] font-black">{u.plan}</span></td>
                     <td className="px-4 py-3">
                       <UserRoleSelector
                         userId={u.id}

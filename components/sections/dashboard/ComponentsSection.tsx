@@ -72,7 +72,7 @@ export function ComponentsSection({ userEmail }: ComponentsSectionProps) {
     <div className="space-y-6">
       <header className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="space-y-1">
-          <p className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
+          <p className="text-xs font-medium tracking-[0.16em] text-muted-foreground">
             Components
           </p>
           <h1 className="text-xl font-semibold tracking-tight text-foreground">

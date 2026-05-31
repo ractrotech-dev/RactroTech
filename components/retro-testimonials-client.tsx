@@ -25,7 +25,7 @@ export function RetroTestimonialsClient({ items, fromDatabase, googleReviewUrl }
     <section className="border-b-4 border-black bg-yellow-400 py-16">
       <FadeInView>
         <div className="mx-auto max-w-7xl px-4">
-          <h2 className="retro-heading mb-12 text-center text-5xl">WHAT CLIENTS SAY</h2>
+          <h2 className="retro-heading mb-12 text-center text-5xl">What Our Clients Say About Us ! 💬</h2>
 
           <StaggerContainer className="grid gap-6 md:grid-cols-3">
             {items.map((testimonial) => (
@@ -60,15 +60,15 @@ export function RetroTestimonialsClient({ items, fromDatabase, googleReviewUrl }
                 <div className="mb-4 text-4xl font-black">&quot;</div>
                 <p className="mb-4 text-lg font-semibold">{testimonial.text}</p>
                 <div className="border-t-4 border-black pt-4">
-                  <p className="font-black uppercase">{testimonial.author}</p>
-                  <p className="text-sm font-bold uppercase">{testimonial.company}</p>
+                  <p className="font-black">{testimonial.author}</p>
+                  <p className="text-sm font-bold">{testimonial.company}</p>
                 </div>
               </motion.div>
             ))}
           </StaggerContainer>
 
           {(fromDatabase || googleReviewUrl) ? (
-            <p className="mt-10 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center text-[10px] font-bold uppercase tracking-widest text-black/40">
+            <p className="mt-10 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center text-[10px] font-bold tracking-widest text-black/40">
               {fromDatabase ? (
                 <a href="/review" className="underline decoration-2 underline-offset-4 hover:text-black">
                   Leave a review

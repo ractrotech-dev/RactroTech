@@ -11,6 +11,7 @@ import { createClient } from '@/utils/supabase/server'
 import { getStripePlan } from '@/utils/stripe/api'
 import { DashboardHeaderGreeting } from '@/components/DashboardHeaderGreeting'
 import { DashboardHeaderProfileMenu } from '@/components/DashboardHeaderProfileMenu'
+import { ThemeToggle } from '@/components/shared/theme-toggle'
 import type { User } from '@supabase/supabase-js'
 
 function getDashboardDisplayName(user: User): string {
@@ -122,6 +123,7 @@ export default async function DashboardHeader() {
             </div>
           </form>
           <div className="flex shrink-0 items-center justify-end gap-2 sm:justify-start">
+            <ThemeToggle />
             <Button variant="ghost" size="icon" className="shrink-0" type="button">
               <Bell className="h-4 w-4" />
               <span className="sr-only">Notifications</span>

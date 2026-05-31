@@ -45,7 +45,7 @@ export default async function AdminMediaPage() {
         subtitle={`${assets.length} assets uploaded`}
         backHref="/admin"
         actions={
-          <button className="flex items-center gap-2 border-2 border-black bg-yellow-400 px-4 py-2 text-[10px] font-black uppercase tracking-widest transition-all hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <button className="flex items-center gap-2 border-2 border-black bg-yellow-400 px-4 py-2 text-[10px] font-black tracking-widest transition-all hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <Upload size={14} /> Upload File
           </button>
         }
@@ -62,7 +62,7 @@ export default async function AdminMediaPage() {
           />
         </div>
         <div className="flex gap-2">
-          <button className="flex items-center gap-2 border-2 border-black bg-white px-3 py-2 text-[10px] font-black uppercase tracking-widest transition-all hover:bg-gray-50">
+          <button className="flex items-center gap-2 border-2 border-black bg-white px-3 py-2 text-[10px] font-black tracking-widest transition-all hover:bg-gray-50">
             <Filter size={14} /> Filter
           </button>
         </div>
@@ -99,7 +99,7 @@ export default async function AdminMediaPage() {
                   )}
                 </div>
                 <div className="mt-2 min-w-0">
-                  <p className="truncate text-[10px] font-black uppercase tracking-wider">
+                  <p className="truncate text-[10px] font-black tracking-wider">
                     {asset.name}
                   </p>
                   <p className="text-[9px] font-bold text-black/40">
@@ -109,7 +109,7 @@ export default async function AdminMediaPage() {
 
                 {/* Overlay actions */}
                 <div className="absolute inset-0 flex items-center justify-center gap-2 bg-black/60 p-4 opacity-0 transition-opacity group-hover:opacity-100">
-                  <button className="flex-1 border-2 border-white bg-white py-1.5 text-[8px] font-black uppercase tracking-widest text-black transition-all hover:border-black hover:bg-yellow-400">
+                  <button className="flex-1 border-2 border-white bg-white py-1.5 text-[8px] font-black tracking-widest text-black transition-all hover:border-black hover:bg-yellow-400">
                     View
                   </button>
                   <button className="border-2 border-red-500 bg-red-500 p-1.5 text-white transition-all hover:bg-white hover:text-red-500">

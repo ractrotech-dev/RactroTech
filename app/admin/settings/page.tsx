@@ -20,7 +20,7 @@ export default async function AdminSettingsPage() {
         <SettingsForm settings={settings as any} />
       ) : (
         <div className="border-4 border-black bg-white p-12 text-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-          <p className="text-xs font-black uppercase tracking-wider text-red-500">
+          <p className="text-xs font-black tracking-wider text-red-500">
             Error loading settings. Please try again later.
           </p>
         </div>

@@ -17,7 +17,7 @@ export default function MiniStat({ icon, value, label, color }: MiniStatProps) {
       </div>
       <div>
         <p className="text-xl font-black">{value}</p>
-        <p className="text-[9px] font-black uppercase tracking-wider text-black/40">{label}</p>
+        <p className="text-[9px] font-black tracking-wider text-black/40">{label}</p>
       </div>
     </div>
   );

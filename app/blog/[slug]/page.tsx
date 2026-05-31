@@ -63,7 +63,7 @@ export default async function BlogPostPage({ params }: Props) {
       <main className="flex-1 pb-20">
         <div className="border-b-4 border-black bg-yellow-400">
           <div className="mx-auto max-w-3xl px-4 py-8 md:py-10">
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[10px] font-black uppercase tracking-widest text-black/55">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[10px] font-black tracking-widest text-black/55">
               <Link href="/blog" className="hover:underline">
                 ← Journal
               </Link>
@@ -74,11 +74,11 @@ export default async function BlogPostPage({ params }: Props) {
                 Home
               </Link>
             </div>
-            <p className="mt-6 inline-block border-2 border-black bg-white px-3 py-1 text-[10px] font-black uppercase tracking-[0.25em] text-black/70 shadow-[2px_2px_0_0_rgba(0,0,0,1)]">
+            <p className="mt-6 inline-block border-2 border-black bg-white px-3 py-1 text-[10px] font-black tracking-[0.25em] text-black/70 shadow-[2px_2px_0_0_rgba(0,0,0,1)]">
               {post.category || 'Article'}
             </p>
             <h1 className="retro-heading mt-4 text-3xl leading-[1.15] md:text-5xl md:leading-tight">{post.title}</h1>
-            <div className="mt-5 flex flex-wrap items-center gap-3 text-xs font-bold uppercase tracking-wider text-black/50">
+            <div className="mt-5 flex flex-wrap items-center gap-3 text-xs font-bold tracking-wider text-black/50">
               {dateLabel && post.published_at ? (
                 <time dateTime={new Date(post.published_at).toISOString()}>{dateLabel}</time>
               ) : null}
@@ -90,7 +90,7 @@ export default async function BlogPostPage({ params }: Props) {
                 {tagList.map((tag) => (
                   <li
                     key={tag}
-                    className="border-2 border-black bg-white/80 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-black/70"
+                    className="border-2 border-black bg-white/80 px-2.5 py-1 text-[10px] font-black tracking-wider text-black/70"
                   >
                     {tag}
                   </li>
@@ -126,19 +126,19 @@ export default async function BlogPostPage({ params }: Props) {
           </article>
 
           <footer className="mt-12 flex flex-col gap-4 border-t-4 border-black/10 pt-10 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-journal-ink">
+            <p className="text-[10px] font-black tracking-[0.2em] text-journal-ink">
               Thanks for reading — more on the journal.
             </p>
             <div className="flex flex-wrap gap-3">
               <Link
                 href="/blog"
-                className="inline-flex items-center justify-center border-4 border-black bg-yellow-400 px-5 py-2.5 text-[10px] font-black uppercase tracking-widest shadow-[3px_3px_0_0_rgba(0,0,0,1)] transition-transform hover:-translate-y-0.5"
+                className="inline-flex items-center justify-center border-4 border-black bg-yellow-400 px-5 py-2.5 text-[10px] font-black tracking-widest shadow-[3px_3px_0_0_rgba(0,0,0,1)] transition-transform hover:-translate-y-0.5"
               >
                 All posts
               </Link>
               <Link
                 href="/"
-                className="inline-flex items-center justify-center border-4 border-black bg-card px-5 py-2.5 text-[10px] font-black uppercase tracking-widest shadow-[3px_3px_0_0_rgba(0,0,0,1)] transition-transform hover:-translate-y-0.5"
+                className="inline-flex items-center justify-center border-4 border-black bg-card px-5 py-2.5 text-[10px] font-black tracking-widest shadow-[3px_3px_0_0_rgba(0,0,0,1)] transition-transform hover:-translate-y-0.5"
               >
                 RactroTech
               </Link>

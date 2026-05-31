@@ -1,0 +1,264 @@
+
+> nextjs@0.1.0 library:dedup:cleanup:apply
+> tsx --env-file=.env scripts/component-library/dedup/cleanup-duplicates.ts --apply
+
+Duplicate cleanup (apply)...
+Refreshing duplicate flags (scan --apply)...
+Scanning component library for duplicates (apply)...
+Loaded 5277 components.
+Duplicate detection report:
+{
+  "totalComponents": 5277,
+  "uniqueComponents": 81,
+  "duplicatesFound": 5196,
+  "nearDuplicatesFlagged": 5,
+  "similarPairs": 48,
+  "componentsToDelete": 5196,
+  "replacementsRequired": 5196,
+  "clustersFound": 67,
+  "generatedAt": "2026-05-30T20:16:04.656Z",
+  "flaggedForManualReview": [
+    {
+      "id": "ca27746b-2f8b-4e5b-9abe-4616defa7aeb",
+      "title": "Forms · forgot-password (corporate)",
+      "score": 76,
+      "comparedTo": "72de15ba-e35f-4c62-b9c4-3e3244943144"
+    },
+    {
+      "id": "18ccefe8-e536-453d-b00e-84271dfb323a",
+      "title": "Dashboards · analytics (minimal)",
+      "score": 79,
+      "comparedTo": "88f44548-18d0-4465-bad5-0c4176327ef8"
+    },
+    {
+      "id": "d820f4cc-d3d3-4be0-b12f-fb4e3d33eedd",
+      "title": "Notifications · toast (modern)",
+      "score": 77,
+      "comparedTo": "5211ec4b-b6e2-45d2-baa6-e67ec0fea0f6"
+    },
+    {
+      "id": "29f91991-92bc-4bec-9051-13ebb2d6a032",
+      "title": "Buttons · social-login replacement (corporate)",
+      "score": 80,
+      "comparedTo": "b434610a-064c-4f13-a10f-8e1b2e243153"
+    },
+    {
+      "id": "5755cc12-60cd-43e1-9004-8ea5aaf0cffc",
+      "title": "Pricing · three-tier replacement (glassmorphism)",
+      "score": 85,
+      "comparedTo": "81c3c7f7-7b17-4f07-a335-cbdd8cb366a9"
+    }
+  ],
+  "sampleClusters": [
+    {
+      "keeperId": "19400451-bb87-4976-89e9-b90aa2e8f936",
+      "keeperTitle": "Buttons · primary (modern)",
+      "duplicateIds": [
+        "dc7e89a5-19c7-483a-b756-325ee5838a21",
+        "f6837288-e258-4ca0-9783-030ed3c24028",
+        "65aa5b9f-051d-4141-8eaf-61e5c9d27141",
+        "a30a5e25-fdad-4094-a17a-1eb9d0bef1a7",
+        "690a9027-7412-4015-9bdc-8fa618470eb2",
+        "61b3c0a2-7971-4496-a23d-d3e0b28db599",
+        "b5393e77-7603-4f7b-ae11-d6c3ad37d0ac",
+        "0461ba21-248a-4859-b455-e2e65160ec3d"
+      ],
+      "maxScore": 97
+    },
+    {
+      "keeperId": "2de25a81-ade7-44d1-b2f1-8c9504fc9e62",
+      "keeperTitle": "Forms · login (modern)",
+      "duplicateIds": [
+        "1d3eb93a-9c7e-4236-abce-b71f09f56521",
+        "c8afe6e6-a556-4cf7-8b9a-27305f87d9ee",
+        "208fa700-dd6b-4c56-90f2-7d6fd4949b0c",
+        "e99eb289-78a6-4529-b784-490d73f8549c",
+        "ccacdb12-0be1-42ef-aae8-92298e22d6f4"
+      ],
+      "maxScore": 97
+    },
+    {
+      "keeperId": "7a8dae0a-b144-4693-a1ed-b688fb2eccb1",
+      "keeperTitle": "Forms · register (corporate)",
+      "duplicateIds": [
+        "b4e165d6-2467-4b50-a59f-4a2523957d3b"
+      ],
+      "maxScore": 93
+    },
+    {
+      "keeperId": "ca27746b-2f8b-4e5b-9abe-4616defa7aeb",
+      "keeperTitle": "Forms · forgot-password (corporate)",
+      "duplicateIds": [
+        "50a3e1a7-7738-46b1-9f0c-9772c1bdf51d",
+        "45811f0e-0c48-4322-bd75-35aee3112ff6",
+        "b6fbc206-f022-473e-a224-e9c3e308f00c",
+        "16e024d8-200f-4f58-8c5d-d2ea7dd13763",
+        "4feee55d-44f2-452f-86ee-a1561f81b83d"
+      ],
+      "maxScore": 95
+    },
+    {
+      "keeperId": "72de15ba-e35f-4c62-b9c4-3e3244943144",
+      "keeperTitle": "Forms · search (modern)",
+      "duplicateIds": [
+        "4a387024-0e3b-4beb-a65c-7f019ddfdd14",
+        "5187a34d-e63e-4b99-a33e-88963504cf53"
+      ],
+      "maxScore": 97
+    },
+    {
+      "keeperId": "0469086d-a088-4e2a-9d23-1f8925f94e79",
+      "keeperTitle": "Pricing · three-tier (corporate)",
+      "duplicateIds": [
+        "564350f6-91f6-4347-b7e0-a074853011c4"
+      ],
+      "maxScore": 93
+    },
+    {
+      "keeperId": "892f16f7-b0c0-409f-967e-3c04148aa17b",
+      "keeperTitle": "Testimonials · single-spotlight (corporate)",
+      "duplicateIds": [
+        "c5499c59-47ca-41fe-8f25-5c1488a68cb3",
+        "4e021a0b-8583-45c5-aaba-73a31d5dcc74",
+        "b10faa68-60a1-4bba-9945-1988ffc3b672",
+        "37131e7b-5403-4f6f-9fdb-c8d77858c67a",
+        "3a64ddcb-053f-4f0d-adc1-f19e0b231cdb",
+        "0794ca86-7568-48c9-9c09-d35463d14f18",
+        "81fd741f-0a73-4f46-9f18-b935b82ee9ba",
+        "d375fbf6-1c78-4980-adcf-dfe158e224fd",
+        "8489d7e3-df4a-46ab-b094-647f80a853fe",
+        "d379d4a1-105f-4964-88da-f8ef24a8670f",
+        "c58a36e9-0cf7-4e5c-a97f-602093f95215",
+        "63ab50c2-3b36-4e9c-9d6a-d84735744bc2"
+      ],
+      "maxScore": 97
+    },
+    {
+      "keeperId": "18ccefe8-e536-453d-b00e-84271dfb323a",
+      "keeperTitle": "Dashboards · analytics (minimal)",
+      "duplicateIds": [
+        "e600610d-c66e-4c9e-a2da-e3681ea84248",
+        "b16946f3-41dd-434b-b66c-310591a3660a",
+        "3c134604-e4e3-41b1-be58-b38bcb46d4b3",
+        "7253491c-8371-472d-abac-3deb71ee7f2f",
+        "d3a62600-a6f2-423e-bcd4-e36b2f6cb476"
+      ],
+      "maxScore": 97
+    },
+    {
+      "keeperId": "88f44548-18d0-4465-bad5-0c4176327ef8",
+      "keeperTitle": "Dashboards · finance (modern)",
+      "duplicateIds": [
+        "84fa9d1a-7814-4a72-bfe4-e84dd8c38ece",
+        "a6192957-16e1-4696-931a-ab8ba91d8b49",
+        "b32e8ea1-e27f-4fc9-8c10-ea88a5e86b47",
+        "1ba6fac5-293e-400a-bb12-a36ab67723da"
+      ],
+      "maxScore": 97
+    },
+    {
+      "keeperId": "ee053b57-1f51-4074-b667-ce3c1e870bb3",
+      "keeperTitle": "Dashboards · finance (modern)",
+      "duplicateIds": [
+        "3c405f97-69da-4c1f-a543-1e20015a7040"
+      ],
+      "maxScore": 97
+    },
+    {
+      "keeperId": "1838ea2d-071f-4586-946f-9d1871b75dfe",
+      "keeperTitle": "Dashboards · crm (glassmorphism)",
+      "duplicateIds": [
+        "b39b3a67-e59f-4443-8407-92628dad53c6",
+        "92ad3ecc-f651-46f1-aa32-f871542b6dbe",
+        "e19eddd8-a3ee-4ee0-8a0a-aa7a4d77949a",
+        "b7b9813f-3a64-458d-b2ca-a30b299c14c4",
+        "da58fd52-9422-4421-b143-678ea442ccd6"
+      ],
+      "maxScore": 97
+    },
+    {
+      "keeperId": "b13c2c86-f79f-4337-8b2e-ba5dd559ddab",
+      "keeperTitle": "Dashboards · ecommerce (modern)",
+      "duplicateIds": [
+        "989d05e0-d5b0-4a6b-8ae8-26d9d700681a",
+        "da99e6d7-a8a3-4e48-97e8-852ce2c0c134",
+        "dfe24cde-9d56-4578-9d02-6af6828892f5",
+        "8a62c61d-8835-4d51-84c5-f109751bd8d5",
+        "5f9ba29b-f995-4cbe-be1d-c3f3fbaacf04"
+      ],
+      "maxScore": 97
+    },
+    {
+      "keeperId": "d820f4cc-d3d3-4be0-b12f-fb4e3d33eedd",
+      "keeperTitle": "Notifications · toast (modern)",
+      "duplicateIds": [
+        "32a2cd86-de2f-4f9a-918d-ae45d34924ae",
+        "0dab56af-1ab1-4a5d-a1c4-819262eaf838",
+        "d62ad269-cb62-422c-84ef-2271627b9a45",
+        "a4528e0e-7344-417f-a911-718ea2f8cec8",
+        "0d556f5e-fdc0-494d-9e6c-0482dd0f970b"
+      ],
+      "maxScore": 97
+    },
+    {
+      "keeperId": "5211ec4b-b6e2-45d2-baa6-e67ec0fea0f6",
+      "keeperTitle": "Notifications · inbox (modern)",
+      "duplicateIds": [
+        "fd1a87eb-7fa8-43f5-bbca-a84f440d08f8",
+        "4d411a00-b10e-45ac-bcf0-9b7bf7cb21a5",
+        "1eb41b02-004f-4c42-8937-545f900b3e9b",
+        "9b9d9ba0-8216-4835-82e0-dfe94ed59808"
+      ],
+      "maxScore": 97
+    },
+    {
+      "keeperId": "bbdf1fb5-8261-479e-ae07-592428db8e10",
+      "keeperTitle": "Notifications · banner (modern)",
+      "duplicateIds": [
+        "e8c5cd51-2990-4690-a6c2-b8d80008a0ce",
+        "478b8b03-bf15-43c1-9593-60a10f7e0caa",
+        "e084ae26-5fad-4e0b-b7e3-ce40a637aa0e"
+      ],
+      "maxScore": 97
+    }
+  ]
+}
+Report written to /home/gaurav-mirjha/Ractrotech.com/RactroTech/scripts/component-library/catalog/dedup-report.json
+Updated 250/5277...
+Updated 500/5277...
+Updated 750/5277...
+Updated 1000/5277...
+Updated 1250/5277...
+Updated 1500/5277...
+Updated 1750/5277...
+Updated 2000/5277...
+Updated 2250/5277...
+Updated 2500/5277...
+Updated 2750/5277...
+Updated 3000/5277...
+Updated 3250/5277...
+Updated 3500/5277...
+Updated 3750/5277...
+Updated 4000/5277...
+Updated 4250/5277...
+Updated 4500/5277...
+Updated 4750/5277...
+Updated 5000/5277...
+Updated 5250/5277...
+Updated 5277/5277...
+Updated 5277 component records with duplicate metadata.
+Found 5196 duplicates to delete (5277 total rows).
+After cleanup: ~81 components will remain.
+Deleted 500/5196...
+Deleted 1000/5196...
+Deleted 1500/5196...
+Deleted 2000/5196...
+Deleted 2500/5196...
+Deleted 3000/5196...
+Deleted 3500/5196...
+Deleted 4000/5196...
+Deleted 4500/5196...
+Deleted 5000/5196...
+Deleted 5196/5196...
+Cleanup complete: deleted 5196 duplicates, 81 components remain.
+Cleanup 2026-05-30T20:16:10.980Z: deleted 5196, remaining 81

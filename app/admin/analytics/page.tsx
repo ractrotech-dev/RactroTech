@@ -52,11 +52,11 @@ export default async function AdminAnalyticsPage() {
 
       <div className="grid gap-6 lg:grid-cols-2">
         <div className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-          <h3 className="mb-6 text-xs font-black uppercase tracking-[0.2em]">Inquiry Distribution</h3>
+          <h3 className="mb-6 text-xs font-black tracking-[0.2em]">Inquiry Distribution</h3>
           <div className="space-y-4">
             {inquiryStats.map(stat => (
               <div key={stat.status}>
-                <div className="mb-1.5 flex justify-between text-[10px] font-black uppercase tracking-wider">
+                <div className="mb-1.5 flex justify-between text-[10px] font-black tracking-wider">
                   <span>{stat.status}</span>
                   <span>{stat.count}</span>
                 </div>
@@ -72,11 +72,11 @@ export default async function AdminAnalyticsPage() {
         </div>
 
         <div className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-          <h3 className="mb-6 text-xs font-black uppercase tracking-[0.2em]">Project Status Overview</h3>
+          <h3 className="mb-6 text-xs font-black tracking-[0.2em]">Project Status Overview</h3>
           <div className="space-y-4">
              {projectStats.map(stat => (
               <div key={stat.status}>
-                <div className="mb-1.5 flex justify-between text-[10px] font-black uppercase tracking-wider">
+                <div className="mb-1.5 flex justify-between text-[10px] font-black tracking-wider">
                   <span>{stat.status}</span>
                   <span>{stat.count}</span>
                 </div>
@@ -93,7 +93,7 @@ export default async function AdminAnalyticsPage() {
       </div>
 
       <div className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-        <h3 className="mb-6 text-xs font-black uppercase tracking-[0.2em]">Growth Trends</h3>
+        <h3 className="mb-6 text-xs font-black tracking-[0.2em]">Growth Trends</h3>
         <DashboardCharts />
       </div>
     </div>

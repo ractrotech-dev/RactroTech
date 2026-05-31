@@ -63,7 +63,7 @@ export default function StartProject() {
         >
           <Link
             href="/"
-            className="mb-4 inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest opacity-50 hover:underline"
+            className="mb-4 inline-flex items-center gap-2 text-[10px] font-black tracking-widest opacity-50 hover:underline"
           >
             <ArrowLeft className="h-3 w-3" />
             Back to Home
@@ -89,7 +89,7 @@ export default function StartProject() {
               <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full border-4 border-black bg-yellow-400 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                 <Send className="h-10 w-10 text-black" />
               </div>
-              <h2 className="mb-4 text-xl font-black uppercase tracking-tight">THANK YOU!</h2>
+              <h2 className="mb-4 text-xl font-black tracking-tight">THANK YOU!</h2>
               <p className="mx-auto mb-8 max-w-xs text-sm font-bold leading-relaxed opacity-60">
                 Your enquiry has been securely stored. Our team will review your criteria and get in
                 touch within the next 24 hours.
@@ -105,7 +105,7 @@ export default function StartProject() {
           ) : (
             <form action={formAction} className="space-y-3">
               {state?.message && !state.success && (
-                <p className="mb-4 block text-center text-xs font-bold uppercase tracking-widest text-red-500">
+                <p className="mb-4 block text-center text-xs font-bold tracking-widest text-red-500">
                   {state.message}
                 </p>
               )}
@@ -113,7 +113,7 @@ export default function StartProject() {
                 <div className="retro-card border-2 bg-white p-2 transition-colors hover:bg-yellow-50">
                   <label
                     htmlFor="name"
-                    className="mb-1 block text-[8px] font-black uppercase tracking-widest text-black/40"
+                    className="mb-1 block text-[8px] font-black tracking-widest text-black/40"
                   >
                     01. FULL NAME
                   </label>
@@ -130,7 +130,7 @@ export default function StartProject() {
                 <div className="retro-card border-2 bg-white p-2 transition-colors hover:bg-yellow-50">
                   <label
                     htmlFor="phone"
-                    className="mb-1 block text-[8px] font-black uppercase tracking-widest text-black/40"
+                    className="mb-1 block text-[8px] font-black tracking-widest text-black/40"
                   >
                     02. PHONE NUMBER
                   </label>
@@ -149,7 +149,7 @@ export default function StartProject() {
                 <div className="retro-card border-2 bg-white p-2 transition-colors hover:bg-yellow-50">
                   <label
                     htmlFor="email"
-                    className="mb-1 block text-[8px] font-black uppercase tracking-widest text-black/40"
+                    className="mb-1 block text-[8px] font-black tracking-widest text-black/40"
                   >
                     03. EMAIL <span className="opacity-50">(OPTIONAL)</span>
                   </label>
@@ -165,7 +165,7 @@ export default function StartProject() {
                 <div className="retro-card border-2 bg-white p-2 transition-colors hover:bg-yellow-50">
                   <label
                     htmlFor="projectType"
-                    className="mb-1 block text-[8px] font-black uppercase tracking-widest text-black/40"
+                    className="mb-1 block text-[8px] font-black tracking-widest text-black/40"
                   >
                     04. PROJECT TYPE
                   </label>
@@ -190,7 +190,7 @@ export default function StartProject() {
               <div className="retro-card border-2 bg-white p-2 transition-colors hover:bg-yellow-50">
                 <label
                   htmlFor="description"
-                  className="mb-1 block text-[8px] font-black uppercase tracking-widest text-black/40"
+                  className="mb-1 block text-[8px] font-black tracking-widest text-black/40"
                 >
                   05. PROJECT CRITERIA / DESCRIPTION
                 </label>
@@ -210,7 +210,7 @@ export default function StartProject() {
 
           {/* Compact brand footer */}
           <div className="mt-6 border-t border-black/5 pt-4 text-center">
-            <h2 className="text-[10px] font-black uppercase tracking-[0.3em] opacity-30">
+            <h2 className="text-[10px] font-black tracking-[0.3em] opacity-30">
               RACTROTECH
             </h2>
           </div>

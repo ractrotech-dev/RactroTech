@@ -29,13 +29,13 @@ export function RetroFooter() {
               <div className="flex gap-3">
                 <Link
                   href="/login"
-                  className="inline-flex items-center justify-center border-2 border-white/30 px-6 py-2.5 text-xs font-black uppercase tracking-widest text-white transition-all duration-200 hover:-translate-y-0.5 hover:border-white hover:bg-white/10"
+                  className="inline-flex items-center justify-center border-2 border-white/30 px-6 py-2.5 text-xs font-black tracking-widest text-white transition-all duration-200 hover:-translate-y-0.5 hover:border-white hover:bg-white/10"
                 >
                   Login
                 </Link>
                 <Link
                   href="/signup"
-                  className="inline-flex items-center justify-center border-2 border-yellow-400 bg-yellow-400 px-6 py-2.5 text-xs font-black uppercase tracking-widest text-black transition-all duration-200 hover:-translate-y-0.5 hover:bg-yellow-300"
+                  className="inline-flex items-center justify-center border-2 border-yellow-400 bg-yellow-400 px-6 py-2.5 text-xs font-black tracking-widest text-black transition-all duration-200 hover:-translate-y-0.5 hover:bg-yellow-300"
                 >
                   Sign Up
                 </Link>
@@ -47,13 +47,13 @@ export function RetroFooter() {
           <div className="lg:col-span-7">
             <StaggerContainer className="grid grid-cols-2 gap-8 sm:grid-cols-2 md:grid-cols-4">
               <motion.div variants={staggerItemVariants} className="space-y-6">
-                <h4 className="text-sm font-black uppercase tracking-widest text-yellow-400">
-                  Services
+                <h4 className="text-sm font-black tracking-widest text-yellow-400">
+                  SERVICES
                 </h4>
                 <ul className="space-y-4">
                   <li>
                     <Link
-                      href="#services"
+                      href="/services"
                       className="font-bold text-gray-400 underline-offset-4 transition-colors hover:text-white hover:underline"
                     >
                       Web Apps
@@ -61,7 +61,7 @@ export function RetroFooter() {
                   </li>
                   <li>
                     <Link
-                      href="#services"
+                      href="/services"
                       className="font-bold text-gray-400 underline-offset-4 transition-colors hover:text-white hover:underline"
                     >
                       Mobile UX
@@ -69,7 +69,7 @@ export function RetroFooter() {
                   </li>
                   <li>
                     <Link
-                      href="#services"
+                      href="/services"
                       className="font-bold text-gray-400 underline-offset-4 transition-colors hover:text-white hover:underline"
                     >
                       SaaS Build
@@ -77,7 +77,7 @@ export function RetroFooter() {
                   </li>
                   <li>
                     <Link
-                      href="#services"
+                      href="/services"
                       className="font-bold text-gray-400 underline-offset-4 transition-colors hover:text-white hover:underline"
                     >
                       AI Tools
@@ -87,13 +87,13 @@ export function RetroFooter() {
               </motion.div>
 
               <motion.div variants={staggerItemVariants} className="space-y-6">
-                <h4 className="text-sm font-black uppercase tracking-widest text-yellow-400">
-                  Company
+                <h4 className="text-sm font-black tracking-widest text-yellow-400">
+                  COMPANY
                 </h4>
-                <ul className="space-y-4">
+                <ul className="space-y-4" >
                   <li>
                     <Link
-                      href="#about"
+                      href="/about"
                       className="font-bold text-gray-400 underline-offset-4 transition-colors hover:text-white hover:underline"
                     >
                       About Us
@@ -120,15 +120,15 @@ export function RetroFooter() {
                       href="/contact"
                       className="font-bold text-gray-400 underline-offset-4 transition-colors hover:text-white hover:underline"
                     >
-                      Careers
+                      Contact
                     </Link>
                   </li>
                 </ul>
               </motion.div>
 
               <motion.div variants={staggerItemVariants} className="space-y-6">
-                <h4 className="text-sm font-black uppercase tracking-widest text-yellow-400">
-                  Resources
+                <h4 className="text-sm font-black tracking-widest text-yellow-400">
+                  RESOURCES
                 </h4>
                 <ul className="space-y-4">
                   <li>
@@ -175,8 +175,8 @@ export function RetroFooter() {
               </motion.div>
 
               <motion.div variants={staggerItemVariants} className="space-y-6">
-                <h4 className="text-sm font-black uppercase tracking-widest text-yellow-400">
-                  Legal
+                <h4 className="text-sm font-black tracking-widest text-yellow-400">
+                  LEGAL
                 </h4>
                 <ul className="space-y-4">
                   <li>
@@ -240,14 +240,14 @@ export function RetroFooter() {
               className="group relative flex items-center gap-3 border-4 border-white/20 bg-white/5 px-4 py-2.5 transition-all hover:-translate-y-1 hover:border-yellow-400"
             >
               <div className="flex flex-col">
-                <span className="text-[10px] font-black uppercase tracking-widest text-white group-hover:text-yellow-400">
+                <span className="text-[10px] font-black tracking-widest text-white group-hover:text-yellow-400">
                   Staff Portal
                 </span>
-                <span className="text-[8px] font-bold uppercase tracking-tighter text-white/40">
+                <span className="text-[8px] font-bold tracking-tighter text-white/40">
                   Admin Login
                 </span>
               </div>
-              <span className="border-2 border-yellow-400 bg-yellow-400 px-1.5 py-0.5 text-[8px] font-black uppercase tracking-widest text-black">
+              <span className="border-2 border-yellow-400 bg-yellow-400 px-1.5 py-0.5 text-[8px] font-black tracking-widest text-black">
                 BETA
               </span>
             </Link>
@@ -255,8 +255,8 @@ export function RetroFooter() {
 
 
           <div className="text-center md:text-right">
-            <p className="font-black uppercase tracking-widest text-white">© 2026 RACTROTECH</p>
-            <p className="mt-2 text-xs font-bold uppercase text-gray-500">
+            <p className="font-black tracking-widest text-white">© 2026 RACTROTECH</p>
+            <p className="mt-2 text-xs font-bold text-gray-500">
               Designed with <span className="text-red-500">♥</span> for the modern web | All Rights
               Reserved
             </p>

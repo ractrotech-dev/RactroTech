@@ -57,10 +57,10 @@ export default function StatCard({
 
       <div className="relative flex items-start justify-between gap-3">
         <div className="min-w-0 space-y-2">
-          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-black/45">{title}</p>
+          <p className="text-[10px] font-black tracking-[0.2em] text-black/45">{title}</p>
           <p className="text-3xl font-black leading-none tracking-tight text-black">{value}</p>
           {hint ? (
-            <p className="text-[11px] font-bold uppercase tracking-wider text-black/50">{hint}</p>
+            <p className="text-[11px] font-bold tracking-wider text-black/50">{hint}</p>
           ) : null}
         </div>
         <div
@@ -72,7 +72,7 @@ export default function StatCard({
 
       {href ? (
         <div className="relative mt-4 border-t-2 border-black/10 pt-2">
-          <span className="text-[10px] font-black uppercase tracking-wider text-black/35 transition-colors group-hover:text-black">
+          <span className="text-[10px] font-black tracking-wider text-black/35 transition-colors group-hover:text-black">
             Open →
           </span>
         </div>

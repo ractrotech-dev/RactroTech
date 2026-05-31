@@ -34,7 +34,7 @@ export default async function BlogIndexPage() {
       <main className="flex-1 pb-16">
         <div className="border-b-4 border-black bg-yellow-400">
           <div className="mx-auto max-w-3xl px-4 py-12">
-            <p className="text-[10px] font-black uppercase tracking-[0.35em] text-black/50">RactroTech</p>
+            <p className="text-[10px] font-black tracking-[0.35em] text-black/50">RactroTech</p>
             <h1 className="retro-heading mt-2 text-4xl md:text-5xl">Journal</h1>
             <p className="mt-3 text-sm font-bold text-black/60">Published posts from the team.</p>
           </div>
@@ -53,14 +53,14 @@ export default async function BlogIndexPage() {
                     href={`/blog/${p.slug}`}
                     className="group block border-4 border-black bg-card p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-y-0.5"
                   >
-                    <p className="text-[10px] font-black uppercase tracking-widest text-black/40">
+                    <p className="text-[10px] font-black tracking-widest text-black/40">
                       {p.category || 'Update'}
                     </p>
-                    <h2 className="mt-2 text-xl font-black uppercase tracking-tight group-hover:underline">{p.title}</h2>
+                    <h2 className="mt-2 text-xl font-black tracking-tight group-hover:underline">{p.title}</h2>
                     {p.excerpt ? (
                       <p className="mt-2 line-clamp-2 text-sm font-semibold text-black/60">{p.excerpt}</p>
                     ) : null}
-                    <p className="mt-4 text-[10px] font-bold uppercase tracking-wider text-black/35">
+                    <p className="mt-4 text-[10px] font-bold tracking-wider text-black/35">
                       {p.published_at
                         ? new Date(p.published_at).toLocaleDateString(undefined, {
                             year: 'numeric',

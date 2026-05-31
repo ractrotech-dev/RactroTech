@@ -156,10 +156,10 @@ export default function AdminSidebar({ collapsed, onToggle, adminEmail, adminRol
               transition={{ duration: 0.15 }}
             >
               <Link href="/admin" className="flex items-center gap-2">
-                <span className="text-xl font-black uppercase tracking-widest text-yellow-400">
+                <span className="text-xl font-black tracking-widest text-yellow-400">
                   RT
                 </span>
-                <span className="text-xs font-bold uppercase tracking-wider text-white/60">
+                <span className="text-xs font-bold tracking-wider text-white/60">
                   Admin
                 </span>
               </Link>
@@ -183,7 +183,7 @@ export default function AdminSidebar({ collapsed, onToggle, adminEmail, adminRol
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="mb-1.5 px-3 text-[8px] font-black uppercase tracking-[0.3em] text-white/20"
+                  className="mb-1.5 px-3 text-[8px] font-black tracking-[0.3em] text-white/20"
                 >
                   {group.title}
                 </motion.p>
@@ -196,7 +196,7 @@ export default function AdminSidebar({ collapsed, onToggle, adminEmail, adminRol
                   <li key={item.href}>
                     <Link
                       href={item.badge ? '#' : item.href}
-                      className={`group relative flex items-center gap-3 rounded px-3 py-2 text-[11px] font-bold uppercase tracking-wider transition-all duration-150 ${
+                      className={`group relative flex items-center gap-3 rounded px-3 py-2 text-[11px] font-bold tracking-wider transition-all duration-150 ${
                         active
                           ? 'bg-yellow-400 text-black shadow-[2px_2px_0px_0px_rgba(250,204,21,0.4)]'
                           : item.badge
@@ -221,7 +221,7 @@ export default function AdminSidebar({ collapsed, onToggle, adminEmail, adminRol
                         )}
                       </AnimatePresence>
                       {item.badge && !collapsed && (
-                        <span className="ml-auto rounded border border-white/15 bg-white/5 px-1.5 py-0.5 text-[8px] font-black uppercase tracking-wider text-white/30">
+                        <span className="ml-auto rounded border border-white/15 bg-white/5 px-1.5 py-0.5 text-[8px] font-black tracking-wider text-white/30">
                           {item.badge}
                         </span>
                       )}
@@ -246,7 +246,7 @@ export default function AdminSidebar({ collapsed, onToggle, adminEmail, adminRol
       <div className="border-t-4 border-yellow-400/20 px-2 py-3">
         <Link
           href="/dashboard"
-          className="flex items-center gap-3 rounded px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-white/40 transition-colors hover:text-white"
+          className="flex items-center gap-3 rounded px-3 py-2 text-[10px] font-bold tracking-wider text-white/40 transition-colors hover:text-white"
         >
           <ExternalLink size={14} className="shrink-0" />
           {!collapsed && <span>Back to App</span>}
@@ -262,7 +262,7 @@ export default function AdminSidebar({ collapsed, onToggle, adminEmail, adminRol
                 {adminEmail.split('@')[0]}
               </p>
               <span
-                className={`inline-block border px-1 py-0.5 text-[7px] font-black uppercase tracking-wider ${getRoleBadgeClasses(adminRole)}`}
+                className={`inline-block border px-1 py-0.5 text-[7px] font-black tracking-wider ${getRoleBadgeClasses(adminRole)}`}
               >
                 {getRoleLabel(adminRole)}
               </span>
@@ -273,7 +273,7 @@ export default function AdminSidebar({ collapsed, onToggle, adminEmail, adminRol
         {/* Collapse toggle */}
         <button
           onClick={onToggle}
-          className="mt-2 flex w-full items-center justify-center gap-2 rounded bg-white/5 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-white/40 transition-all hover:bg-white/10 hover:text-white"
+          className="mt-2 flex w-full items-center justify-center gap-2 rounded bg-white/5 px-3 py-1.5 text-[10px] font-bold tracking-wider text-white/40 transition-all hover:bg-white/10 hover:text-white"
         >
           {collapsed ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
           {!collapsed && <span>Collapse</span>}

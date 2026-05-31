@@ -111,7 +111,7 @@ export default function AdminHeader({ onMobileMenuToggle, adminEmail, adminRole 
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   autoFocus
-                  className="h-9 w-full border-2 border-black bg-gray-50 pl-9 pr-8 text-xs font-bold uppercase tracking-wider placeholder:font-bold placeholder:normal-case placeholder:tracking-normal placeholder:text-black/30 focus:bg-white focus:outline-none"
+                  className="h-9 w-full border-2 border-black bg-gray-50 pl-9 pr-8 text-xs font-bold tracking-wider placeholder:font-bold placeholder:normal-case placeholder:tracking-normal placeholder:text-black/30 focus:bg-white focus:outline-none"
                 />
                 <div className="absolute right-2 flex items-center gap-1">
                   {isSearching && <Loader2 size={14} className="animate-spin text-yellow-500" />}
@@ -153,15 +153,15 @@ export default function AdminHeader({ onMobileMenuToggle, adminEmail, adminRole 
                                 {getIcon(result.type)}
                               </div>
                               <div className="min-w-0 flex-1">
-                                <p className="truncate text-[11px] font-black uppercase tracking-wider">{result.name}</p>
-                                <p className="text-[8px] font-bold uppercase tracking-[0.2em] text-black/40">{result.type}</p>
+                                <p className="truncate text-[11px] font-black tracking-wider">{result.name}</p>
+                                <p className="text-[8px] font-bold tracking-[0.2em] text-black/40">{result.type}</p>
                               </div>
                             </Link>
                           ))}
                         </div>
                       ) : (
                         <div className="px-3 py-4 text-center">
-                          <p className="text-[10px] font-black uppercase tracking-wider text-black/30">No results found for &quot;{searchQuery}&quot;</p>
+                          <p className="text-[10px] font-black tracking-wider text-black/30">No results found for &quot;{searchQuery}&quot;</p>
                         </div>
                       )}
                     </motion.div>
@@ -199,10 +199,10 @@ export default function AdminHeader({ onMobileMenuToggle, adminEmail, adminRole 
               <User size={12} />
             </div>
             <div className="flex flex-col">
-              <span className="max-w-[120px] truncate text-[10px] font-bold uppercase tracking-wider text-white">
+              <span className="max-w-[120px] truncate text-[10px] font-bold tracking-wider text-white">
                 {adminEmail.split('@')[0]}
               </span>
-              <span className="text-[7px] font-black uppercase tracking-wider text-yellow-400/80">
+              <span className="text-[7px] font-black tracking-wider text-yellow-400/80">
                 {getRoleLabel(adminRole)}
               </span>
             </div>

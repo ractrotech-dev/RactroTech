@@ -34,7 +34,7 @@ export default async function AdminTeamPage() {
         subtitle="Manage roles and access for your internal team" 
         backHref="/admin"
         actions={
-          <button className="flex items-center gap-2 border-2 border-black bg-yellow-400 px-4 py-2 text-[10px] font-black uppercase tracking-widest transition-all hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <button className="flex items-center gap-2 border-2 border-black bg-yellow-400 px-4 py-2 text-[10px] font-black tracking-widest transition-all hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <UserPlus size={14} /> Invite Member
           </button>
         }
@@ -50,7 +50,7 @@ export default async function AdminTeamPage() {
         {team.map((member) => (
           <div key={member.id} className="group border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
             <div className="flex items-start justify-between">
-              <div className="flex h-12 w-12 items-center justify-center border-4 border-black bg-gray-100 text-lg font-black uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] group-hover:bg-yellow-400 transition-colors">
+              <div className="flex h-12 w-12 items-center justify-center border-4 border-black bg-gray-100 text-lg font-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] group-hover:bg-yellow-400 transition-colors">
                 {member.name?.charAt(0) || <Shield size={20} />}
               </div>
               <UserRoleSelector
@@ -61,7 +61,7 @@ export default async function AdminTeamPage() {
             </div>
             
             <div className="mt-4">
-              <h3 className="text-sm font-black uppercase tracking-wider">{member.name}</h3>
+              <h3 className="text-sm font-black tracking-wider">{member.name}</h3>
               <div className="mt-2 space-y-1">
                 <div className="flex items-center gap-2 text-[10px] font-bold text-black/40">
                   <Mail size={12} /> {member.email}
@@ -73,7 +73,7 @@ export default async function AdminTeamPage() {
             </div>
 
             <div className="mt-6 flex gap-2">
-              <button className="flex-1 border-2 border-black py-1.5 text-[9px] font-black uppercase tracking-widest hover:bg-black hover:text-white transition-all">
+              <button className="flex-1 border-2 border-black py-1.5 text-[9px] font-black tracking-widest hover:bg-black hover:text-white transition-all">
                 Edit Profile
               </button>
               <button className="border-2 border-black p-1.5 hover:bg-red-500 hover:text-white transition-all">

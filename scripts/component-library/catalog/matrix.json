@@ -1,0 +1,48 @@
+{
+  "waves": [
+    { "id": 1, "categories": ["Buttons", "Cards", "CTAs", "Footers"], "target": 400 },
+    { "id": 2, "categories": ["Forms", "Navigation", "Hero", "Feature Grids"], "target": 600 },
+    { "id": 3, "categories": ["Pricing", "Testimonials", "FAQs", "Statistics", "Blog"], "target": 600 },
+    {
+      "id": 4,
+      "categories": ["Dashboards", "Tables", "Charts", "Auth", "Profile", "Settings"],
+      "target": 800
+    },
+    { "id": 5, "categories": ["Notifications", "Chat", "E-commerce"], "target": 600 }
+  ],
+  "totalTarget": 3000,
+  "styles": [
+    "minimal",
+    "modern",
+    "glassmorphism",
+    "neumorphism",
+    "corporate",
+    "luxury",
+    "dark-theme",
+    "startup",
+    "ai-product",
+    "fintech",
+    "healthcare",
+    "education",
+    "food-delivery",
+    "travel",
+    "real-estate"
+  ],
+  "industries": [
+    "saas",
+    "fintech",
+    "healthcare",
+    "education",
+    "food-delivery",
+    "travel",
+    "real-estate",
+    "ecommerce",
+    "agency",
+    "startup",
+    "ai",
+    "corporate",
+    "luxury",
+    "nonprofit",
+    "media"
+  ]
+}

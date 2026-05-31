@@ -30,7 +30,7 @@ export default async function AdminReviewsPage({
 
         <form method="get" className="flex max-w-md flex-col gap-2 sm:flex-row sm:items-end">
           <div className="flex-1 space-y-1">
-            <label htmlFor="q" className="text-[10px] font-black uppercase tracking-widest text-black/40">
+            <label htmlFor="q" className="text-[10px] font-black tracking-widest text-black/40">
               Search
             </label>
             <Input
@@ -41,13 +41,13 @@ export default async function AdminReviewsPage({
               className="border-2 border-black bg-white text-sm font-semibold"
             />
           </div>
-          <Button type="submit" variant="outline" className="border-2 border-black bg-yellow-400 font-black uppercase">
+          <Button type="submit" variant="outline" className="border-2 border-black bg-yellow-400 font-black">
             Filter
           </Button>
         </form>
 
         <section className="space-y-3">
-          <h2 className="text-xs font-black uppercase tracking-[0.2em] text-black/50">Pending ({pending.length})</h2>
+          <h2 className="text-xs font-black tracking-[0.2em] text-black/50">Pending ({pending.length})</h2>
           <div className="border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             {pending.length === 0 ? (
               <EmptyState
@@ -68,7 +68,7 @@ export default async function AdminReviewsPage({
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-xs font-black uppercase tracking-[0.2em] text-black/50">Published ({approved.length})</h2>
+          <h2 className="text-xs font-black tracking-[0.2em] text-black/50">Published ({approved.length})</h2>
           <div className="border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             {approved.length === 0 ? (
               <EmptyState
@@ -126,8 +126,8 @@ function ReviewRow({
     <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
       <div className="min-w-0 flex-1 space-y-2">
         <div className="flex flex-wrap items-center gap-2">
-          <p className="text-sm font-black uppercase">{review.full_name}</p>
-          <span className="border-2 border-black bg-yellow-400 px-2 py-0.5 text-[9px] font-black uppercase">
+          <p className="text-sm font-black">{review.full_name}</p>
+          <span className="border-2 border-black bg-yellow-400 px-2 py-0.5 text-[9px] font-black">
             {projectLabel(review.project_type)}
           </span>
           <Stars n={review.rating} />
@@ -157,7 +157,7 @@ function ReviewRow({
         {!review.approved ? (
           <form action={moderateReviewForm} className="inline">
             <input type="hidden" name="id" value={review.id} />
-            <Button type="submit" name="cmd" value="approve" className="border-2 border-black bg-emerald-400 font-black uppercase">
+            <Button type="submit" name="cmd" value="approve" className="border-2 border-black bg-emerald-400 font-black">
               Approve
             </Button>
           </form>
@@ -169,7 +169,7 @@ function ReviewRow({
             name="cmd"
             value="delete"
             variant="destructive"
-            className="border-2 border-black font-black uppercase"
+            className="border-2 border-black font-black"
           >
             {review.approved ? 'Remove' : 'Reject'}
           </Button>

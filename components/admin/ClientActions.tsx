@@ -30,14 +30,14 @@ export default function ClientActions({ clientId, currentStatus }: ClientActions
   return (
     <div className="space-y-4">
       <div>
-        <p className="mb-2 text-[9px] font-black uppercase tracking-[0.2em] text-black/40">Manage Status</p>
+        <p className="mb-2 text-[9px] font-black tracking-[0.2em] text-black/40">Manage Status</p>
         <div className="flex flex-wrap gap-1.5">
           {statuses.map((s) => (
             <button
               key={s}
               onClick={() => handleStatusChange(s)}
               disabled={isPending || s === currentStatus}
-              className={`border-2 px-2.5 py-1 text-[9px] font-black uppercase tracking-wider transition-all ${
+              className={`border-2 px-2.5 py-1 text-[9px] font-black tracking-wider transition-all ${
                 s === currentStatus
                   ? statusColors[s]
                   : 'border-black/10 bg-white text-black/30 hover:border-black hover:bg-black hover:text-white'
@@ -49,7 +49,7 @@ export default function ClientActions({ clientId, currentStatus }: ClientActions
         </div>
       </div>
       {isPending && (
-        <p className="text-[9px] font-bold uppercase tracking-wider text-yellow-600 animate-pulse">
+        <p className="text-[9px] font-bold tracking-wider text-yellow-600 animate-pulse">
           Updating...
         </p>
       )}

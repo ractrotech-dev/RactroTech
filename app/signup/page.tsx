@@ -35,7 +35,7 @@ export default function Signup() {
               <Image src="/logo.png" alt="RactroTech logo" width={40} height={40} />
             </div>
             <div className="hidden sm:block">
-              <p className="text-xs font-black uppercase tracking-[0.3em] text-black/70">
+              <p className="text-xs font-black tracking-[0.3em] text-black/70">
                 RactroTech
               </p>
               <p className="text-sm font-semibold text-black/80">Innovative Business Solutions</p>
@@ -44,7 +44,7 @@ export default function Signup() {
 
           <Link
             href="/login"
-            className="border-4 border-black bg-black px-4 py-2 text-xs font-black uppercase tracking-widest text-yellow-400 transition-colors hover:bg-black/90"
+            className="border-4 border-black bg-black px-4 py-2 text-xs font-black tracking-widest text-yellow-400 transition-colors hover:bg-black/90"
           >
             Login
           </Link>
@@ -53,10 +53,10 @@ export default function Signup() {
         <div className="grid items-stretch gap-8 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
           <div className="hidden flex-col justify-between border-4 border-black bg-black p-6 text-yellow-400 shadow-[-8px_8px_0px_0px_rgba(0,0,0,1)] md:flex md:p-8">
             <div>
-              <p className="mb-3 text-xs font-black uppercase tracking-[0.3em] text-yellow-300/80">
+              <p className="mb-3 text-xs font-black tracking-[0.3em] text-yellow-300/80">
                 Create Account
               </p>
-              <h1 className="mb-4 text-3xl font-black uppercase leading-[1.1] md:text-4xl">
+              <h1 className="mb-4 text-3xl font-black leading-[1.1] md:text-4xl">
                 Launch your next{' '}
                 <span className="inline-block border-4 border-black bg-yellow-400 px-2 py-1 text-black">
                   big project
@@ -70,18 +70,18 @@ export default function Signup() {
             <div className="mt-8 flex gap-8 border-t-4 border-yellow-400 pt-4">
               <div>
                 <p className="text-2xl font-black leading-none">No code</p>
-                <p className="mt-1 text-xs font-bold uppercase tracking-wider">Required</p>
+                <p className="mt-1 text-xs font-bold tracking-wider">Required</p>
               </div>
               <div>
                 <p className="text-2xl font-black leading-none">Minutes</p>
-                <p className="mt-1 text-xs font-bold uppercase tracking-wider">To get started</p>
+                <p className="mt-1 text-xs font-bold tracking-wider">To get started</p>
               </div>
             </div>
           </div>
 
           <Card className="relative border-4 border-black bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
             <CardHeader className="space-y-2 border-b-4 border-black pb-4">
-              <CardTitle className="text-2xl font-black uppercase tracking-wide">Signup</CardTitle>
+              <CardTitle className="text-2xl font-black tracking-wide">Signup</CardTitle>
               <CardDescription className="text-sm font-semibold text-black/80">
                 Create your RactroTech account in a few seconds and start experimenting.
               </CardDescription>
@@ -94,7 +94,7 @@ export default function Signup() {
                 <div className="absolute inset-0 flex items-center">
                   <span className="w-full border-t border-black" />
                 </div>
-                <div className="relative flex justify-center text-[10px] uppercase tracking-[0.2em]">
+                <div className="relative flex justify-center text-[10px] tracking-[0.2em]">
                   <span className="bg-white px-3 font-bold text-black/80">Or continue with</span>
                 </div>
               </div>

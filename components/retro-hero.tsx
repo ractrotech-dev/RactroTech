@@ -52,29 +52,29 @@ export function RetroHero() {
       <div className="relative mx-auto max-w-7xl px-4 py-20 md:py-28 lg:py-36">
         <motion.div className="max-w-3xl" variants={container} initial="hidden" animate="show">
           <motion.p
-            className="mb-4 text-sm font-black uppercase tracking-[0.3em] text-black/70"
+            className="mb-4 text-sm font-black tracking-[0.3em] text-black/70"
             variants={item}
           >
-            Digital Agency
+            DIGITAL AGENCY
           </motion.p>
           <motion.h1
-            className="mb-4 text-3xl font-black uppercase leading-[1.05] tracking-tight sm:text-4xl md:text-5xl lg:text-6xl"
+            className="mb-4 text-3xl font-black leading-[1.05] tracking-tight sm:text-4xl md:text-5xl lg:text-6xl"
             variants={item}
           >
-            We build{' '}
+            WE BUILD{' '}
             <motion.span
               className="inline-block border-4 border-black bg-black px-3 py-1 text-yellow-400 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)]"
               variants={badge}
             >
-              amazing
+              AMAZING
             </motion.span>{' '}
-            digital products
+            DIGITAL PRODUCTS
           </motion.h1>
           <motion.p
             className="mb-10 max-w-xl text-lg font-semibold leading-relaxed text-black/90 md:text-xl"
             variants={item}
           >
-            Websites, apps, and SaaS — built by experienced professionals who actually ship.
+            Websites, apps, and SaaS built by experienced professionals who actually ship.
           </motion.p>
 
           <motion.div className="mb-14 flex flex-wrap gap-4" variants={item}>
@@ -86,7 +86,7 @@ export function RetroHero() {
             </Link>
             <a
               href="#about"
-              className="border-4 border-black bg-transparent px-6 py-3 font-black uppercase tracking-widest transition-colors hover:bg-black hover:text-yellow-400"
+              className="border-4 border-black bg-transparent px-6 py-3 font-black tracking-widest transition-colors hover:bg-black hover:text-yellow-400"
             >
               Learn more
             </a>
@@ -96,7 +96,7 @@ export function RetroHero() {
             className="mt-12 flex flex-col gap-10 border-t-4 border-black pt-12"
             variants={item}
           >
-            <p className="text-center text-xs font-black uppercase tracking-[0.3em] text-black/40">
+            <p className="text-center text-xs font-black tracking-[0.3em] text-black/40">
               TRUSTED BY MODERN TEAMS WORLDWIDE
             </p>
 

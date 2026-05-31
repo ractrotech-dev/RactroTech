@@ -32,7 +32,7 @@ export default function UserRoleSelector({ userId, currentRole, isSuperAdmin }: 
 
   if (!isSuperAdmin) {
     return (
-      <span className="border-2 border-black/30 bg-gray-100 px-2 py-0.5 text-[9px] font-black uppercase text-black/60">
+      <span className="border-2 border-black/30 bg-gray-100 px-2 py-0.5 text-[9px] font-black text-black/60">
         {getRoleLabel(currentRole)}
       </span>
     );
@@ -43,7 +43,7 @@ export default function UserRoleSelector({ userId, currentRole, isSuperAdmin }: 
       <button
         onClick={() => setIsOpen(!isOpen)}
         disabled={isPending}
-        className={`flex items-center gap-1.5 border-2 border-black px-2 py-0.5 text-[9px] font-black uppercase transition-all hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none ${
+        className={`flex items-center gap-1.5 border-2 border-black px-2 py-0.5 text-[9px] font-black transition-all hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none ${
           currentRole === 'super_admin' || currentRole === 'admin' ? 'bg-black text-white' : 'bg-white text-black'
         }`}
       >
@@ -61,7 +61,7 @@ export default function UserRoleSelector({ userId, currentRole, isSuperAdmin }: 
                 key={role}
                 onClick={() => handleRoleChange(role)}
                 disabled={role === currentRole || isPending}
-                className={`flex w-full items-center px-2 py-1.5 text-[9px] font-black uppercase tracking-wider transition-colors hover:bg-yellow-400 disabled:opacity-50 ${
+                className={`flex w-full items-center px-2 py-1.5 text-[9px] font-black tracking-wider transition-colors hover:bg-yellow-400 disabled:opacity-50 ${
                   role === currentRole ? 'bg-gray-100 text-black/40' : 'text-black'
                 }`}
               >

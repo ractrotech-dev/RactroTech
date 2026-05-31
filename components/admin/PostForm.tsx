@@ -106,7 +106,7 @@ export default function PostForm({ post }: PostFormProps) {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <Link
           href="/admin/content"
-          className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-black/40 transition-colors hover:text-black"
+          className="flex items-center gap-2 text-[10px] font-black tracking-widest text-black/40 transition-colors hover:text-black"
         >
           <ArrowLeft size={14} /> Back to Content
         </Link>
@@ -116,7 +116,7 @@ export default function PostForm({ post }: PostFormProps) {
               href={liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 border-2 border-black bg-white px-4 py-2 text-[10px] font-black uppercase tracking-widest transition-all hover:bg-yellow-50"
+              className="flex items-center gap-2 border-2 border-black bg-white px-4 py-2 text-[10px] font-black tracking-widest transition-all hover:bg-yellow-50"
             >
               <ExternalLink size={14} />
               View live
@@ -135,7 +135,7 @@ export default function PostForm({ post }: PostFormProps) {
             type="button"
             onClick={handleSave}
             disabled={isPending}
-            className="flex items-center gap-2 border-2 border-black bg-yellow-400 px-6 py-2 text-[10px] font-black uppercase tracking-widest transition-all hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] disabled:opacity-50"
+            className="flex items-center gap-2 border-2 border-black bg-yellow-400 px-6 py-2 text-[10px] font-black tracking-widest transition-all hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] disabled:opacity-50"
           >
             <Save size={16} />
             {isPending ? 'Saving...' : 'Save post'}
@@ -145,7 +145,7 @@ export default function PostForm({ post }: PostFormProps) {
               type="button"
               onClick={handlePublish}
               disabled={isPending}
-              className="flex items-center gap-2 border-2 border-black bg-black px-6 py-2 text-[10px] font-black uppercase tracking-widest text-white transition-all hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)] disabled:opacity-50"
+              className="flex items-center gap-2 border-2 border-black bg-black px-6 py-2 text-[10px] font-black tracking-widest text-white transition-all hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)] disabled:opacity-50"
             >
               <Send size={16} />
               Publish
@@ -162,7 +162,7 @@ export default function PostForm({ post }: PostFormProps) {
               value={title}
               onChange={handleTitleChange}
               placeholder="Post Title"
-              className="w-full border-b-4 border-black/5 pb-4 text-2xl font-black uppercase tracking-wider placeholder:text-black/10 focus:border-yellow-400 focus:outline-none"
+              className="w-full border-b-4 border-black/5 pb-4 text-2xl font-black tracking-wider placeholder:text-black/10 focus:border-yellow-400 focus:outline-none"
             />
             <div className="mt-4">
               <textarea
@@ -177,11 +177,11 @@ export default function PostForm({ post }: PostFormProps) {
 
         <div className="space-y-4">
           <div className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <h3 className="mb-4 text-xs font-black uppercase tracking-[0.2em]">Post Settings</h3>
+            <h3 className="mb-4 text-xs font-black tracking-[0.2em]">Post Settings</h3>
 
             <div className="space-y-4">
               <div>
-                <label className="mb-1.5 block text-[9px] font-black uppercase tracking-[0.2em] text-black/50">
+                <label className="mb-1.5 block text-[9px] font-black tracking-[0.2em] text-black/50">
                   Slug
                 </label>
                 <input
@@ -192,7 +192,7 @@ export default function PostForm({ post }: PostFormProps) {
                 />
               </div>
               <div>
-                <label className="mb-1.5 block text-[9px] font-black uppercase tracking-[0.2em] text-black/50">
+                <label className="mb-1.5 block text-[9px] font-black tracking-[0.2em] text-black/50">
                   Category
                 </label>
                 <input
@@ -204,7 +204,7 @@ export default function PostForm({ post }: PostFormProps) {
                 />
               </div>
               <div>
-                <label className="mb-1.5 block text-[9px] font-black uppercase tracking-[0.2em] text-black/50">Tags</label>
+                <label className="mb-1.5 block text-[9px] font-black tracking-[0.2em] text-black/50">Tags</label>
                 <input
                   type="text"
                   value={tags}
@@ -214,7 +214,7 @@ export default function PostForm({ post }: PostFormProps) {
                 />
               </div>
               <div>
-                <label className="mb-1.5 block text-[9px] font-black uppercase tracking-[0.2em] text-black/50">
+                <label className="mb-1.5 block text-[9px] font-black tracking-[0.2em] text-black/50">
                   Excerpt
                 </label>
                 <textarea
@@ -226,13 +226,13 @@ export default function PostForm({ post }: PostFormProps) {
                 />
               </div>
               <div>
-                <label className="mb-1.5 block text-[9px] font-black uppercase tracking-[0.2em] text-black/50">
+                <label className="mb-1.5 block text-[9px] font-black tracking-[0.2em] text-black/50">
                   Status
                 </label>
                 <select
                   value={status}
                   onChange={(e) => setStatus(e.target.value as typeof status)}
-                  className="w-full border-2 border-black bg-white px-3 py-2 text-[11px] font-black uppercase tracking-wider focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                  className="w-full border-2 border-black bg-white px-3 py-2 text-[11px] font-black tracking-wider focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 >
                   <option value="draft">Draft</option>
                   <option value="published">Published</option>
@@ -247,7 +247,7 @@ export default function PostForm({ post }: PostFormProps) {
             <button
               type="button"
               onClick={() => setPreviewOpen(true)}
-              className="mt-3 flex w-full items-center justify-center gap-2 border-2 border-black py-2 text-[9px] font-black uppercase tracking-widest transition-all hover:bg-black hover:text-white"
+              className="mt-3 flex w-full items-center justify-center gap-2 border-2 border-black py-2 text-[9px] font-black tracking-widest transition-all hover:bg-black hover:text-white"
             >
               <Eye size={12} /> Preview post
             </button>
@@ -264,18 +264,18 @@ export default function PostForm({ post }: PostFormProps) {
         >
           <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto border-4 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
             <div className="flex items-center justify-between border-b-4 border-black bg-yellow-400 px-4 py-3">
-              <p className="text-[10px] font-black uppercase tracking-widest">Preview</p>
+              <p className="text-[10px] font-black tracking-widest">Preview</p>
               <button
                 type="button"
                 onClick={() => setPreviewOpen(false)}
-                className="border-2 border-black bg-white px-3 py-1 text-[10px] font-black uppercase hover:bg-black hover:text-white"
+                className="border-2 border-black bg-white px-3 py-1 text-[10px] font-black hover:bg-black hover:text-white"
               >
                 Close
               </button>
             </div>
             <div className="p-6">
-              <p className="text-[10px] font-black uppercase tracking-widest text-black/40">{category || 'Article'}</p>
-              <h2 className="mt-2 text-2xl font-black uppercase leading-tight">{title.trim() || 'Untitled'}</h2>
+              <p className="text-[10px] font-black tracking-widest text-black/40">{category || 'Article'}</p>
+              <h2 className="mt-2 text-2xl font-black leading-tight">{title.trim() || 'Untitled'}</h2>
               {excerpt ? <p className="mt-4 border-l-4 border-black pl-3 text-sm font-semibold text-black/75">{excerpt}</p> : null}
               <div className="mt-6 whitespace-pre-wrap text-sm font-medium leading-relaxed text-black/90">{content}</div>
             </div>

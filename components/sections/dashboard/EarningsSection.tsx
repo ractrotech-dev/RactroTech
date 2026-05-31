@@ -2,7 +2,7 @@ export function EarningsSection() {
   return (
     <div className="space-y-4">
       <header className="space-y-1">
-        <p className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
+        <p className="text-xs font-medium tracking-[0.16em] text-muted-foreground">
           Revenue
         </p>
         <h1 className="text-xl font-semibold tracking-tight text-foreground">

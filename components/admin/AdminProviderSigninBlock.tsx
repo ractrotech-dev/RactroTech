@@ -26,7 +26,7 @@ export default function AdminProviderSigninBlock() {
               variant="outline"
               aria-label="Continue with Google"
               type="submit"
-              className="h-9 w-full justify-start gap-2 border-2 border-black bg-white px-3 text-[10px] font-black uppercase tracking-wide transition-all duration-200 hover:-translate-y-0.5 hover:bg-yellow-50"
+              className="h-9 w-full justify-start gap-2 border-2 border-black bg-white px-3 text-[10px] font-black tracking-wide transition-all duration-200 hover:-translate-y-0.5 hover:bg-yellow-50"
             >
               <Image
                 src={providerIcons.google}
@@ -46,7 +46,7 @@ export default function AdminProviderSigninBlock() {
               variant="outline"
               aria-label="Continue with Facebook"
               type="submit"
-              className="h-9 w-full justify-start gap-2 border-2 border-black bg-white px-3 text-[10px] font-black uppercase tracking-wide transition-all duration-200 hover:-translate-y-0.5 hover:bg-yellow-50"
+              className="h-9 w-full justify-start gap-2 border-2 border-black bg-white px-3 text-[10px] font-black tracking-wide transition-all duration-200 hover:-translate-y-0.5 hover:bg-yellow-50"
             >
               <Image
                 src={providerIcons.facebook}
@@ -66,7 +66,7 @@ export default function AdminProviderSigninBlock() {
               variant="outline"
               aria-label="Continue with Github"
               type="submit"
-              className="h-9 w-full justify-start gap-2 border-2 border-black bg-white px-3 text-[10px] font-black uppercase tracking-wide transition-all duration-200 hover:-translate-y-0.5 hover:bg-yellow-50"
+              className="h-9 w-full justify-start gap-2 border-2 border-black bg-white px-3 text-[10px] font-black tracking-wide transition-all duration-200 hover:-translate-y-0.5 hover:bg-yellow-50"
             >
               <Image
                 src={providerIcons.github}

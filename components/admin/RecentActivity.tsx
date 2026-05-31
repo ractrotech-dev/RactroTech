@@ -37,7 +37,7 @@ export default function RecentActivity({ items }: RecentActivityProps) {
   return (
     <div className="border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
       <div className="border-b-4 border-black px-5 py-3">
-        <h3 className="text-xs font-black uppercase tracking-[0.2em]">Recent Activity</h3>
+        <h3 className="text-xs font-black tracking-[0.2em]">Recent Activity</h3>
       </div>
       <div className="divide-y-2 divide-black/5">
         {items.length === 0 ? (
@@ -67,7 +67,7 @@ export default function RecentActivity({ items }: RecentActivityProps) {
                     {item.description}
                   </p>
                 </div>
-                <span className="shrink-0 text-[9px] font-bold uppercase tracking-wider text-black/30">
+                <span className="shrink-0 text-[9px] font-bold tracking-wider text-black/30">
                   {item.time}
                 </span>
               </motion.div>

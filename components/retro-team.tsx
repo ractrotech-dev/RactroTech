@@ -41,7 +41,7 @@ export function RetroTeam() {
                   <span className="text-2xl font-black">PHOTO</span>
                 </div>
                 <h3 className="retro-heading mb-1 text-xl">{member.name}</h3>
-                <p className="mb-2 text-sm font-bold uppercase">{member.role}</p>
+                <p className="mb-2 text-sm font-bold">{member.role}</p>
                 <p className="text-sm font-semibold">{member.bio}</p>
               </div>
             ))}

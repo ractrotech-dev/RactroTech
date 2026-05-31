@@ -6,13 +6,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { createClient as createSupabaseClient } from '@/utils/supabase/client';
 
 const navLinks = [
-  { href: '/blog', label: 'JOURNAL' },
   // { href: '#product', label: 'PRODUCT' },
   { href: '/components', label: 'COMPONENTS' },
   { href: '/templates', label: 'TEMPLATES' },
   { href: '/services', label: 'SERVICES' },
   { href: '/contact', label: 'CONTACT' },
   { href: '/about', label: 'ABOUT' },
+  { href: '/blog', label: 'BLOG' },
   { href: '/login', label: 'LOGIN' },
 ];
 
@@ -95,7 +95,7 @@ export function RetroHeader() {
       <div className="mx-auto max-w-7xl px-4 py-4 sm:py-6">
         <div className="flex min-w-0 items-center justify-between gap-4">
           <Link href="/" className="min-w-0 shrink-0">
-            <h1 className="truncate text-2xl font-black uppercase tracking-widest sm:text-3xl md:text-4xl">
+            <h1 className="truncate text-2xl font-black tracking-widest sm:text-3xl md:text-4xl">
               RACTROTECH
             </h1>
           </Link>
@@ -103,13 +103,13 @@ export function RetroHeader() {
           {/* Desktop nav + CTA */}
           <nav className="hidden shrink-0 items-center gap-6 md:flex lg:gap-8">
             {navLinks.map(({ href, label }) => (
-              <a
+              <Link
                 key={href}
                 href={href}
-                className="whitespace-nowrap text-sm font-bold uppercase hover:underline"
+                className="whitespace-nowrap text-sm font-bold hover:underline"
               >
                 {label}
-              </a>
+              </Link>
             ))}
             <HeaderCta variant="desktop" />
           </nav>
@@ -149,14 +149,14 @@ export function RetroHeader() {
           >
             <nav className="flex flex-col gap-1 px-4 py-4">
               {navLinks.map(({ href, label }) => (
-                <a
+                <Link
                   key={href}
                   href={href}
                   onClick={() => setMenuOpen(false)}
-                  className="border-b border-black/10 px-2 py-3 text-sm font-bold uppercase last:border-0 hover:underline"
+                  className="border-b border-black/10 px-2 py-3 text-sm font-bold last:border-0 hover:underline"
                 >
                   {label}
-                </a>
+                </Link>
               ))}
               <HeaderCta variant="mobile" onClick={() => setMenuOpen(false)} />
             </nav>
