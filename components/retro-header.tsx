@@ -87,7 +87,7 @@ export function RetroHeader() {
 
   return (
     <motion.header
-      className="retro-border border-b-4 bg-white"
+      className="retro-border border-b-4 bg-white text-black"
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: 'easeOut' }}

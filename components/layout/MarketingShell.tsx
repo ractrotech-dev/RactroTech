@@ -23,7 +23,7 @@ const RetroFooter = dynamic(
 
 export function MarketingShell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex min-h-screen flex-col bg-white">
+    <div className="flex min-h-screen flex-col bg-white text-black">
       <RetroHeader />
       <main className="flex-1">{children}</main>
       <RetroFooter />

@@ -58,7 +58,7 @@ export function RetroHero() {
             DIGITAL AGENCY
           </motion.p>
           <motion.h1
-            className="mb-4 text-3xl font-black leading-[1.05] tracking-tight sm:text-4xl md:text-5xl lg:text-6xl"
+            className="mb-4 text-3xl font-black leading-[1.05] tracking-tight text-black sm:text-4xl md:text-5xl lg:text-6xl"
             variants={item}
           >
             WE BUILD{' '}
@@ -88,7 +88,7 @@ export function RetroHero() {
               href="#about"
               className="border-4 border-black bg-transparent px-6 py-3 font-black tracking-widest transition-colors hover:bg-black hover:text-yellow-400"
             >
-              Learn more
+              LEARN MORE
             </a>
           </motion.div>
 

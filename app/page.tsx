@@ -22,7 +22,7 @@ export const revalidate = 120;
 
 export default function Home() {
   return (
-    <main className="bg-white">
+    <main className="bg-white text-black">
       <RetroHeader />
       <RetroHero />
       <RetroServices />

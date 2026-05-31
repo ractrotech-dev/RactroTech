@@ -109,7 +109,7 @@
   }
 
   .retro-heading {
-    @apply font-black uppercase tracking-widest text-xl;
+    @apply font-black uppercase tracking-widest text-xl text-black;
   }
 
   .journal-shell {
@@ -124,6 +124,6 @@
   }
 
   .journal-prose {
-    @apply text-[15px] font-medium leading-[1.75] text-foreground/90 md:text-base;
+    @apply text-[15px] font-medium leading-[1.75] text-black/90 md:text-base;
   }
 }
