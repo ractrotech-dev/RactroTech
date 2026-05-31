@@ -45,7 +45,7 @@ export function RetroWhyUs() {
               WHY CHOOSE <span className="text-black-500">RACTROTECH</span>?
             </h2>
             <p className="text-lg font-semibold text-black/80 max-w-xl mx-auto">
-              We don't just deliver projects, we deliver outcomes that move the needle.
+              We don&apos;t just deliver projects, we deliver outcomes that move the needle.
             </p>
           </div>
 
