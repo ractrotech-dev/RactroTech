@@ -11,6 +11,7 @@ import Image from 'next/image';
 import SignupForm from '@/components/SignupForm';
 import ProviderSigninBlock from '@/components/ProviderSigninBlock';
 import { constructMetadata } from '@/lib/seo';
+import { getEnabledOAuthProviders } from '@/lib/oauth/enabled-providers';
 
 export const metadata = constructMetadata({
   title: "Sign Up",
@@ -18,6 +19,8 @@ export const metadata = constructMetadata({
   canonicalUrl: "https://ractrotech.com/signup",
 });
 export default function Signup() {
+  const oauthProviders = getEnabledOAuthProviders();
+
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden border-b-4 border-black bg-yellow-400">
       {/* subtle retro pattern */}
@@ -99,7 +102,7 @@ export default function Signup() {
                 </div>
               </div>
 
-              <ProviderSigninBlock />
+              <ProviderSigninBlock providers={oauthProviders} />
             </CardContent>
 
             <CardFooter className="mt-2 flex flex-col gap-2 border-t-4 border-black pt-4 text-center">

@@ -8,7 +8,7 @@ import { buildSrcDoc, getFrameWidthClass } from './build-src-doc';
 import { fetchLibraryCategories } from './fetch-library-data';
 import type { Category, PreviewDevice } from './types';
 import { LIBRARY_INDUSTRIES, LIBRARY_STYLES } from '@/lib/component-library/constants';
-import { saveCustomComponent } from '@/lib/component-library/save-custom-component';
+import { saveComponentAction, loadComponentForEditAction } from '@/lib/components/actions';
 import { STARTER_SNIPPETS } from '@/lib/component-library/starter-snippets';
 import { cn } from '@/lib/utils';
 import { createClient } from '@/utils/supabase/client';
@@ -52,25 +52,19 @@ export function CreateComponentEditor() {
         return;
       }
 
-      const { data, error: loadError } = await supabase
-        .from('components')
-        .select(
-          'id, title, description, code, category_id, style_variant, industry_variant, difficulty, supports_dark_mode, tags'
-        )
-        .eq('id', editId)
-        .maybeSingle();
-
-      if (loadError || !data) {
-        setError('Could not load this component for editing.');
+      const editResult = await loadComponentForEditAction(editId);
+      if (!editResult.ok) {
+        setError(editResult.message);
         setIsLoading(false);
         return;
       }
 
-      setComponentId(String(data.id));
+      const data = editResult.component;
+      setComponentId(data.id);
       setTitle(data.title);
       setDescription(data.description);
       setCode(data.code);
-      setSelectedCategoryId(data.category_id ? String(data.category_id) : null);
+      setSelectedCategoryId(data.category_id);
       setStyleVariant(data.style_variant ?? 'minimal');
       setIndustryVariant(data.industry_variant ?? 'saas');
       setDifficulty(data.difficulty ?? 'beginner');
@@ -95,13 +89,12 @@ export function CreateComponentEditor() {
     setIsSaving(true);
 
     try {
-      const supabase = createClient();
       const tags = tagsInput
         .split(',')
         .map((tag) => tag.trim())
         .filter(Boolean);
 
-      const result = await saveCustomComponent(supabase, {
+      const result = await saveComponentAction({
         title,
         description,
         code,

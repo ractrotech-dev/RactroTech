@@ -11,7 +11,18 @@ export const metadata = constructMetadata({
   canonicalUrl: "https://ractrotech.com/forgot-password",
 });
 
-export default function ForgotPassword() {
+export default function ForgotPassword({
+  searchParams,
+}: {
+  searchParams: { error?: string };
+}) {
+    const errorMessage =
+      searchParams.error === 'expired_link'
+        ? 'Your reset link has expired. Please request a new one.'
+        : searchParams.error === 'missing_code'
+          ? 'Invalid reset link. Please request a new password reset.'
+          : null;
+
     return (
         <div className="flex items-center justify-center bg-muted min-h-screen" >
             <Card className="w-[350px] mx-auto">
@@ -22,6 +33,9 @@ export default function ForgotPassword() {
 
                     <CardTitle className="text-2xl font-bold">Forgot Your Password?</CardTitle>
                     <CardDescription>Enter your email address</CardDescription>
+                    {errorMessage && (
+                      <p className="text-sm text-red-600 pt-2">{errorMessage}</p>
+                    )}
                 </CardHeader>
                 <CardContent className="grid gap-4">
                     <ForgotPasswordForm />

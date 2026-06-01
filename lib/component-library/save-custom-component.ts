@@ -1,6 +1,10 @@
-import type { SupabaseClient } from '@supabase/supabase-js';
 import { computeContentHash } from './hash';
 import { slugify } from './style-tokens';
+
+/**
+ * @deprecated Use `saveComponentAction` from `@/lib/components/actions` (server-only, enforces ownership).
+ * This module only exports payload builders for server actions.
+ */
 
 export type CustomComponentInput = {
   title: string;
@@ -54,50 +58,3 @@ export function buildCustomComponentPayload(input: CustomComponentInput, existin
   };
 }
 
-export async function saveCustomComponent(
-  supabase: SupabaseClient,
-  input: CustomComponentInput
-): Promise<SaveCustomComponentResult> {
-  if (!input.title.trim() || !input.description.trim() || !input.code.trim()) {
-    return { ok: false, message: 'Title, description, and code are required.' };
-  }
-
-  if (input.componentId) {
-    const { data: existing, error: loadError } = await supabase
-      .from('components')
-      .select('slug')
-      .eq('id', input.componentId)
-      .maybeSingle();
-
-    if (loadError || !existing) {
-      return { ok: false, message: 'Could not load component for update.' };
-    }
-
-    const payload = buildCustomComponentPayload(
-      input,
-      existing.slug ?? buildUniqueSlug(input.title, input.styleVariant)
-    );
-    const { error } = await supabase.from('components').update(payload).eq('id', input.componentId);
-    if (error) {
-      return { ok: false, message: error.message || 'Failed to update component.' };
-    }
-    return { ok: true, id: input.componentId };
-  }
-
-  const payload = buildCustomComponentPayload(input);
-  const { data, error } = await supabase
-    .from('components')
-    .insert(payload)
-    .select('id')
-    .maybeSingle();
-
-  if (error) {
-    return { ok: false, message: error.message || 'Failed to save component.' };
-  }
-
-  if (!data?.id) {
-    return { ok: false, message: 'Component saved but no id was returned.' };
-  }
-
-  return { ok: true, id: String(data.id) };
-}

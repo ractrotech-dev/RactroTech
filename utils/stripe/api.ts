@@ -1,5 +1,9 @@
+import 'server-only';
+
 import { Stripe } from "stripe";
-import { createClient as createSupabaseClient } from "@/utils/supabase/client";
+import { db } from "@/utils/db/db";
+import { usersTable } from "@/utils/db/schema";
+import { eq } from "drizzle-orm";
 
 const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY;
 export const isStripeConfigured = () => Boolean(STRIPE_SECRET_KEY?.trim());
@@ -14,15 +18,13 @@ const PUBLIC_URL = process.env.NEXT_PUBLIC_WEBSITE_URL || "https://www.ractrotec
 export const STRIPE_DISABLED_PLACEHOLDER = "no-stripe";
 
 async function getUserByEmail(email: string) {
-  const supabase = createSupabaseClient();
-  const { data, error } = await supabase
-    .from("users_table")
-    .select("id, plan, stripe_id")
-    .eq("email", email)
-    .maybeSingle();
+  const [row] = await db
+    .select({ id: usersTable.id, plan: usersTable.plan, stripe_id: usersTable.stripe_id })
+    .from(usersTable)
+    .where(eq(usersTable.email, email.toLowerCase()))
+    .limit(1);
 
-  if (error || !data) return null;
-  return data;
+  return row ?? null;
 }
 
 export async function getStripePlan(email: string): Promise<string> {

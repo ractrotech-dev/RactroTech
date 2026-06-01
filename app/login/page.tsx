@@ -11,6 +11,7 @@ import Image from 'next/image';
 import LoginForm from '@/components/LoginForm';
 import ProviderSigninBlock from '@/components/ProviderSigninBlock';
 import { constructMetadata } from '@/lib/seo';
+import { getEnabledOAuthProviders } from '@/lib/oauth/enabled-providers';
 
 export const metadata = constructMetadata({
   title: "Login",
@@ -19,6 +20,8 @@ export const metadata = constructMetadata({
 });
 
 export default function Login({ searchParams }: { searchParams: { error?: string } }) {
+  const oauthProviders = getEnabledOAuthProviders();
+
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden border-b-4 border-black bg-yellow-400">
       {/* subtle retro pattern */}
@@ -113,7 +116,7 @@ export default function Login({ searchParams }: { searchParams: { error?: string
                 </div>
               </div>
 
-              <ProviderSigninBlock />
+              <ProviderSigninBlock providers={oauthProviders} />
             </CardContent>
 
             <CardFooter className="mt-2 flex flex-col gap-2 border-t-4 border-black pt-4 text-center">

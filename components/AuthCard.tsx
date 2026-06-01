@@ -4,15 +4,23 @@ import { ArrowLeft } from "lucide-react";
 import LoginForm from "@/components/LoginForm";
 import SignupForm from "@/components/SignupForm";
 import ProviderSigninBlock from "@/components/ProviderSigninBlock";
+import type { OAuthProviders } from "@/lib/oauth/enabled-providers";
 import { motion } from "framer-motion";
 
 type AuthMode = "login" | "signup";
 
-type AuthCardProps = {
-  mode: AuthMode;
+const defaultOAuthProviders: OAuthProviders = {
+  google: false,
+  github: false,
+  facebook: false,
 };
 
-export default function AuthCard({ mode }: AuthCardProps) {
+type AuthCardProps = {
+  mode: AuthMode;
+  oauthProviders?: OAuthProviders;
+};
+
+export default function AuthCard({ mode, oauthProviders = defaultOAuthProviders }: AuthCardProps) {
   const isLogin = mode === "login";
 
   return (
@@ -89,7 +97,7 @@ export default function AuthCard({ mode }: AuthCardProps) {
               </div>
             </div>
 
-            <ProviderSigninBlock />
+            <ProviderSigninBlock providers={oauthProviders} />
           </motion.div>
 
           <div className="mt-4 border-t border-black/10 pt-3 text-center">

@@ -4,6 +4,7 @@ import Image from 'next/image'
 import AdminLoginForm from '@/components/admin/AdminLoginForm'
 import AdminProviderSigninBlock from '@/components/admin/AdminProviderSigninBlock'
 import { constructMetadata } from '@/lib/seo'
+import { getEnabledOAuthProviders } from '@/lib/oauth/enabled-providers'
 
 import {
   Card,
@@ -25,6 +26,7 @@ type AdminLoginPageProps = {
 }
 
 export default function AdminLoginPage({ searchParams }: AdminLoginPageProps) {
+  const oauthProviders = getEnabledOAuthProviders()
   const raw = typeof searchParams.error === 'string' ? searchParams.error : ''
   let errorMessage: string | undefined
   try {
@@ -109,7 +111,7 @@ export default function AdminLoginPage({ searchParams }: AdminLoginPageProps) {
                 </div>
               </div>
 
-              <AdminProviderSigninBlock />
+              <AdminProviderSigninBlock providers={oauthProviders} />
             </CardContent>
 
             <CardFooter className="mt-2 flex flex-col gap-2 border-t-4 border-black pt-4 text-center">

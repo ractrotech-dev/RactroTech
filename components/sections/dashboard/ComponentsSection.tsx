@@ -11,7 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { createClient } from "@/utils/supabase/client"
+import { deleteComponentAction, listUserComponentsAction } from "@/lib/components/actions"
 
 type ComponentsSectionProps = {
   userEmail: string
@@ -33,11 +33,9 @@ export function ComponentsSection({ userEmail }: ComponentsSectionProps) {
     )
     if (!confirmed) return
 
-    const supabase = createClient()
-    const { error } = await supabase.from("components").delete().eq("id", id)
-    if (error) {
-      console.error(error)
-      alert("Failed to delete component. Please try again.")
+    const result = await deleteComponentAction(id)
+    if (!result.ok) {
+      alert(result.message ?? "Failed to delete component. Please try again.")
       return
     }
 
@@ -46,22 +44,10 @@ export function ComponentsSection({ userEmail }: ComponentsSectionProps) {
 
   useEffect(() => {
     const loadComponents = async () => {
-      const supabase = createClient()
-      const { data, error } = await supabase
-        .from("components")
-        .select("id, title, description")
-        .order("created_at", { ascending: false })
-
-      if (!error && data) {
-        setComponents(
-          data.map((row) => ({
-            id: String(row.id),
-            title: row.title,
-            description: row.description,
-          }))
-        )
+      const result = await listUserComponentsAction()
+      if (result.ok) {
+        setComponents(result.components)
       }
-
       setIsLoading(false)
     }
 
@@ -130,4 +116,3 @@ export function ComponentsSection({ userEmail }: ComponentsSectionProps) {
     </div>
   )
 }
-

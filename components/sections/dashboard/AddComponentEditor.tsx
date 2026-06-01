@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/card"
 import { buildSrcDoc, getFrameWidthClass } from "@/components/sections/components/build-src-doc"
 import { LIBRARY_INDUSTRIES, LIBRARY_STYLES } from "@/lib/component-library/constants"
-import { saveCustomComponent } from "@/lib/component-library/save-custom-component"
+import { saveComponentAction, createCategoryAction } from "@/lib/components/actions"
 import { STARTER_SNIPPETS } from "@/lib/component-library/starter-snippets"
 import { cn } from "@/lib/utils"
 import { createClient } from "@/utils/supabase/client"
@@ -76,27 +76,19 @@ export function AddComponentEditor() {
 
     try {
       setIsAddingCategory(true)
-      const supabase = createClient()
-      const { data, error } = await supabase
-        .from("category")
-        .insert({ name: trimmed })
-        .select("id, name")
-        .maybeSingle()
+      const result = await createCategoryAction(trimmed)
 
-      if (error) {
-        console.error(error)
-        alert("Failed to add category. Please try again.")
+      if (!result.ok) {
+        alert(result.message)
         return
       }
 
-      if (data) {
-        const created = { id: String(data.id), name: data.name }
-        setCategories((prev) => [...prev, created].sort((a, b) =>
-          a.name.localeCompare(b.name)
-        ))
-        setSelectedCategoryId(created.id)
-        setNewCategoryName("")
-      }
+      const created = { id: result.id, name: result.name }
+      setCategories((prev) => [...prev, created].sort((a, b) =>
+        a.name.localeCompare(b.name)
+      ))
+      setSelectedCategoryId(created.id)
+      setNewCategoryName("")
     } finally {
       setIsAddingCategory(false)
     }
@@ -107,12 +99,11 @@ export function AddComponentEditor() {
 
     try {
       setIsSaving(true)
-      const supabase = createClient()
       const tags = tagsInput
         .split(",")
         .map((t) => t.trim())
         .filter(Boolean)
-      const result = await saveCustomComponent(supabase, {
+      const result = await saveComponentAction({
         title,
         description,
         code,

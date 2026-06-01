@@ -1,0 +1,46 @@
+<!--
+  Supabase → Authentication → Email Templates → Magic Link
+
+  Subject: Your RactroTech sign-in link
+
+  Variables: {{ .ConfirmationURL }}, {{ .SiteURL }}, {{ .Email }}
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign in to RactroTech</title>
+</head>
+<body style="margin:0;padding:0;background-color:#facc15;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color:#facc15;">
+    <tr>
+      <td align="center" style="padding:32px 16px;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width:520px;background-color:#efefef;border:4px solid #000000;">
+          <tr>
+            <td style="padding:24px;">
+              <p style="margin:0 0 8px;font-size:10px;font-weight:900;letter-spacing:0.3em;color:rgba(0,0,0,0.4);text-align:center;text-transform:uppercase;">RactroTech</p>
+              <h1 style="margin:0 0 16px;font-size:22px;font-weight:900;text-align:center;text-transform:uppercase;color:#000000;">Sign in</h1>
+              <p style="margin:0 0 20px;font-size:14px;font-weight:600;line-height:1.6;color:rgba(0,0,0,0.85);text-align:center;">
+                Click below to sign in as <strong>{{ .Email }}</strong>. This link works once and expires soon.
+              </p>
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                  <td align="center">
+                    <a href="{{ .ConfirmationURL }}" style="display:inline-block;padding:14px 28px;background-color:#000000;color:#facc15;font-size:13px;font-weight:900;text-decoration:none;text-transform:uppercase;letter-spacing:0.15em;border:4px solid #000000;">
+                      Sign in
+                    </a>
+                  </td>
+                </tr>
+              </table>
+              <p style="margin:20px 0 0;font-size:11px;font-weight:600;color:rgba(0,0,0,0.5);text-align:center;word-break:break-all;">
+                <a href="{{ .ConfirmationURL }}" style="color:#000000;">{{ .ConfirmationURL }}</a>
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

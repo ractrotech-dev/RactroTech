@@ -1,5 +1,6 @@
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
+import { getPostgresSsl } from "./postgres-ssl";
 
 // NOTE:
 // - We still use Drizzle in multiple server components.
@@ -14,7 +15,8 @@ const databaseUrl = process.env.DATABASE_URL;
 // if DATABASE_URL is unset in deployment env — set it in Vercel project settings.
 
 // Disable prepare as it is not supported for "Transaction" pool mode.
-const client = postgres(databaseUrl || "postgres://postgres:postgres@localhost:5432/postgres", { 
+const client = postgres(databaseUrl || "postgres://postgres:postgres@localhost:5432/postgres", {
   prepare: false,
+  ssl: getPostgresSsl(),
 });
 export const db = drizzle(client);

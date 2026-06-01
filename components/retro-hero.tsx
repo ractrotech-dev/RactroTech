@@ -84,12 +84,6 @@ export function RetroHero() {
             >
               Start a project
             </Link>
-            <a
-              href="#about"
-              className="border-4 border-black bg-transparent px-6 py-3 font-black tracking-widest transition-colors hover:bg-black hover:text-yellow-400"
-            >
-              LEARN MORE
-            </a>
           </motion.div>
 
           <motion.div

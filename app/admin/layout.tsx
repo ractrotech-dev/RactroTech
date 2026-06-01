@@ -4,6 +4,8 @@ import { constructMetadata } from "@/lib/seo";
 import AdminShell from "@/components/admin/AdminShell";
 import DatabaseError from "@/components/admin/DatabaseError";
 import AdminAccessDenied from "@/components/admin/AdminAccessDenied";
+import { isEmailVerified } from "@/lib/auth/verification";
+import { redirect } from "next/navigation";
 
 export const metadata = constructMetadata({
   title: "Admin Dashboard",
@@ -25,6 +27,10 @@ export default async function AdminLayout({
     // Middleware redirects unauthenticated users to `/admin/login`.
     // Returning children here avoids redirect loops and lets the admin login page render.
     return children;
+  }
+
+  if (!isEmailVerified(user)) {
+    redirect(`/signup/verify-email?email=${encodeURIComponent(user.email ?? '')}`);
   }
 
   let adminUser;

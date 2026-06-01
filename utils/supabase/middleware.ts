@@ -1,5 +1,7 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import { secureCookieOptions } from '@/lib/auth/cookies'
+import { isEmailVerified } from '@/lib/auth/verification'
 
 /** Paths that must work without a Supabase session (marketing, legal, public forms). */
 function isPublicPath(pathname: string): boolean {
@@ -36,6 +38,10 @@ function isPublicPath(pathname: string): boolean {
     return prefixes.some((p) => pathname === p || pathname.startsWith(`${p}/`))
 }
 
+function isProtectedPath(pathname: string): boolean {
+    return pathname.startsWith('/dashboard') || pathname.startsWith('/admin')
+}
+
 export async function updateSession(request: NextRequest) {
     let supabaseResponse = NextResponse.next({
         request,
@@ -56,12 +62,12 @@ export async function updateSession(request: NextRequest) {
                     return request.cookies.getAll()
                 },
                 setAll(cookiesToSet) {
-                    cookiesToSet.forEach(({ name, value, options }) => request.cookies.set(name, value))
+                    cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
                     supabaseResponse = NextResponse.next({
                         request,
                     })
                     cookiesToSet.forEach(({ name, value, options }) =>
-                        supabaseResponse.cookies.set(name, value, options)
+                        supabaseResponse.cookies.set(name, value, secureCookieOptions(options))
                     )
                 },
             },
@@ -74,13 +80,13 @@ export async function updateSession(request: NextRequest) {
     const {
         data: { user },
     } = await supabase.auth.getUser()
+
     const url = request.nextUrl.clone()
 
     if (request.nextUrl.pathname.startsWith('/webhook')) {
         return supabaseResponse
     }
 
-    // Already signed in: skip the admin gate screen
     if (user && request.nextUrl.pathname === '/admin/login') {
         const dest = new URL('/admin', request.url)
         const redirectResponse = NextResponse.redirect(dest)
@@ -90,24 +96,20 @@ export async function updateSession(request: NextRequest) {
         return redirectResponse
     }
 
+    if (user && !isEmailVerified(user) && isProtectedPath(request.nextUrl.pathname)) {
+        url.pathname = '/signup/verify-email'
+        url.searchParams.set('email', user.email ?? '')
+        const redirectResponse = NextResponse.redirect(url)
+        supabaseResponse.cookies.getAll().forEach(({ name, value }) => {
+            redirectResponse.cookies.set(name, value)
+        })
+        return redirectResponse
+    }
+
     if (!user && !isPublicPath(request.nextUrl.pathname)) {
-        // no user, redirect to login page
         url.pathname = request.nextUrl.pathname.startsWith('/admin') ? '/admin/login' : '/login'
         return NextResponse.redirect(url)
     }
-    // If user is logged in, allow them to stay on home; do not auto-redirect
-    // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're
-    // creating a new response object with NextResponse.next() make sure to:
-    // 1. Pass the request in it, like so:
-    //    const myNewResponse = NextResponse.next({ request })
-    // 2. Copy over the cookies, like so:
-    //    myNewResponse.cookies.setAll(supabaseResponse.cookies.getAll())
-    // 3. Change the myNewResponse object to fit your needs, but avoid changing
-    //    the cookies!
-    // 4. Finally:
-    //    return myNewResponse
-    // If this is not done, you may be causing the browser and server to go out
-    // of sync and terminate the user's session prematurely!
 
     return supabaseResponse
 }

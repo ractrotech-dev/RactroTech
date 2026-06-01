@@ -17,14 +17,25 @@ import {
   reviewsTable,
   type SelectPost,
 } from '@/utils/db/schema';
-import { eq, desc, ilike, or, sql } from 'drizzle-orm';
+import { and, eq, desc, ilike, or, sql } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 import { getAdminUser } from '@/utils/admin';
+import { getClientIp } from '@/lib/auth/client-ip';
+import { logSecurityEvent } from '@/lib/security/logger';
+import { checkAdminActionRateLimit } from '@/lib/security/rate-limit';
+import { adminSearchSchema } from '@/lib/validation/schemas';
 
 // ─── Helper ────────────────────────────────────────────────────────────────────
 async function requireAdmin() {
   const admin = await getAdminUser();
   if (!admin) throw new Error('Unauthorized');
+
+  const ip = getClientIp();
+  if (!checkAdminActionRateLimit(ip, admin.id)) {
+    logSecurityEvent({ type: 'rate_limit', ip, path: '/admin', action: 'admin_action' });
+    throw new Error('Too many requests. Please slow down.');
+  }
+
   return admin;
 }
 
@@ -224,8 +235,11 @@ export async function updateTaskStatus(id: string, status: 'todo' | 'in_progress
 // ─── Notification Actions ──────────────────────────────────────────────────────
 
 export async function markNotificationRead(id: string) {
-  await requireAdmin();
-  await db.update(notificationsTable).set({ read: true }).where(eq(notificationsTable.id, id));
+  const admin = await requireAdmin();
+  await db
+    .update(notificationsTable)
+    .set({ read: true })
+    .where(and(eq(notificationsTable.id, id), eq(notificationsTable.user_id, admin.id)));
   revalidatePath('/admin/notifications');
 }
 
@@ -249,10 +263,11 @@ export async function updateUserRole(userId: string, role: string) {
 // ─── Search Actions ────────────────────────────────────────────────────────────
 
 export async function searchAdminEntities(query: string) {
-  if (!query || query.length < 2) return [];
+  const parsed = adminSearchSchema.safeParse({ query });
+  if (!parsed.success) return [];
   await requireAdmin();
 
-  const searchTerm = `%${query}%`;
+  const searchTerm = `%${parsed.data.query.replace(/[%_\\]/g, '')}%`;
 
   // Search inquiries
   const inquiries = await db
@@ -342,6 +357,19 @@ export async function createPost(data: {
   return post;
 }
 
+async function assertCanModifyPost(admin: Awaited<ReturnType<typeof requireAdmin>>, postId: string) {
+  if (admin.dbRole === 'super_admin') return;
+  const [post] = await db
+    .select({ author_id: postsTable.author_id })
+    .from(postsTable)
+    .where(eq(postsTable.id, postId))
+    .limit(1);
+  if (!post) throw new Error('Post not found');
+  if (post.author_id !== admin.id) {
+    throw new Error('You can only edit posts you created');
+  }
+}
+
 export async function updatePost(id: string, data: Partial<{
   title: string;
   slug: string;
@@ -352,6 +380,7 @@ export async function updatePost(id: string, data: Partial<{
   status: 'draft' | 'published' | 'archived';
 }>) {
   const admin = await requireAdmin();
+  await assertCanModifyPost(admin, id);
   const updateData: Record<string, unknown> = { updated_at: new Date() };
   (Object.keys(data) as (keyof typeof data)[]).forEach((key) => {
     const v = data[key];
@@ -371,6 +400,7 @@ export async function updatePost(id: string, data: Partial<{
 
 export async function deletePost(id: string) {
   const admin = await requireAdmin();
+  await assertCanModifyPost(admin, id);
   const [row] = await db.select({ slug: postsTable.slug }).from(postsTable).where(eq(postsTable.id, id));
   await db.delete(postsTable).where(eq(postsTable.id, id));
   await logActivity(admin.id, 'Deleted post', 'post', id);
@@ -407,7 +437,15 @@ export async function addMediaAsset(data: {
 
 export async function deleteMediaAsset(id: string) {
   const admin = await requireAdmin();
-  await db.delete(mediaAssetsTable).where(eq(mediaAssetsTable.id, id));
+  const whereClause =
+    admin.dbRole === 'super_admin'
+      ? eq(mediaAssetsTable.id, id)
+      : and(eq(mediaAssetsTable.id, id), eq(mediaAssetsTable.uploaded_by, admin.id));
+
+  const deleted = await db.delete(mediaAssetsTable).where(whereClause).returning({ id: mediaAssetsTable.id });
+  if (deleted.length === 0) {
+    throw new Error('Media asset not found or access denied');
+  }
   await logActivity(admin.id, 'Deleted media asset', 'media', id);
   revalidatePath('/admin/media');
 }

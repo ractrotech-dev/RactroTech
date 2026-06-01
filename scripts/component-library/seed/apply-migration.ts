@@ -1,6 +1,7 @@
 import { readFileSync, readdirSync } from 'fs';
 import path from 'path';
 import postgres from 'postgres';
+import { getPostgresSsl } from '../../../utils/db/postgres-ssl';
 
 async function main() {
   const connectionString = process.env.DIRECT_URL ?? process.env.DATABASE_URL;
@@ -19,7 +20,7 @@ async function main() {
 
   console.log('Applying component library migrations to Supabase Postgres...');
 
-  const sql = postgres(connectionString, { max: 1 });
+  const sql = postgres(connectionString, { max: 1, ssl: getPostgresSsl() });
   try {
     for (const file of migrationFiles) {
       const migrationSql = readFileSync(path.join(migrationsDir, file), 'utf8');

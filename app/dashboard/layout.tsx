@@ -6,6 +6,7 @@ import { redirect } from 'next/navigation';
 import { constructMetadata } from '@/lib/seo';
 import { ensureAuthUserInDb } from '@/utils/auth-user-sync';
 import { ADMIN_ROLES, type AdminRole } from '@/utils/admin-roles';
+import { isEmailVerified } from '@/lib/auth/verification';
 
 export const metadata: Metadata = constructMetadata({
   title: 'Dashboard',
@@ -26,6 +27,10 @@ export default async function DashboardLayout({
 
   if (!user?.email) {
     return redirect('/signup');
+  }
+
+  if (!isEmailVerified(user)) {
+    return redirect(`/signup/verify-email?email=${encodeURIComponent(user.email)}`);
   }
 
   await ensureAuthUserInDb(user);
