@@ -61,21 +61,20 @@ export function RetroHero() {
             className="mb-4 text-3xl font-black leading-[1.05] tracking-tight text-black sm:text-4xl md:text-5xl lg:text-6xl"
             variants={item}
           >
-            WEB DEVELOPMENT SERVICES &{' '}
+            WE BUILD{' '}
             <motion.span
               className="inline-block border-4 border-black bg-black px-3 py-1 text-yellow-400 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)]"
               variants={badge}
             >
-              SAAS
+              AMAZING
             </motion.span>{' '}
-            THAT SHIP
+            DIGITAL PRODUCTS
           </motion.h1>
           <motion.p
             className="mb-10 max-w-xl text-lg font-semibold leading-relaxed text-black/90 md:text-xl"
             variants={item}
           >
-            Custom web apps, Next.js templates, and digital products built by a developer-led team
-            focused on performance and launch speed.
+            Websites, apps, and SaaS built by experienced professionals who actually ship.
           </motion.p>
 
           <motion.div className="mb-14 flex flex-wrap gap-4" variants={item}>

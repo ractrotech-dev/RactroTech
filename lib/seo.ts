@@ -45,6 +45,10 @@ export const siteConfig = {
     "web optimization",
   ],
   author: "Ractrotech",
+  /** Google Search Console HTML tag verification */
+  googleSiteVerification:
+    process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION ??
+    "M2S9-dkQg2H8Q5tM-GANPTd0XiTxy0-ZoV8NTvX2cO0",
 };
 
 export function constructMetadata({
@@ -98,6 +102,9 @@ export function constructMetadata({
       creator: "@ractrotech",
     },
     metadataBase: new URL(siteConfig.url),
+    verification: {
+      google: siteConfig.googleSiteVerification,
+    },
     alternates: {
       canonical: canonicalUrl || siteConfig.url,
     },
