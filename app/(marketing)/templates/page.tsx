@@ -6,7 +6,7 @@ import { constructMetadata, generateBreadcrumbSchema, siteConfig } from '@/lib/s
 export const metadata = constructMetadata({
   title: 'SaaS & Web Templates',
   description:
-    'Browse RactroTech templates for SaaS apps, landing pages, dashboards, e-commerce, and reusable UI components.',
+    'Browse Ractrotech templates for SaaS apps, landing pages, dashboards, e-commerce, and reusable UI components.',
   canonicalUrl: `${siteConfig.url}/templates`,
 });
 

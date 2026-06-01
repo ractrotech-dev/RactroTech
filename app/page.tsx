@@ -9,12 +9,13 @@ import RetroTestimonials from '@/components/retro-testimonials';
 // import { RetroPricing } from "@/components/retro-pricing";
 import { RetroCTA } from '@/components/retro-cta';
 import { RetroFooter } from '@/components/retro-footer';
-import { constructMetadata } from '@/lib/seo';
+import { constructMetadata, sitePath } from '@/lib/seo';
 
 export const metadata = constructMetadata({
-  title: "Ractrotech - Web Development Services & SaaS Templates",
-  description: "Ractrotech is a platform offering high-quality web development services, along with powerful tools and ready-to-use templates.",
-  canonicalUrl: "https://ractrotech.com",
+  title: 'Web Development Services & SaaS Templates',
+  description:
+    'Custom web apps, SaaS builds, and ready-to-use Next.js templates. Ractrotech helps teams ship faster—start your project or browse our library today.',
+  canonicalUrl: sitePath('/'),
 });
 
 /** Testimonials refetch after admin approval via `revalidatePath('/')`. */

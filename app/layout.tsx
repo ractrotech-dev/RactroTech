@@ -4,7 +4,11 @@ import "./globals.css";
 import { constructMetadata, generateOrganizationSchema, generateWebsiteSchema } from "@/lib/seo";
 import { AppProviders } from "@/providers/app-providers";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
 
 export const metadata: Metadata = constructMetadata();
 
@@ -17,14 +21,12 @@ export default function RootLayout({
   const webSchema = generateWebsiteSchema();
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className={inter.variable} suppressHydrationWarning>
       <head>
         <link rel="icon" href="/icon.svg" type="image/svg+xml" sizes="any" />
         <link rel="shortcut icon" href="/icon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/icon.svg" />
       </head>
-      {/* Required for pricing table */}
-      <script async src="https://js.stripe.com/v3/pricing-table.js"></script>
       <body className={inter.className}>
         <AppProviders>
           <script

@@ -5,19 +5,37 @@
 -- Auth dashboard (not SQL): Authentication → Settings → enable
 -- "Leaked password protection" (HaveIBeenPwned).
 
--- ─── 1. search_path ───────────────────────────────────────────────────────────
-ALTER FUNCTION public.handle_updated_at() SET search_path = public;
-ALTER FUNCTION public.handle_new_user() SET search_path = public;
-ALTER FUNCTION public.rls_auto_enable() SET search_path = public;
+-- ─── 1. search_path (skip functions that do not exist in this project) ────────
+DO $$
+BEGIN
+  IF to_regprocedure('public.handle_updated_at()') IS NOT NULL THEN
+    ALTER FUNCTION public.handle_updated_at() SET search_path = public;
+  END IF;
+
+  IF to_regprocedure('public.handle_new_user()') IS NOT NULL THEN
+    ALTER FUNCTION public.handle_new_user() SET search_path = public;
+  END IF;
+
+  IF to_regprocedure('public.rls_auto_enable()') IS NOT NULL THEN
+    ALTER FUNCTION public.rls_auto_enable() SET search_path = public;
+  END IF;
+END $$;
 
 -- ─── 2. Revoke RPC execute (triggers still work; only blocks /rest/v1/rpc/*) ─
-REVOKE EXECUTE ON FUNCTION public.handle_new_user() FROM PUBLIC;
-REVOKE EXECUTE ON FUNCTION public.handle_new_user() FROM anon;
-REVOKE EXECUTE ON FUNCTION public.handle_new_user() FROM authenticated;
+DO $$
+BEGIN
+  IF to_regprocedure('public.handle_new_user()') IS NOT NULL THEN
+    REVOKE EXECUTE ON FUNCTION public.handle_new_user() FROM PUBLIC;
+    REVOKE EXECUTE ON FUNCTION public.handle_new_user() FROM anon;
+    REVOKE EXECUTE ON FUNCTION public.handle_new_user() FROM authenticated;
+  END IF;
 
-REVOKE EXECUTE ON FUNCTION public.rls_auto_enable() FROM PUBLIC;
-REVOKE EXECUTE ON FUNCTION public.rls_auto_enable() FROM anon;
-REVOKE EXECUTE ON FUNCTION public.rls_auto_enable() FROM authenticated;
+  IF to_regprocedure('public.rls_auto_enable()') IS NOT NULL THEN
+    REVOKE EXECUTE ON FUNCTION public.rls_auto_enable() FROM PUBLIC;
+    REVOKE EXECUTE ON FUNCTION public.rls_auto_enable() FROM anon;
+    REVOKE EXECUTE ON FUNCTION public.rls_auto_enable() FROM authenticated;
+  END IF;
+END $$;
 
 -- ─── 3. Category INSERT policy ───────────────────────────────────────────────
 DROP POLICY IF EXISTS "category_insert_authenticated" ON public.category;

@@ -5,9 +5,9 @@ import { RetroCTA } from '@/components/retro-cta';
 import { constructMetadata, generateBreadcrumbSchema, siteConfig } from '@/lib/seo';
 
 export const metadata = constructMetadata({
-  title: 'About RactroTech',
+  title: 'About Ractrotech',
   description:
-    'Learn about RactroTech — a developer-led team building websites, apps, and SaaS products with modern tech and a focus on shipping.',
+    'Learn about Ractrotech — a developer-led team building websites, apps, and SaaS products with modern tech and a focus on shipping.',
   canonicalUrl: `${siteConfig.url}/about`,
 });
 

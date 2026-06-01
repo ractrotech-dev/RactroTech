@@ -10,13 +10,14 @@ import Link from 'next/link';
 import Image from 'next/image';
 import LoginForm from '@/components/LoginForm';
 import ProviderSigninBlock from '@/components/ProviderSigninBlock';
-import { constructMetadata } from '@/lib/seo';
+import { constructMetadata, sitePath } from '@/lib/seo';
 import { getEnabledOAuthProviders } from '@/lib/oauth/enabled-providers';
 
 export const metadata = constructMetadata({
-  title: "Login",
-  description: "Sign in to your Ractrotech account to access powerful web development tools and templates.",
-  canonicalUrl: "https://ractrotech.com/login",
+  title: 'Login',
+  description: 'Sign in to your Ractrotech account to access templates and developer tools.',
+  canonicalUrl: sitePath('/login'),
+  noIndex: true,
 });
 
 export default function Login({ searchParams }: { searchParams: { error?: string } }) {
@@ -112,7 +113,7 @@ export default function Login({ searchParams }: { searchParams: { error?: string
                   <span className="w-full border-t border-black" />
                 </div>
                 <div className="relative flex justify-center text-[10px] tracking-[0.2em]">
-                  <span className="bg-white px-3 font-bold text-black/80">Or continue with</span>
+                  <span className="bg-white px-3 font-bold text-black/80">OR CONTINUE WITH</span>
                 </div>
               </div>
 

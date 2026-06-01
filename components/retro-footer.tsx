@@ -26,18 +26,24 @@ export function RetroFooter() {
                 apps, and SaaS solutions for the modern web.
               </p>
 
-              <div className="flex gap-3">
+              <div className="flex flex-wrap items-center gap-3">
                 <Link
                   href="/login"
                   className="inline-flex items-center justify-center border-2 border-white/30 px-6 py-2.5 text-xs font-black tracking-widest text-white transition-all duration-200 hover:-translate-y-0.5 hover:border-white hover:bg-white/10"
                 >
-                  Login
+                  LOGIN
                 </Link>
                 <Link
                   href="/signup"
                   className="inline-flex items-center justify-center border-2 border-yellow-400 bg-yellow-400 px-6 py-2.5 text-xs font-black tracking-widest text-black transition-all duration-200 hover:-translate-y-0.5 hover:bg-yellow-300"
                 >
-                  Sign Up
+                  SIGN UP
+                </Link>
+                <Link
+                  href="/review"
+                  className="inline-flex items-center justify-center border-2 border-white/20 px-6 py-2.5 text-xs font-black tracking-widest text-yellow-400 transition-all duration-200 hover:-translate-y-0.5 hover:border-yellow-400 hover:bg-yellow-400/10"
+                >
+                  LEAVE A REVIEW
                 </Link>
               </div>
             </FadeInView>
@@ -163,14 +169,6 @@ export function RetroFooter() {
                       Support
                     </Link>
                   </li>
-                  <li>
-                    <Link
-                      href="/review"
-                      className="font-bold text-gray-400 underline-offset-4 transition-colors hover:text-white hover:underline"
-                    >
-                      Leave a review
-                    </Link>
-                  </li>
                 </ul>
               </motion.div>
 
@@ -241,15 +239,15 @@ export function RetroFooter() {
             >
               <div className="flex flex-col">
                 <span className="text-[10px] font-black tracking-widest text-white group-hover:text-yellow-400">
-                  Staff Portal
+                  STAFF PORTAL
                 </span>
                 <span className="text-[8px] font-bold tracking-tighter text-white/40">
-                  Admin Login
+                  ADMIN LOGIN
                 </span>
               </div>
-              <span className="border-2 border-yellow-400 bg-yellow-400 px-1.5 py-0.5 text-[8px] font-black tracking-widest text-black">
+              {/* <span className="border-2 border-yellow-400 bg-yellow-400 px-1.5 py-0.5 text-[8px] font-black tracking-widest text-black">
                 BETA
-              </span>
+              </span> */}
             </Link>
           </div>
 
@@ -257,8 +255,8 @@ export function RetroFooter() {
           <div className="text-center md:text-right">
             <p className="font-black tracking-widest text-white">© 2026 RACTROTECH</p>
             <p className="mt-2 text-xs font-bold text-gray-500">
-              Designed with <span className="text-red-500">♥</span> for the modern web | All Rights
-              Reserved
+              DESIGNED WITH <span className="text-red-500">♥</span> FOR THE MODERN WEB | ALL RIGHTS
+              RESERVED
             </p>
           </div>
         </div>

@@ -94,10 +94,10 @@ export function RetroHeader() {
     >
       <div className="mx-auto max-w-7xl px-4 py-4 sm:py-6">
         <div className="flex min-w-0 items-center justify-between gap-4">
-          <Link href="/" className="min-w-0 shrink-0">
-            <h1 className="truncate text-2xl font-black tracking-widest sm:text-3xl md:text-4xl">
+          <Link href="/" className="min-w-0 shrink-0" aria-label="Ractrotech home">
+            <span className="truncate text-2xl font-black tracking-widest sm:text-3xl md:text-4xl">
               RACTROTECH
-            </h1>
+            </span>
           </Link>
 
           {/* Desktop nav + CTA */}

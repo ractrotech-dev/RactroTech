@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 import AdminLoginForm from '@/components/admin/AdminLoginForm'
 import AdminProviderSigninBlock from '@/components/admin/AdminProviderSigninBlock'
-import { constructMetadata } from '@/lib/seo'
+import { constructMetadata, sitePath } from '@/lib/seo'
 import { getEnabledOAuthProviders } from '@/lib/oauth/enabled-providers'
 
 import {
@@ -17,8 +17,9 @@ import {
 
 export const metadata = constructMetadata({
   title: 'Admin Login',
-  description: 'Sign in to the RactroTech admin dashboard.',
-  canonicalUrl: 'https://ractrotech.com/admin/login',
+  description: 'Sign in to the Ractrotech admin dashboard.',
+  canonicalUrl: sitePath('/admin/login'),
+  noIndex: true,
 })
 
 type AdminLoginPageProps = {
@@ -107,7 +108,7 @@ export default function AdminLoginPage({ searchParams }: AdminLoginPageProps) {
                   <span className="w-full border-t border-black" />
                 </div>
                 <div className="relative flex justify-center text-[10px] tracking-[0.2em]">
-                  <span className="bg-white px-3 font-bold text-black/80">Or continue with</span>
+                  <span className="bg-white px-3 font-bold text-black/80">Or coc ntinue with</span>
                 </div>
               </div>
 

@@ -1,0 +1,269 @@
+---
+description: SEO optimization for content, on-page elements, technical audits, and keyword research. Trigger for any mention of SEO, rankings, meta tags, keywords, organic traffic, or content optimization — for blog posts, product pages, and landing pages.
+globs: ["**/*.html", "**/*.md", "**/*.mdx", "**/*.txt", "**/*.jsx", "**/*.tsx", "**/*.vue"]
+alwaysApply: false
+---
+
+# SEO Optimization Rules
+
+When the user asks to optimize content, audit SEO, research keywords, or improve search rankings — run the relevant mode(s) below. Always end with a **Priority Action List**.
+
+---
+
+## MODE A — On-Page SEO
+
+Audit and rewrite these elements. For each: show status (✅ Good / ⚠️ Needs Work / ❌ Missing), issue, and an optimized version.
+
+### Checklist
+
+**Title Tag**
+- 50–60 characters
+- Primary keyword near the front
+- Format: `Primary Keyword – Secondary Keyword | Brand`
+
+**Meta Description**
+- 150–160 characters
+- Primary keyword present naturally
+- Ends with a call-to-action
+
+**URL Slug**
+- Short, lowercase, hyphens only
+- Contains primary keyword
+- No stop words
+
+**H1 Tag**
+- Exactly one H1
+- Contains primary keyword
+- Matches search intent
+
+**Heading Hierarchy (H2–H6)**
+- Logical outline, no skipped levels
+- Secondary/LSI keywords in H2s
+
+**Keyword Usage**
+- Primary keyword in first 100 words
+- Density 1–2% (not stuffed)
+- LSI/semantic keywords present
+- Keywords in image alt text
+
+**Internal Links**
+- 2–3+ internal links
+- Descriptive anchor text (no "click here")
+
+**Images**
+- Alt text present and descriptive
+- File names are keyword-relevant
+
+### Output Format
+
+```
+## On-Page SEO Report
+
+### SEO Score: XX/100
+
+| Element        | Status          | Issue                    |
+|----------------|-----------------|--------------------------|
+| Title Tag      | ✅ Good          | —                        |
+| Meta Desc      | ⚠️ Needs Work   | Too short (89 chars)     |
+
+### Rewrites
+
+**Optimized Title Tag (XX chars):**
+> [title here]
+
+**Optimized Meta Description (XXX chars):**
+> [meta description here]
+
+**Suggested H1:**
+> [H1 here]
+```
+
+---
+
+## MODE B — Content Writing & Optimization
+
+### Rewriting existing content:
+1. Identify target keyword (ask if not provided)
+2. Analyze for: thin content, keyword gaps, readability, structure issues
+3. Rewrite with:
+   - Primary keyword in first 100 words
+   - H2 for main sections, H3 for sub-points
+   - LSI keywords woven naturally
+   - Short paragraphs (3–4 sentences max)
+   - Bullet/numbered lists for scanability
+   - FAQ section (targets "People Also Ask" boxes)
+   - Strong conclusion with CTA
+
+### Writing new SEO content:
+Ask for (or infer): target keyword, content type, word count, tone/audience.
+
+Output structure:
+```
+[SEO-Optimized Title]
+[Meta Description]
+[H1]
+[Intro — keyword in first sentence]
+[H2 Section 1]
+  [H3 sub-point if needed]
+[H2 Section 2]
+...
+[FAQ Section]
+[Conclusion + CTA]
+```
+
+### Readability Standards
+- Flesch Reading Ease: 60–70
+- Avg sentence length: under 20 words
+- Minimize passive voice
+- Use transition words (therefore, however, for example…)
+
+---
+
+## MODE C — Technical SEO Audit
+
+### Core Technical Checks
+
+**Crawlability & Indexation**
+- robots.txt blocking important pages?
+- sitemap.xml present and submitted to GSC?
+- Canonical tags correct? (no self-referencing, no duplicate canonicals)
+- Accidental noindex tags?
+
+**Page Speed (Core Web Vitals)**
+- LCP, INP, CLS — flag issues
+- Recommend: image compression, lazy loading, minify CSS/JS, CDN
+- Tools: Google PageSpeed Insights, GTmetrix
+
+**Mobile-Friendliness**
+- Responsive design, font/tap target size, no intrusive interstitials
+
+**HTTPS & Security**
+- Served over HTTPS? Mixed content warnings?
+
+**Structured Data / Schema**
+- Schema present? (Article, Product, FAQ, BreadcrumbList, etc.)
+- Recommend schema types relevant to the page type
+- Validate with Google's Rich Results Test
+
+**SEO Architecture**
+- Flat URL structure (max 3 clicks from homepage)
+- Pagination handled (rel=next/prev or canonical)
+- Hreflang if multilingual
+- www vs non-www, trailing slash consistency
+
+### Output Format
+```
+## Technical SEO Audit
+
+### Critical Issues 🔴
+- [Issue]: [Fix]
+
+### Warnings ⚠️
+- [Issue]: [Recommendation]
+
+### Passed ✅
+- HTTPS: OK
+- ...
+
+### Recommended Tools
+- [Tool]: [What to check]
+```
+
+---
+
+## MODE D — Keyword Research & Strategy
+
+### Step 1: Seed Keyword Expansion
+Given a topic, generate:
+- 5–10 **primary keywords** (high intent, moderate-high volume)
+- 10–15 **long-tail keywords** (low competition, high intent)
+- 5–8 **LSI/semantic keywords**
+- 3–5 **question keywords** (who/what/how/why — featured snippet targets)
+
+### Step 2: Intent Classification
+
+| Intent | Description | Example |
+|--------|-------------|---------|
+| Informational | User wants to learn | "how to do SEO" |
+| Navigational | User wants a specific site | "Ahrefs login" |
+| Commercial | Researching before buying | "best SEO tools" |
+| Transactional | Ready to buy/act | "buy SEO course" |
+
+### Step 3: Prioritization Matrix
+
+Score each keyword:
+- **Search Volume**: High / Medium / Low
+- **Competition**: High / Medium / Low
+- **Business Relevance**: High / Medium / Low
+- **Quick Win**: Yes (existing page can be optimized) / No
+
+### Step 4: Content Cluster Map
+```
+Pillar Page: [Broad topic]
+├── Cluster 1: [Subtopic A]
+├── Cluster 2: [Subtopic B]
+├── Cluster 3: [Subtopic C]
+└── Cluster 4: [Subtopic D]
+```
+
+### Output Format
+```
+## Keyword Research Report
+
+### Primary Keywords
+| Keyword | Est. Volume | Competition | Intent |
+|---------|-------------|-------------|--------|
+
+### Long-Tail Keywords
+...
+
+### Question Keywords (Featured Snippet Opportunities)
+...
+
+### Content Cluster Map
+...
+```
+
+---
+
+## Routing Logic
+
+| Input | Modes to Run |
+|-------|-------------|
+| URL only | A + C, offer D |
+| Keyword only | D, offer B |
+| Raw content pasted | A + B |
+| "Audit my SEO" | All four modes |
+| Missing target keyword | Ask before running A or B |
+
+---
+
+## Priority Action List (Always End With This)
+
+```
+## 🎯 Priority Action List
+
+**Quick Wins (High Impact, Low Effort):**
+1. [Action]
+2. [Action]
+
+**Next Steps (High Impact, More Effort):**
+3. [Action]
+4. [Action]
+
+**Nice to Have:**
+5. [Action]
+```
+
+Order by: impact × ease. Quick wins always first.
+
+---
+
+## Format Rules
+
+- Tables for audits and comparisons
+- Code blocks for rewritten HTML/meta tags
+- Bullet points for lists of 3+ items
+- Always include character counts for title tags and meta descriptions
+- Specific, actionable recommendations only — never vague ("improve your content")
+- Preserve brand voice when rewriting unless asked to change it

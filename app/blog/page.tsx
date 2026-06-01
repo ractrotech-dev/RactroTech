@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { constructMetadata } from '@/lib/seo';
+import { constructMetadata, sitePath } from '@/lib/seo';
 import { db } from '@/utils/db/db';
 import { postsTable } from '@/utils/db/schema';
 import DatabaseError from '@/components/admin/DatabaseError';
@@ -10,8 +10,8 @@ export const dynamic = 'force-dynamic';
 
 export const metadata = constructMetadata({
   title: 'Journal',
-  description: 'Articles and updates from RactroTech.',
-  canonicalUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL ?? 'https://www.ractrotech.com'}/blog`,
+  description: 'Articles and updates on web development, SaaS, and shipping digital products from Ractrotech.',
+  canonicalUrl: sitePath('/blog'),
 });
 
 export default async function BlogIndexPage() {

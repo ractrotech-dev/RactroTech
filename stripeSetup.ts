@@ -28,7 +28,11 @@ interface WebhookEndpoint {
 }
 
 // Configuration
-const PUBLIC_URL = process.env.NEXT_PUBLIC_WEBSITE_URL || "https://www.ractrotech.com";
+const PUBLIC_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  process.env.NEXT_PUBLIC_WEBSITE_URL ||
+  'https://www.ractrotech.com'
+).replace(/\/$/, '');
 const CURRENCY = 'usd';
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 

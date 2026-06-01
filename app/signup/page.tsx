@@ -10,13 +10,14 @@ import Link from 'next/link';
 import Image from 'next/image';
 import SignupForm from '@/components/SignupForm';
 import ProviderSigninBlock from '@/components/ProviderSigninBlock';
-import { constructMetadata } from '@/lib/seo';
+import { constructMetadata, sitePath } from '@/lib/seo';
 import { getEnabledOAuthProviders } from '@/lib/oauth/enabled-providers';
 
 export const metadata = constructMetadata({
-  title: "Sign Up",
-  description: "Create a Ractrotech account in seconds and start experimenting with high-quality SaaS templates.",
-  canonicalUrl: "https://ractrotech.com/signup",
+  title: 'Sign Up',
+  description: 'Create a Ractrotech account in seconds and start experimenting with high-quality SaaS templates.',
+  canonicalUrl: sitePath('/signup'),
+  noIndex: true,
 });
 export default function Signup() {
   const oauthProviders = getEnabledOAuthProviders();

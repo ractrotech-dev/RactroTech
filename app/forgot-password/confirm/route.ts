@@ -1,7 +1,9 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/utils/supabase/server'
 
-const PUBLIC_URL = process.env.NEXT_PUBLIC_WEBSITE_URL || 'https://www.ractrotech.com'
+import { getSiteUrl } from '@/lib/seo';
+
+const PUBLIC_URL = getSiteUrl();
 
 /**
  * Exchanges a password-recovery code for a session server-side so the token

@@ -17,7 +17,9 @@ import { loginSchema, signupSchema } from '@/lib/validation/schemas'
 import { sanitizePlainText } from '@/lib/validation/sanitize'
 import { isEmailVerified } from '@/lib/auth/verification'
 
-const PUBLIC_URL = process.env.NEXT_PUBLIC_WEBSITE_URL || "https://www.ractrotech.com"
+import { getSiteUrl } from "@/lib/seo";
+
+const PUBLIC_URL = getSiteUrl();
 
 type AuthFormState = { message: string }
 

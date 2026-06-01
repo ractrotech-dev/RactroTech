@@ -1,6 +1,7 @@
 import 'server-only';
 
 import { Stripe } from "stripe";
+import { getSiteUrl } from "@/lib/seo";
 import { db } from "@/utils/db/db";
 import { usersTable } from "@/utils/db/schema";
 import { eq } from "drizzle-orm";
@@ -12,7 +13,7 @@ export const stripe = isStripeConfigured()
   ? new Stripe(STRIPE_SECRET_KEY!, { apiVersion: "2024-06-20" })
   : null;
 
-const PUBLIC_URL = process.env.NEXT_PUBLIC_WEBSITE_URL || "https://www.ractrotech.com";
+const PUBLIC_URL = getSiteUrl();
 
 /** Placeholder stripe_id when Stripe is not configured (schema requires a value). */
 export const STRIPE_DISABLED_PLACEHOLDER = "no-stripe";

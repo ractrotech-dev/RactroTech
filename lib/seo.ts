@@ -1,25 +1,50 @@
 import { Metadata } from "next";
 
+const DEFAULT_SITE_URL = "https://www.ractrotech.com";
+
+/** Single canonical origin for metadata, sitemap, auth redirects, and schema. */
+export function getSiteUrl(): string {
+  const raw =
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    process.env.NEXT_PUBLIC_WEBSITE_URL ||
+    DEFAULT_SITE_URL;
+  return raw.replace(/\/$/, "");
+}
+
+/** Absolute URL for a site path (e.g. `/blog` → `https://www.ractrotech.com/blog`). */
+export function sitePath(path: string): string {
+  const normalized = path.startsWith("/") ? path : `/${path}`;
+  return `${getSiteUrl()}${normalized}`;
+}
+
 export const siteConfig = {
   name: "Ractrotech",
-  description: "Ractrotech is a platform offering high-quality web development services, along with powerful tools and ready-to-use templates designed to help businesses and developers build, scale, and optimize their digital products efficiently.",
-  url: process.env.NEXT_PUBLIC_SITE_URL || "https://ractrotech.com",
-  ogImage: "https://ractrotech.com/og-image.jpg",
+  description:
+    "Ractrotech builds custom web apps, SaaS products, and ready-to-use Next.js templates. Ship faster with a developer-led team focused on performance and modern stacks.",
+  get url() {
+    return getSiteUrl();
+  },
+  get ogImage() {
+    return `${getSiteUrl()}/opengraph-image`;
+  },
+  get logoUrl() {
+    return `${getSiteUrl()}/icon.svg`;
+  },
   links: {
     twitter: "https://twitter.com/ractrotech",
     github: "https://github.com/ractrotech",
   },
   keywords: [
-    "web development",
-    "software engineering",
-    "templates",
-    "react",
-    "next.js",
-    "saas",
+    "web development services",
+    "custom SaaS development",
+    "Next.js development",
+    "SaaS templates",
+    "React component library",
+    "web development agency",
     "digital products",
-    "web optimization"
+    "web optimization",
   ],
-  author: "Ractrotech"
+  author: "Ractrotech",
 };
 
 export function constructMetadata({
@@ -46,7 +71,7 @@ export function constructMetadata({
       {
         name: siteConfig.author,
         url: siteConfig.url,
-      }
+      },
     ],
     creator: siteConfig.author,
     openGraph: {
@@ -70,7 +95,7 @@ export function constructMetadata({
       title,
       description,
       images: [image],
-      creator: "@ractrotech", // Replace with actual handle
+      creator: "@ractrotech",
     },
     metadataBase: new URL(siteConfig.url),
     alternates: {
@@ -85,19 +110,15 @@ export function constructMetadata({
   };
 }
 
-// Schema Markup Generators
 export function generateOrganizationSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": siteConfig.name,
-    "url": siteConfig.url,
-    "logo": `${siteConfig.url}/logo.png`,
-    "description": siteConfig.description,
-    "sameAs": [
-      siteConfig.links.twitter,
-      siteConfig.links.github
-    ]
+    name: siteConfig.name,
+    url: siteConfig.url,
+    logo: siteConfig.logoUrl,
+    description: siteConfig.description,
+    sameAs: [siteConfig.links.twitter, siteConfig.links.github],
   };
 }
 
@@ -105,14 +126,9 @@ export function generateWebsiteSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": siteConfig.name,
-    "url": siteConfig.url,
-    "description": siteConfig.description,
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": `${siteConfig.url}/search?q={search_term_string}`,
-      "query-input": "required name=search_term_string"
-    }
+    name: siteConfig.name,
+    url: siteConfig.url,
+    description: siteConfig.description,
   };
 }
 
@@ -120,11 +136,54 @@ export function generateBreadcrumbSchema(items: { name: string; item: string }[]
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    "itemListElement": items.map((breadcrumb, index) => ({
+    itemListElement: items.map((breadcrumb, index) => ({
       "@type": "ListItem",
-      "position": index + 1,
-      "name": breadcrumb.name,
-      "item": `${siteConfig.url}${breadcrumb.item}`
-    }))
+      position: index + 1,
+      name: breadcrumb.name,
+      item: `${siteConfig.url}${breadcrumb.item}`,
+    })),
+  };
+}
+
+type BlogPostingInput = {
+  title: string;
+  excerpt: string | null;
+  slug: string;
+  published_at: Date | string | null;
+  cover_image?: string | null;
+};
+
+export function generateBlogPostingSchema(post: BlogPostingInput) {
+  const published =
+    post.published_at instanceof Date
+      ? post.published_at.toISOString()
+      : post.published_at
+        ? new Date(post.published_at).toISOString()
+        : undefined;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.excerpt || post.title,
+    datePublished: published,
+    image: post.cover_image || siteConfig.ogImage,
+    author: {
+      "@type": "Organization",
+      name: siteConfig.name,
+      url: siteConfig.url,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: siteConfig.name,
+      logo: {
+        "@type": "ImageObject",
+        url: siteConfig.logoUrl,
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": sitePath(`/blog/${post.slug}`),
+    },
   };
 }

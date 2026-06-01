@@ -1,10 +1,10 @@
 import { LegalLayout, LegalSection, LegalParagraph, LegalList } from '@/components/LegalLayout';
-import { constructMetadata } from '@/lib/seo';
+import { constructMetadata, sitePath } from '@/lib/seo';
 
 export const metadata = constructMetadata({
-  title: "Privacy Policy",
-  description: "Read the RactroTech privacy policy to learn how we protect your data.",
-  canonicalUrl: "https://ractrotech.com/privacy",
+  title: 'Privacy Policy',
+  description: 'Read the Ractrotech privacy policy to learn how we protect your data.',
+  canonicalUrl: sitePath('/privacy'),
 });
 
 export default function PrivacyPage() {

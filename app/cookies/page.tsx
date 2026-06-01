@@ -1,10 +1,10 @@
 import { LegalLayout, LegalSection, LegalParagraph, LegalList } from '@/components/LegalLayout';
-import { constructMetadata } from '@/lib/seo';
+import { constructMetadata, sitePath } from '@/lib/seo';
 
 export const metadata = constructMetadata({
-  title: "Cookies Policy",
-  description: "Learn about how RactroTech uses cookies to improve your browsing experience.",
-  canonicalUrl: "https://ractrotech.com/cookies",
+  title: 'Cookies Policy',
+  description: 'Learn about how Ractrotech uses cookies to improve your browsing experience.',
+  canonicalUrl: sitePath('/cookies'),
 });
 
 export default function CookiesPage() {

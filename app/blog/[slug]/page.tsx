@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
-import { constructMetadata } from '@/lib/seo';
+import { constructMetadata, generateBlogPostingSchema, sitePath } from '@/lib/seo';
 import { db } from '@/utils/db/db';
 import { postsTable } from '@/utils/db/schema';
 import DatabaseError from '@/components/admin/DatabaseError';
@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: Props) {
     return constructMetadata({
       title: post.title,
       description: post.excerpt || post.title,
-      canonicalUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL ?? 'https://www.ractrotech.com'}/blog/${params.slug}`,
+      canonicalUrl: sitePath(`/blog/${params.slug}`),
     });
   } catch {
     return constructMetadata({ title: 'Journal', noIndex: true });
@@ -44,6 +44,14 @@ export default async function BlogPostPage({ params }: Props) {
       .where(and(eq(postsTable.slug, params.slug), eq(postsTable.status, 'published')));
 
     if (!post) notFound();
+
+    const blogSchema = generateBlogPostingSchema({
+      title: post.title,
+      excerpt: post.excerpt,
+      slug: post.slug,
+      published_at: post.published_at,
+      cover_image: post.cover_image,
+    });
 
     const tagList =
       post.tags
@@ -61,6 +69,10 @@ export default async function BlogPostPage({ params }: Props) {
 
     return (
       <main className="flex-1 pb-20">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }}
+        />
         <div className="border-b-4 border-black bg-yellow-400">
           <div className="mx-auto max-w-3xl px-4 py-8 md:py-10">
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[10px] font-black tracking-widest text-black/55">

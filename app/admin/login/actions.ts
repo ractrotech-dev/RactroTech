@@ -9,7 +9,9 @@ import { checkLoginRateLimit } from '@/lib/security/rate-limit'
 import { logSecurityEvent } from '@/lib/security/logger'
 import { isEmailVerified } from '@/lib/auth/verification'
 
-const PUBLIC_URL = process.env.NEXT_PUBLIC_WEBSITE_URL || 'https://www.ractrotech.com'
+import { getSiteUrl } from '@/lib/seo';
+
+const PUBLIC_URL = getSiteUrl();
 
 export async function loginAdminUser(formData: FormData) {
   const email = (formData.get('email') as string)?.trim().toLowerCase()

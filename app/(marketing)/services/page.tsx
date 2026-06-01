@@ -6,7 +6,7 @@ import { constructMetadata, generateBreadcrumbSchema, siteConfig } from '@/lib/s
 export const metadata = constructMetadata({
   title: 'Web Development Services',
   description:
-    'Custom web development, SaaS builds, mobile apps, AI integration, e-commerce, and cloud solutions from RactroTech.',
+    'Custom web development, SaaS builds, mobile apps, AI integration, e-commerce, and cloud solutions from Ractrotech.',
   canonicalUrl: `${siteConfig.url}/services`,
 });
 
