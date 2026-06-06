@@ -1,26 +1,10 @@
 /**
- * Keeps `users_table` in sync with Supabase Auth.
+ * Keeps `users_table` in sync with Supabase Auth via the Supabase client (no DATABASE_URL).
  * OAuth flows hit `/auth/callback`; password login does not, so we upsert here.
  * SERVER ONLY.
  */
-import type { User } from '@supabase/supabase-js';
-import { eq } from 'drizzle-orm';
-import { db } from '@/utils/db/db';
-import { usersTable } from '@/utils/db/schema';
-
-async function withDbRetry<T>(fn: () => Promise<T>, attempts = 3): Promise<T> {
-  let last: unknown;
-  const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
-  for (let i = 0; i < attempts; i++) {
-    try {
-      return await fn();
-    } catch (e) {
-      last = e;
-      if (i < attempts - 1) await delay(200 * (i + 1));
-    }
-  }
-  throw last;
-}
+import type { SupabaseClient, User } from '@supabase/supabase-js';
+import { createClient } from '@/utils/supabase/server';
 
 function parseBootstrapEmails(): Set<string> {
   const raw = process.env.ADMIN_BOOTSTRAP_EMAILS ?? '';
@@ -34,44 +18,67 @@ function displayName(user: User): string {
   return meta?.full_name ?? user.email?.split('@')[0] ?? 'User';
 }
 
-export async function ensureAuthUserInDb(user: User): Promise<void> {
-  const email = user.email;
+export async function ensureAuthUserInDb(
+  user: User,
+  supabase?: SupabaseClient,
+): Promise<void> {
+  const email = user.email?.toLowerCase();
   if (!email) return;
 
-  await withDbRetry(async () => {
-    const bootstrap = parseBootstrapEmails();
-    const emailLower = email.toLowerCase();
-    const shouldBootstrap = bootstrap.has(emailLower);
+  const client = supabase ?? createClient();
+  const bootstrap = parseBootstrapEmails();
+  const shouldBootstrap = bootstrap.has(email);
+  const name = displayName(user);
+  const now = new Date().toISOString();
 
-    const [byId] = await db
-      .select({ id: usersTable.id, role: usersTable.role })
-      .from(usersTable)
-      .where(eq(usersTable.id, user.id))
-      .limit(1);
+  const { data: existing, error: selectError } = await client
+    .from('users_table')
+    .select('id, role')
+    .eq('id', user.id)
+    .maybeSingle();
 
-    if (byId) {
-      const promoteToSuperAdmin = shouldBootstrap && byId.role === 'user';
+  if (selectError) {
+    throw new Error(selectError.message);
+  }
 
-      await db
-        .update(usersTable)
-        .set({
-          email: emailLower,
-          name: displayName(user),
-          last_login: new Date(),
-          ...(promoteToSuperAdmin ? { role: 'super_admin' } : {}),
-        })
-        .where(eq(usersTable.id, user.id));
-      return;
+  if (existing) {
+    const updates: {
+      email: string;
+      name: string;
+      last_login: string;
+      role?: string;
+    } = {
+      email,
+      name,
+      last_login: now,
+    };
+
+    if (shouldBootstrap && existing.role === 'user') {
+      updates.role = 'super_admin';
     }
 
-    await db.insert(usersTable).values({
-      id: user.id,
-      email: emailLower,
-      name: displayName(user),
-      plan: 'none',
-      stripe_id: 'none',
-      role: shouldBootstrap ? 'super_admin' : 'user',
-      last_login: new Date(),
-    });
+    const { error: updateError } = await client
+      .from('users_table')
+      .update(updates)
+      .eq('id', user.id);
+
+    if (updateError) {
+      throw new Error(updateError.message);
+    }
+    return;
+  }
+
+  const { error: insertError } = await client.from('users_table').insert({
+    id: user.id,
+    email,
+    name,
+    plan: 'none',
+    stripe_id: 'none',
+    role: shouldBootstrap ? 'super_admin' : 'user',
+    last_login: now,
   });
+
+  if (insertError) {
+    throw new Error(insertError.message);
+  }
 }

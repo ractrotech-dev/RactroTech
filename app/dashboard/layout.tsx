@@ -4,6 +4,7 @@ import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 
 import { constructMetadata } from '@/lib/seo';
+import DatabaseError from '@/components/admin/DatabaseError';
 import { ensureAuthUserInDb } from '@/utils/auth-user-sync';
 import { ADMIN_ROLES, type AdminRole } from '@/utils/admin-roles';
 import { isEmailVerified } from '@/lib/auth/verification';
@@ -13,6 +14,11 @@ export const metadata: Metadata = constructMetadata({
   description: 'Welcome to your RactroTech Dashboard',
   noIndex: true,
 });
+
+function syncErrorMessage(error: unknown): string {
+  if (error instanceof Error) return error.message;
+  return 'Could not sync your profile. Check Supabase table policies for users_table.';
+}
 
 export default async function DashboardLayout({
   children,
@@ -26,14 +32,25 @@ export default async function DashboardLayout({
   } = await supabase.auth.getUser();
 
   if (!user?.email) {
-    return redirect('/signup');
+    redirect('/signup');
   }
 
   if (!isEmailVerified(user)) {
-    return redirect(`/signup/verify-email?email=${encodeURIComponent(user.email)}`);
+    redirect(`/signup/verify-email?email=${encodeURIComponent(user.email)}`);
   }
 
-  await ensureAuthUserInDb(user);
+  try {
+    await ensureAuthUserInDb(user, supabase);
+  } catch (error) {
+    return (
+      <div className="flex min-h-screen flex-col">
+        <DashboardHeader />
+        <div className="flex min-h-[50vh] flex-1 items-center justify-center p-6">
+          <DatabaseError message={syncErrorMessage(error)} />
+        </div>
+      </div>
+    );
+  }
 
   const { data: profile, error } = await supabase
     .from('users_table')
@@ -43,7 +60,7 @@ export default async function DashboardLayout({
 
   const role = profile?.role as AdminRole | undefined;
   if (error || !role || !ADMIN_ROLES.includes(role)) {
-    return redirect('/');
+    redirect('/');
   }
 
   return (

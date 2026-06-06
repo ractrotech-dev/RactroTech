@@ -6,6 +6,7 @@ import {
   PricingSection,
   EarningsSection,
   CustomerSupportSection,
+  ClientOnboardSection,
 } from '@/components/sections/dashboard'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -19,6 +20,7 @@ const TABS = [
   { key: 'templates', label: 'Templates' },
   { key: 'pricing', label: 'Pricing' },
   { key: 'earnings', label: 'Earnings' },
+  { key: 'onboard', label: 'Client Onboard' },
   { key: 'support', label: 'Customer Support' },
 ] as const
 
@@ -64,6 +66,9 @@ export function DashboardShell({ userEmail }: DashboardShellProps) {
           </TabsContent>
           <TabsContent value="earnings" className="mt-0 focus-visible:outline-none">
             <EarningsSection />
+          </TabsContent>
+          <TabsContent value="onboard" className="mt-0 focus-visible:outline-none">
+            <ClientOnboardSection />
           </TabsContent>
           <TabsContent value="support" className="mt-0 focus-visible:outline-none">
             <CustomerSupportSection />
