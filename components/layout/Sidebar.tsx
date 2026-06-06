@@ -1,4 +1,10 @@
-type TabKey = 'components' | 'templates' | 'pricing' | 'earnings' | 'support'
+type TabKey =
+  | 'components'
+  | 'templates'
+  | 'pricing'
+  | 'earnings'
+  | 'support'
+  | 'onboard'
 
 type SidebarProps = {
   tabs: { key: TabKey; label: string }[]

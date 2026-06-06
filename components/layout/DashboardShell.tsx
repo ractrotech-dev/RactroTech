@@ -9,19 +9,27 @@ import {
   PricingSection,
   EarningsSection,
   CustomerSupportSection,
+  ClientOnboardSection,
 } from '@/components/sections/dashboard'
 
 type DashboardShellProps = {
   userEmail: string
 }
 
-type TabKey = 'components' | 'templates' | 'pricing' | 'earnings' | 'support'
+type TabKey =
+  | 'components'
+  | 'templates'
+  | 'pricing'
+  | 'earnings'
+  | 'support'
+  | 'onboard'
 
 const TABS: { key: TabKey; label: string }[] = [
   { key: 'components', label: 'Components' },
   { key: 'templates', label: 'Templates' },
   { key: 'pricing', label: 'Pricing' },
   { key: 'earnings', label: 'Earnings' },
+  { key: 'onboard', label: 'Client Onboard' },
   { key: 'support', label: 'Customer Support' },
 ]
 
@@ -40,6 +48,8 @@ export function DashboardShell({ userEmail }: DashboardShellProps) {
         return <EarningsSection />
       case 'support':
         return <CustomerSupportSection />
+      case 'onboard':
+        return <ClientOnboardSection />
       default:
         return null
     }

@@ -1,20 +1,39 @@
-import { drizzle } from "drizzle-orm/postgres-js";
+import { drizzle, type PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 
 // NOTE:
-// - We still use Drizzle in multiple server components.
-// - Vercel build/typecheck runs without `DATABASE_URL` available.
-// - To avoid build-time type errors, we create a Drizzle client using a fallback URL.
-//   Queries will only run at request-time; if you don't provide `DATABASE_URL` in prod,
-//   those queries will fail then (which is expected).
-const databaseUrl = process.env.DATABASE_URL;
+// - Drizzle is used in server components and server actions.
+// - Vercel build imports this module without `DATABASE_URL`; we lazy-init so build can finish.
+// - At request time, set `DATABASE_URL` (Supabase pooler URI) in `.env.local` / Vercel env.
 
-// Do not throw here when DATABASE_URL is missing: Next/Vercel imports this module during
-// `next build` (e.g. via /auth/callback → auth-user-sync). Runtime DB calls will fail
-// if DATABASE_URL is unset in deployment env — set it in Vercel project settings.
+function resolveDatabaseUrl(): string {
+  if (process.env.DATABASE_URL) return process.env.DATABASE_URL;
 
-// Disable prepare as it is not supported for "Transaction" pool mode.
-const client = postgres(databaseUrl || "postgres://postgres:postgres@localhost:5432/postgres", { 
-  prepare: false,
+  if (process.env.NEXT_PHASE === "phase-production-build") {
+    return "postgres://postgres:postgres@127.0.0.1:5432/postgres";
+  }
+
+  throw new Error(
+    "DATABASE_URL is not set. Add your Supabase Postgres URI to .env.local " +
+      "(Dashboard → Project Settings → Database → Connection string → URI, Transaction pooler).",
+  );
+}
+
+let client: ReturnType<typeof postgres> | undefined;
+let drizzleDb: PostgresJsDatabase | undefined;
+
+function getDbInstance(): PostgresJsDatabase {
+  if (!drizzleDb) {
+    client = postgres(resolveDatabaseUrl(), { prepare: false });
+    drizzleDb = drizzle(client);
+  }
+  return drizzleDb;
+}
+
+export const db = new Proxy({} as PostgresJsDatabase, {
+  get(_target, prop) {
+    const instance = getDbInstance();
+    const value = Reflect.get(instance, prop, instance);
+    return typeof value === "function" ? value.bind(instance) : value;
+  },
 });
-export const db = drizzle(client);

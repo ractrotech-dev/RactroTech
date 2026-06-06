@@ -1,20 +1,21 @@
-import DashboardHeader from '@/components/DashboardHeader';
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 
 import { constructMetadata } from '@/lib/seo';
+import DatabaseError from '@/components/admin/DatabaseError';
 import { ensureAuthUserInDb } from '@/utils/auth-user-sync';
-import { ADMIN_ROLES, type AdminRole } from '@/utils/admin-roles';
-
-const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = constructMetadata({
   title: 'Dashboard',
   description: 'Welcome to your RactroTech Dashboard',
   noIndex: true,
 });
+
+function syncErrorMessage(error: unknown): string {
+  if (error instanceof Error) return error.message;
+  return 'Could not sync your profile. Check Supabase table policies for users_table.';
+}
 
 export default async function DashboardLayout({
   children,
@@ -28,26 +29,18 @@ export default async function DashboardLayout({
   } = await supabase.auth.getUser();
 
   if (!user?.email) {
-    return redirect('/signup');
+    redirect('/signup');
   }
 
-  await ensureAuthUserInDb(user);
-
-  const { data: profile, error } = await supabase
-    .from('users_table')
-    .select('role')
-    .eq('id', user.id)
-    .maybeSingle();
-
-  const role = profile?.role as AdminRole | undefined;
-  if (error || !role || !ADMIN_ROLES.includes(role)) {
-    return redirect('/');
+  try {
+    await ensureAuthUserInDb(user, supabase);
+  } catch (error) {
+    return (
+      <div className="flex min-h-[50vh] items-center justify-center p-6">
+        <DatabaseError message={syncErrorMessage(error)} />
+      </div>
+    );
   }
 
-  return (
-    <html lang="en">
-      {/* <DashboardHeader /> */}
-      {children}
-    </html>
-  );
+  return <>{children}</>;
 }
