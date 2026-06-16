@@ -9,8 +9,8 @@ import { desc, eq } from 'drizzle-orm';
 export const dynamic = 'force-dynamic';
 
 export const metadata = constructMetadata({
-  title: 'Journal',
-  description: 'Articles and updates on web development, SaaS, and shipping digital products from Ractrotech.',
+  title: 'Blog — Web Development & SaaS Insights',
+  description: 'Articles on SaaS development, MVP builds, Next.js, and shipping digital products from Ractrotech.',
   canonicalUrl: sitePath('/blog'),
 });
 
@@ -34,9 +34,11 @@ export default async function BlogIndexPage() {
       <main className="flex-1 pb-16">
         <div className="border-b-4 border-black bg-yellow-400">
           <div className="mx-auto max-w-3xl px-4 py-12">
-            <p className="text-[10px] font-black tracking-[0.35em] text-black/50">RactroTech</p>
-            <h1 className="retro-heading mt-2 text-4xl md:text-5xl">Journal</h1>
-            <p className="mt-3 text-sm font-bold text-black/60">Published posts from the team.</p>
+            <p className="text-[10px] font-black tracking-[0.35em] text-black/50">Ractrotech</p>
+            <h1 className="retro-heading mt-2 text-4xl md:text-5xl">Blog</h1>
+            <p className="mt-3 text-sm font-bold text-black/60">
+              SaaS development, MVP guides, and Next.js insights from the Ractrotech team.
+            </p>
           </div>
         </div>
 

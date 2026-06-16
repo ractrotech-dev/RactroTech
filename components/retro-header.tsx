@@ -1,19 +1,21 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createClient as createSupabaseClient } from '@/utils/supabase/client';
+import { useEffect } from 'react';
 
-const navLinks = [
-  // { href: '#product', label: 'PRODUCT' },
+import { NavbarAuth } from '@/components/auth/NavbarAuth';
+import { useAuth } from '@/hooks/use-auth';
+
+const baseNavLinks = [
   { href: '/components', label: 'COMPONENTS' },
   { href: '/templates', label: 'TEMPLATES' },
   { href: '/services', label: 'SERVICES' },
   { href: '/contact', label: 'CONTACT' },
   { href: '/about', label: 'ABOUT' },
   { href: '/blog', label: 'BLOG' },
-  { href: '/login', label: 'LOGIN' },
 ];
 
 type HeaderRoleState = 'loading' | 'guest' | 'user' | 'admin';
@@ -25,11 +27,18 @@ function HeaderCta({
   variant?: 'desktop' | 'mobile';
   onClick?: () => void;
 }) {
+  const { isAuthenticated, loading, initialized } = useAuth();
   const [roleState, setRoleState] = useState<HeaderRoleState>('loading');
 
   useEffect(() => {
-    const supabase = createSupabaseClient();
+    if (!initialized || loading) return;
 
+    if (!isAuthenticated) {
+      setRoleState('guest');
+      return;
+    }
+
+    const supabase = createSupabaseClient();
     const load = async () => {
       const {
         data: { user },
@@ -46,18 +55,17 @@ function HeaderCta({
         .eq('id', user.id)
         .maybeSingle();
 
-      if (profile?.role === 'admin') {
+      if (profile?.role === 'admin' || profile?.role === 'super_admin') {
         setRoleState('admin');
       } else {
         setRoleState('user');
       }
     };
 
-    load();
-  }, []);
+    void load();
+  }, [isAuthenticated, initialized, loading]);
 
-  // While loading or logged-in non-admin, hide CTA
-  if (roleState === 'loading' || roleState === 'user') {
+  if (!initialized || loading || roleState === 'loading' || roleState === 'user' || roleState === 'admin') {
     return null;
   }
 
@@ -66,31 +74,24 @@ function HeaderCta({
       ? 'retro-button whitespace-nowrap shrink-0'
       : 'retro-button text-center mt-2 py-3';
 
-  if (roleState === 'guest') {
-    return (
-      <Link href="/start-project" onClick={onClick} className={baseClasses}>
-        GET STARTED
-      </Link>
-    );
-  }
-
-  // admin
   return (
-    <Link href="/dashboard" onClick={onClick} className={baseClasses}>
-      GO TO DASHBOARD
+    <Link href="/start-project" onClick={onClick} className={baseClasses}>
+      GET STARTED
     </Link>
   );
 }
 
 export function RetroHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { isAuthenticated } = useAuth();
+
+  const navLinks = baseNavLinks;
 
   return (
     <motion.header
       className="retro-border border-b-4 bg-white text-black"
-      initial={{ opacity: 0, y: -20 }}
+      initial={{ opacity: 1, y: 0 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, ease: 'easeOut' }}
     >
       <div className="mx-auto max-w-7xl px-4 py-4 sm:py-6">
         <div className="flex min-w-0 items-center justify-between gap-4">
@@ -100,7 +101,6 @@ export function RetroHeader() {
             </span>
           </Link>
 
-          {/* Desktop nav + CTA */}
           <nav className="hidden shrink-0 items-center gap-6 md:flex lg:gap-8">
             {navLinks.map(({ href, label }) => (
               <Link
@@ -111,33 +111,35 @@ export function RetroHeader() {
                 {label}
               </Link>
             ))}
-            <HeaderCta variant="desktop" />
+            {!isAuthenticated ? <HeaderCta variant="desktop" /> : null}
+            <NavbarAuth variant="desktop" />
           </nav>
 
-          {/* Hamburger: visible on small screens only */}
-          <button
-            type="button"
-            aria-label="Toggle menu"
-            aria-expanded={menuOpen}
-            onClick={() => setMenuOpen((o) => !o)}
-            className="retro-border flex h-10 w-10 shrink-0 flex-col justify-center gap-1.5 rounded border-2 bg-white p-2 transition-colors hover:bg-black hover:text-white md:hidden"
-          >
-            <span
-              className={`block h-0.5 w-full origin-center bg-current transition-transform ${
-                menuOpen ? 'translate-y-2 rotate-45' : ''
-              }`}
-            />
-            <span className={`block h-0.5 w-full bg-current ${menuOpen ? 'opacity-0' : ''}`} />
-            <span
-              className={`block h-0.5 w-full origin-center bg-current transition-transform ${
-                menuOpen ? '-translate-y-2 -rotate-45' : ''
-              }`}
-            />
-          </button>
+          <div className="flex shrink-0 items-center gap-2 md:hidden">
+            {isAuthenticated ? <NavbarAuth variant="desktop" /> : null}
+            <button
+              type="button"
+              aria-label="Toggle menu"
+              aria-expanded={menuOpen}
+              onClick={() => setMenuOpen((o) => !o)}
+              className="retro-border flex h-10 w-10 shrink-0 flex-col justify-center gap-1.5 rounded border-2 bg-white p-2 transition-colors hover:bg-black hover:text-white"
+            >
+              <span
+                className={`block h-0.5 w-full origin-center bg-current transition-transform ${
+                  menuOpen ? 'translate-y-2 rotate-45' : ''
+                }`}
+              />
+              <span className={`block h-0.5 w-full bg-current ${menuOpen ? 'opacity-0' : ''}`} />
+              <span
+                className={`block h-0.5 w-full origin-center bg-current transition-transform ${
+                  menuOpen ? '-translate-y-2 -rotate-45' : ''
+                }`}
+              />
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Mobile menu */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
@@ -158,7 +160,19 @@ export function RetroHeader() {
                   {label}
                 </Link>
               ))}
-              <HeaderCta variant="mobile" onClick={() => setMenuOpen(false)} />
+              {!isAuthenticated ? (
+                <>
+                  <Link
+                    href="/signup"
+                    onClick={() => setMenuOpen(false)}
+                    className="border-b border-black/10 px-2 py-3 text-sm font-bold hover:underline"
+                  >
+                    SIGN UP
+                  </Link>
+                  <HeaderCta variant="mobile" onClick={() => setMenuOpen(false)} />
+                </>
+              ) : null}
+              <NavbarAuth variant="mobile" onNavigate={() => setMenuOpen(false)} />
             </nav>
           </motion.div>
         )}

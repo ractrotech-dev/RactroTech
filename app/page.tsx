@@ -4,17 +4,17 @@ import { RetroServices } from '@/components/retro-services';
 import { RetroAbout } from '@/components/retro-about';
 import { RetroWhyUs } from '@/components/retro-why-us';
 import { RetroPortfolio } from '@/components/retro-portfolio';
-// import { RetroTeam } from "@/components/retro-team";
 import RetroTestimonials from '@/components/retro-testimonials';
-// import { RetroPricing } from "@/components/retro-pricing";
+import { RetroFAQ } from '@/components/retro-faq';
 import { RetroCTA } from '@/components/retro-cta';
 import { RetroFooter } from '@/components/retro-footer';
-import { constructMetadata, sitePath } from '@/lib/seo';
+import { constructMetadata, generateFAQSchema, sitePath } from '@/lib/seo';
+import { HOMEPAGE_FAQS } from '@/lib/marketing/service-pages';
 
 export const metadata = constructMetadata({
-  title: 'Web Development Services & SaaS Templates',
+  title: 'Custom Web, App & SaaS Development Company',
   description:
-    'Custom web apps, SaaS builds, and ready-to-use Next.js templates. Ractrotech helps teams ship faster—start your project or browse our library today.',
+    'Ractrotech builds websites, web apps, SaaS, e-commerce, mobile apps, and UI/UX for founders and businesses. Tell us your idea — get a free estimate within 24 hours.',
   canonicalUrl: sitePath('/'),
 });
 
@@ -22,17 +22,22 @@ export const metadata = constructMetadata({
 export const revalidate = 120;
 
 export default function Home() {
+  const faqSchema = generateFAQSchema(HOMEPAGE_FAQS);
+
   return (
-    <main className="bg-white text-black">
+    <main className="min-h-screen bg-white text-black">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
       <RetroHeader />
       <RetroHero />
       <RetroServices />
       <RetroAbout />
       <RetroWhyUs />
       <RetroPortfolio />
-      {/* <RetroTeam /> */}
       <RetroTestimonials />
-      {/* <RetroPricing /> */}
+      <RetroFAQ />
       <RetroCTA />
       <RetroFooter />
     </main>

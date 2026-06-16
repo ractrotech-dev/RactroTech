@@ -5,26 +5,26 @@ const reasons = [
   {
     id: 1,
     icon: Users,
-    title: "Expert team",
-    description: "Highly skilled professionals with years of industry experience.",
+    title: "You talk to builders",
+    description: "No sales middlemen. You work directly with the developers designing and shipping your product.",
   },
   {
     id: 2,
     icon: Trophy,
-    title: "Proven results",
-    description: "Track record of successful projects and satisfied clients.",
+    title: "Clear scope & pricing",
+    description: "We explain what you get, what it costs, and how long it takes — before we start.",
   },
   {
     id: 3,
     icon: Zap,
-    title: "Cutting edge",
-    description: "Latest technologies and best practices in web development.",
+    title: "Design + dev together",
+    description: "UI/UX and engineering under one roof, so what gets designed is what actually gets built.",
   },
   {
     id: 4,
     icon: Headphones,
-    title: "24/7 support",
-    description: "Dedicated support team available whenever you need help.",
+    title: "We reply fast",
+    description: "Questions answered within one business day. You are never left wondering what is happening.",
   },
 ];
 
@@ -44,8 +44,8 @@ export function RetroWhyUs() {
             <h2 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight text-black mb-4">
               WHY CHOOSE <span className="text-black-500">RACTROTECH</span>?
             </h2>
-            <p className="text-lg font-semibold text-black/80 max-w-xl mx-auto">
-              We don&apos;t just deliver projects, we deliver outcomes that move the needle.
+            <p className="text-lg font-semibold text-black/80 max-w-2xl mx-auto">
+              Hiring a dev team is stressful. Here is what our clients tell us they value most.
             </p>
           </div>
 
@@ -90,7 +90,7 @@ export function RetroWhyUs() {
           {/* Bottom strip */}
           <div className="mt-14 py-4 px-6 bg-black border-4 border-black text-center">
             <p className="text-yellow-400 font-black tracking-widest text-sm md:text-base">
-              TRUSTED BY STARTUPS AND ENTERPRISES ALIKE
+              BUILT FOR FOUNDERS, BUSINESSES & PRODUCT TEAMS
             </p>
           </div>
         </div>

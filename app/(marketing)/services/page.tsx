@@ -1,13 +1,12 @@
 import { MarketingPageHeader } from '@/components/marketing-page-header';
-import { RetroServices } from '@/components/retro-services';
-import { RetroCTA } from '@/components/retro-cta';
-import { constructMetadata, generateBreadcrumbSchema, siteConfig } from '@/lib/seo';
+import { ServicesHub } from '@/components/marketing/services-hub';
+import { constructMetadata, generateBreadcrumbSchema, sitePath } from '@/lib/seo';
 
 export const metadata = constructMetadata({
-  title: 'Web Development Services',
+  title: 'Web, App & SaaS Development Services',
   description:
-    'Custom web development, SaaS builds, mobile apps, AI integration, e-commerce, and cloud solutions from Ractrotech.',
-  canonicalUrl: `${siteConfig.url}/services`,
+    'Websites, web apps, SaaS, e-commerce, mobile apps, UI/UX, AI integration, and consulting. Explore Ractrotech services and get a free project estimate.',
+  canonicalUrl: sitePath('/services'),
 });
 
 export default function ServicesPage() {
@@ -23,11 +22,10 @@ export default function ServicesPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <MarketingPageHeader
-        title="Our Services"
-        description="End-to-end digital solutions — from strategy and design to development, launch, and support."
+        title="What We Build For You"
+        description="Websites, apps, SaaS, stores, design, and more — tell us your goal and we will find the right way to get you there."
       />
-      <RetroServices />
-      <RetroCTA />
+      <ServicesHub />
     </>
   );
 }

@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Ractrotech — Web Development Services & SaaS Templates";
+export const alt = "Ractrotech — Custom Web, App & SaaS Development";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -39,7 +39,7 @@ export default function OpenGraphImage() {
             maxWidth: 900,
           }}
         >
-          Web Development Services & SaaS Templates
+          Custom Web, App & SaaS Development
         </div>
         <div
           style={{
@@ -50,7 +50,7 @@ export default function OpenGraphImage() {
             maxWidth: 800,
           }}
         >
-          Custom web apps, templates, and digital products that ship.
+          Websites, apps, stores, SaaS & more — built for founders and businesses.
         </div>
       </div>
     ),

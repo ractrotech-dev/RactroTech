@@ -132,13 +132,12 @@ export default function StartProject() {
                     htmlFor="phone"
                     className="mb-1 block text-[8px] font-black tracking-widest text-black/40"
                   >
-                    02. PHONE NUMBER
+                    02. PHONE <span className="opacity-50">(OPTIONAL)</span>
                   </label>
                   <input
                     id="phone"
                     name="phone"
                     type="tel"
-                    required
                     className="w-full border-b-2 border-black/10 bg-transparent py-0.5 text-sm font-bold text-black outline-none focus:border-black"
                     placeholder="NUMBER..."
                   />
@@ -151,12 +150,13 @@ export default function StartProject() {
                     htmlFor="email"
                     className="mb-1 block text-[8px] font-black tracking-widest text-black/40"
                   >
-                    03. EMAIL <span className="opacity-50">(OPTIONAL)</span>
+                    03. EMAIL
                   </label>
                   <input
                     id="email"
                     name="email"
                     type="email"
+                    required
                     className="w-full border-b-2 border-black/10 bg-transparent py-0.5 text-sm font-bold text-black outline-none focus:border-black"
                     placeholder="EMAIL@COMPANY.COM"
                   />

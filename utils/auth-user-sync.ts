@@ -1,12 +1,18 @@
 /**
- * Keeps `users_table` in sync with Supabase Auth.
- * OAuth flows hit `/auth/callback`; password login does not, so we upsert here.
+ * Keeps `users_table` and `profiles` in sync with Supabase Auth.
+ * OAuth flows hit `/auth/callback`; password login syncs in loginUser action.
  * SERVER ONLY.
  */
 import type { User } from '@supabase/supabase-js';
 import { eq } from 'drizzle-orm';
 import { db } from '@/utils/db/db';
-import { usersTable } from '@/utils/db/schema';
+import { profilesTable, usersTable } from '@/utils/db/schema';
+import {
+  defaultUsernameFromEmail,
+  extractAuthProfile,
+  extractFullName,
+  extractOAuthAvatar,
+} from '@/lib/auth/extract-auth-profile';
 
 async function withDbRetry<T>(fn: () => Promise<T>, attempts = 3): Promise<T> {
   let last: unknown;
@@ -30,8 +36,55 @@ function parseBootstrapEmails(): Set<string> {
 }
 
 function displayName(user: User): string {
-  const meta = user.user_metadata as { full_name?: string } | undefined;
-  return meta?.full_name ?? user.email?.split('@')[0] ?? 'User';
+  return extractFullName(user) ?? user.email?.split('@')[0] ?? 'User';
+}
+
+async function ensureProfileInDb(user: User): Promise<void> {
+  const extracted = extractAuthProfile(user);
+  if (!extracted) return;
+
+  const { email, fullName, avatarUrl, provider } = extracted;
+  const isOAuth = provider !== 'email';
+  const now = new Date();
+
+  const [existing] = await db
+    .select({
+      id: profilesTable.id,
+      avatar_url: profilesTable.avatar_url,
+      full_name: profilesTable.full_name,
+      username: profilesTable.username,
+    })
+    .from(profilesTable)
+    .where(eq(profilesTable.id, user.id))
+    .limit(1);
+
+  if (existing) {
+    const nextAvatar =
+      isOAuth && avatarUrl ? avatarUrl : existing.avatar_url ?? avatarUrl;
+
+    await db
+      .update(profilesTable)
+      .set({
+        email,
+        full_name: fullName ?? existing.full_name,
+        avatar_url: nextAvatar,
+        provider,
+        updated_at: now,
+      })
+      .where(eq(profilesTable.id, user.id));
+    return;
+  }
+
+  await db.insert(profilesTable).values({
+    id: user.id,
+    email,
+    full_name: fullName,
+    username: defaultUsernameFromEmail(email),
+    avatar_url: avatarUrl,
+    provider,
+    created_at: now,
+    updated_at: now,
+  });
 }
 
 export async function ensureAuthUserInDb(user: User): Promise<void> {
@@ -42,36 +95,42 @@ export async function ensureAuthUserInDb(user: User): Promise<void> {
     const bootstrap = parseBootstrapEmails();
     const emailLower = email.toLowerCase();
     const shouldBootstrap = bootstrap.has(emailLower);
+    const name = displayName(user);
+    const oauthAvatar = extractOAuthAvatar(user);
 
     const [byId] = await db
-      .select({ id: usersTable.id, role: usersTable.role })
+      .select({ id: usersTable.id, role: usersTable.role, avatar_url: usersTable.avatar_url })
       .from(usersTable)
       .where(eq(usersTable.id, user.id))
       .limit(1);
 
     if (byId) {
       const promoteToSuperAdmin = shouldBootstrap && byId.role === 'user';
+      const nextAvatar = oauthAvatar ?? byId.avatar_url;
 
       await db
         .update(usersTable)
         .set({
           email: emailLower,
-          name: displayName(user),
+          name,
+          avatar_url: nextAvatar,
           last_login: new Date(),
           ...(promoteToSuperAdmin ? { role: 'super_admin' } : {}),
         })
         .where(eq(usersTable.id, user.id));
-      return;
+    } else {
+      await db.insert(usersTable).values({
+        id: user.id,
+        email: emailLower,
+        name,
+        plan: 'none',
+        stripe_id: 'none',
+        role: shouldBootstrap ? 'super_admin' : 'user',
+        avatar_url: oauthAvatar,
+        last_login: new Date(),
+      });
     }
 
-    await db.insert(usersTable).values({
-      id: user.id,
-      email: emailLower,
-      name: displayName(user),
-      plan: 'none',
-      stripe_id: 'none',
-      role: shouldBootstrap ? 'super_admin' : 'user',
-      last_login: new Date(),
-    });
+    await ensureProfileInDb(user);
   });
 }

@@ -3,42 +3,16 @@ import { NextResponse, type NextRequest } from 'next/server'
 import { secureCookieOptions } from '@/lib/auth/cookies'
 import { isEmailVerified } from '@/lib/auth/verification'
 
-/** Paths that must work without a Supabase session (marketing, legal, public forms). */
-function isPublicPath(pathname: string): boolean {
-    if (pathname === '/') return true
-    if (
-        pathname === '/manifest.webmanifest' ||
-        pathname === '/robots.txt' ||
-        pathname === '/sitemap.xml'
-    ) {
-        return true
-    }
-
-    const prefixes = [
-        '/login',
-        '/signup',
-        '/auth',
-        '/forgot-password',
-        '/admin/login',
-        '/review',
-        '/start-project',
-        '/components',
-        '/templates',
-        '/services',
-        '/contact',
-        '/about',
-        '/cookies',
-        '/privacy',
-        '/terms',
-        '/license',
-        '/subscribe',
-        '/blog',
-    ] as const
-
-    return prefixes.some((p) => pathname === p || pathname.startsWith(`${p}/`))
+function isProtectedPath(pathname: string): boolean {
+    return (
+        pathname.startsWith('/dashboard') ||
+        pathname.startsWith('/admin') ||
+        pathname.startsWith('/account')
+    )
 }
 
-function isProtectedPath(pathname: string): boolean {
+function requiresMiddlewareAuth(pathname: string): boolean {
+    if (pathname === '/admin/login') return false
     return pathname.startsWith('/dashboard') || pathname.startsWith('/admin')
 }
 
@@ -106,9 +80,13 @@ export async function updateSession(request: NextRequest) {
         return redirectResponse
     }
 
-    if (!user && !isPublicPath(request.nextUrl.pathname)) {
+    if (!user && requiresMiddlewareAuth(request.nextUrl.pathname)) {
         url.pathname = request.nextUrl.pathname.startsWith('/admin') ? '/admin/login' : '/login'
-        return NextResponse.redirect(url)
+        const redirectResponse = NextResponse.redirect(url)
+        supabaseResponse.cookies.getAll().forEach(({ name, value }) => {
+            redirectResponse.cookies.set(name, value)
+        })
+        return redirectResponse
     }
 
     return supabaseResponse

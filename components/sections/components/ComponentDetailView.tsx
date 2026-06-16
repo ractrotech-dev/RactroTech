@@ -12,6 +12,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import { useProtectedAction } from '@/hooks/use-protected-action';
 import { buildSrcDoc, getFrameWidthClass } from './build-src-doc';
 import type { LibraryComponent, PreviewDevice } from './types';
 
@@ -23,6 +24,21 @@ type ComponentDetailViewProps = {
 export function ComponentDetailView({ component, categoryName }: ComponentDetailViewProps) {
   const [device, setDevice] = useState<PreviewDevice>('desktop');
   const [darkPreview, setDarkPreview] = useState(false);
+  const [codeRevealed, setCodeRevealed] = useState(false);
+  const { handleProtectedAction, isAuthenticated } = useProtectedAction();
+
+  const revealCode = () => setCodeRevealed(true);
+
+  const downloadCode = () => {
+    if (!component.code) return;
+    const blob = new Blob([component.code], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = `${component.title.replace(/\s+/g, '-').toLowerCase()}.html`;
+    anchor.click();
+    URL.revokeObjectURL(url);
+  };
 
   const frameWidthClass = useMemo(() => getFrameWidthClass(device), [device]);
   const srcDoc = useMemo(
@@ -96,18 +112,32 @@ export function ComponentDetailView({ component, categoryName }: ComponentDetail
             size="sm"
             variant="outline"
             className="border-2 border-black bg-black text-sm font-semibold text-yellow-400 hover:bg-black/90"
-            onClick={() => {
-              if (!component.code) return;
-              navigator.clipboard.writeText(component.code).catch(() => {});
-            }}
+            onClick={() => handleProtectedAction(downloadCode)}
           >
-            Copy
+            Download
           </Button>
         </CardHeader>
-        <CardContent className="max-h-[420px] overflow-auto bg-yellow-100 p-4">
-          <pre className="whitespace-pre text-xs leading-relaxed text-black">
+        <CardContent className="relative max-h-[420px] overflow-auto bg-yellow-100 p-4">
+          <pre
+            className={cn(
+              'whitespace-pre text-xs leading-relaxed text-black transition-all duration-300',
+              !codeRevealed && !isAuthenticated && 'select-none blur-sm'
+            )}
+          >
             <code>{component.code}</code>
           </pre>
+          {!codeRevealed && !isAuthenticated ? (
+            <div className="absolute inset-0 flex items-center justify-center bg-white/20 backdrop-blur-[2px]">
+              <Button
+                type="button"
+                size="sm"
+                className="border-2 border-black bg-black font-semibold text-yellow-400 shadow-lg hover:bg-black/90"
+                onClick={() => handleProtectedAction(revealCode)}
+              >
+                View Premium Content
+              </Button>
+            </div>
+          ) : null}
         </CardContent>
       </Card>
 

@@ -18,16 +18,21 @@ export const emailSchema = z
 
 export const uuidSchema = z.string().uuid('Invalid id');
 
+const optionalPhoneSchema = z
+  .string()
+  .trim()
+  .max(20, 'Phone number is too long')
+  .optional()
+  .transform((v) => (v && v.length > 0 ? v : undefined))
+  .refine(
+    (v) => !v || (v.length >= 7 && /^[+]?[\d\s().-]+$/.test(v)),
+    'Invalid phone number format',
+  );
+
 export const projectEnquirySchema = z.object({
   name: z.string().trim().min(2).max(120),
-  phone: phoneSchema,
-  email: z
-    .string()
-    .trim()
-    .max(254)
-    .optional()
-    .transform((v) => (v ? v.toLowerCase() : undefined))
-    .refine((v) => !v || z.string().email().safeParse(v).success, 'Invalid email'),
+  phone: optionalPhoneSchema,
+  email: emailSchema,
   projectType: z.string().trim().min(2).max(80),
   description: z.string().trim().min(10).max(5000),
 });

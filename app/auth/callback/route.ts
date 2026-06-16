@@ -21,15 +21,26 @@ export async function GET(request: Request) {
         await ensureAuthUserInDb(user);
       }
 
+      const provider =
+        user?.app_metadata?.provider ??
+        (Array.isArray(user?.app_metadata?.providers) ? user.app_metadata.providers[0] : null);
+
+      let destination = next;
+      if (provider === "google") {
+        const url = new URL(next, origin);
+        url.searchParams.set("auth", "google");
+        destination = `${url.pathname}${url.search}`;
+      }
+
       const forwardedHost = request.headers.get("x-forwarded-host");
       const isLocalEnv = process.env.NODE_ENV === "development";
 
       if (isLocalEnv) {
-        return NextResponse.redirect(`${origin}${next}`);
+        return NextResponse.redirect(`${origin}${destination}`);
       } else if (forwardedHost) {
-        return NextResponse.redirect(`https://${forwardedHost}${next}`);
+        return NextResponse.redirect(`https://${forwardedHost}${destination}`);
       } else {
-        return NextResponse.redirect(`${origin}${next}`);
+        return NextResponse.redirect(`${origin}${destination}`);
       }
     }
   }

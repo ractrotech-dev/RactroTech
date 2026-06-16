@@ -86,6 +86,22 @@ export const usersTable = pgTable('users_table', {
   last_login: timestamp('last_login'),
 });
 
+// ─── User Profiles (Supabase Auth sync) ─────────────────────────────────────────
+export const profilesTable = pgTable('profiles', {
+  id: text('id').primaryKey(),
+  email: text('email').notNull().unique(),
+  full_name: text('full_name'),
+  username: text('username').unique(),
+  avatar_url: text('avatar_url'),
+  provider: text('provider').notNull().default('email'),
+  bio: text('bio'),
+  website: text('website'),
+  github: text('github'),
+  twitter: text('twitter'),
+  created_at: timestamp('created_at').defaultNow().notNull(),
+  updated_at: timestamp('updated_at').defaultNow().notNull(),
+});
+
 // ─── Project Enquiries Table ───────────────────────────────────────────────────
 export const projectEnquiriesTable = pgTable('project_enquiries', {
   id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
@@ -200,6 +216,8 @@ export const notificationsTable = pgTable('notifications', {
 // ─── Type Exports ──────────────────────────────────────────────────────────────
 export type InsertUser = typeof usersTable.$inferInsert;
 export type SelectUser = typeof usersTable.$inferSelect;
+export type InsertProfile = typeof profilesTable.$inferInsert;
+export type SelectProfile = typeof profilesTable.$inferSelect;
 export type InsertProjectEnquiry = typeof projectEnquiriesTable.$inferInsert;
 export type SelectProjectEnquiry = typeof projectEnquiriesTable.$inferSelect;
 export type InsertClient = typeof clientsTable.$inferInsert;

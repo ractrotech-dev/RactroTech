@@ -24,7 +24,7 @@ export default function AboutPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <MarketingPageHeader
-        title="About RactroTech"
+        title="About Ractrotech"
         description="We turn ideas into real products — websites, apps, and SaaS that ship and perform."
       />
       <RetroAbout />

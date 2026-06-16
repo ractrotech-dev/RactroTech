@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Facebook, Twitter, Linkedin, Instagram, Github, Mail, Phone, Send } from 'lucide-react';
+import { Linkedin, Instagram } from 'lucide-react';
 import { FadeInView, StaggerContainer, staggerItemVariants } from '@/components/fade-in-view';
 import { motion } from 'framer-motion';
 
@@ -22,8 +22,8 @@ export function RetroFooter() {
                 </h2>
               </Link>
               <p className="mb-8 max-w-sm text-lg font-medium leading-relaxed text-gray-400">
-                Building digital futures with a retro twist. We ship high-performance websites,
-                apps, and SaaS solutions for the modern web.
+                Your partner for websites, apps, SaaS, design, and digital products — built by
+                developers who ship real work, not just presentations.
               </p>
 
               <div className="flex flex-wrap items-center gap-3">
@@ -59,7 +59,31 @@ export function RetroFooter() {
                 <ul className="space-y-4">
                   <li>
                     <Link
-                      href="/services"
+                      href="/saas-development"
+                      className="font-bold text-gray-400 underline-offset-4 transition-colors hover:text-white hover:underline"
+                    >
+                      SaaS Development
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/mvp-development"
+                      className="font-bold text-gray-400 underline-offset-4 transition-colors hover:text-white hover:underline"
+                    >
+                      MVP Development
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/nextjs-development"
+                      className="font-bold text-gray-400 underline-offset-4 transition-colors hover:text-white hover:underline"
+                    >
+                      Next.js Development
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/web-app-development"
                       className="font-bold text-gray-400 underline-offset-4 transition-colors hover:text-white hover:underline"
                     >
                       Web Apps
@@ -67,10 +91,10 @@ export function RetroFooter() {
                   </li>
                   <li>
                     <Link
-                      href="/services"
+                      href="/ui-ux-design"
                       className="font-bold text-gray-400 underline-offset-4 transition-colors hover:text-white hover:underline"
                     >
-                      Mobile UX
+                      UI/UX Design
                     </Link>
                   </li>
                   <li>
@@ -78,15 +102,7 @@ export function RetroFooter() {
                       href="/services"
                       className="font-bold text-gray-400 underline-offset-4 transition-colors hover:text-white hover:underline"
                     >
-                      SaaS Build
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/services"
-                      className="font-bold text-gray-400 underline-offset-4 transition-colors hover:text-white hover:underline"
-                    >
-                      AI Tools
+                      All Services
                     </Link>
                   </li>
                 </ul>
@@ -118,7 +134,7 @@ export function RetroFooter() {
                       href="/blog"
                       className="font-bold text-gray-400 underline-offset-4 transition-colors hover:text-white hover:underline"
                     >
-                      Journal
+                      Blog
                     </Link>
                   </li>
                   <li>
@@ -139,14 +155,6 @@ export function RetroFooter() {
                 <ul className="space-y-4">
                   <li>
                     <Link
-                      href="/docs"
-                      className="font-bold text-gray-400 underline-offset-4 transition-colors hover:text-white hover:underline"
-                    >
-                      Docs
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
                       href="/templates"
                       className="font-bold text-gray-400 underline-offset-4 transition-colors hover:text-white hover:underline"
                     >
@@ -163,10 +171,18 @@ export function RetroFooter() {
                   </li>
                   <li>
                     <Link
-                      href="/support"
+                      href="/start-project"
                       className="font-bold text-gray-400 underline-offset-4 transition-colors hover:text-white hover:underline"
                     >
-                      Support
+                      Start a Project
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/contact"
+                      className="font-bold text-gray-400 underline-offset-4 transition-colors hover:text-white hover:underline"
+                    >
+                      Contact
                     </Link>
                   </li>
                 </ul>
@@ -232,23 +248,6 @@ export function RetroFooter() {
                 </Link>
               ))}
             </div>
-
-            <Link
-              href="/admin"
-              className="group relative flex items-center gap-3 border-4 border-white/20 bg-white/5 px-4 py-2.5 transition-all hover:-translate-y-1 hover:border-yellow-400"
-            >
-              <div className="flex flex-col">
-                <span className="text-[10px] font-black tracking-widest text-white group-hover:text-yellow-400">
-                  STAFF PORTAL
-                </span>
-                <span className="text-[8px] font-bold tracking-tighter text-white/40">
-                  ADMIN LOGIN
-                </span>
-              </div>
-              {/* <span className="border-2 border-yellow-400 bg-yellow-400 px-1.5 py-0.5 text-[8px] font-black tracking-widest text-black">
-                BETA
-              </span> */}
-            </Link>
           </div>
 
 

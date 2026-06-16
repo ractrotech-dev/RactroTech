@@ -1,2 +1,5 @@
 export { useMediaQuery, useIsMdUp } from './use-media-query'
 export { useMounted } from './use-mounted'
+export { useAuth } from './use-auth'
+export { useProfile } from './use-profile'
+export { useProtectedAction } from './use-protected-action'

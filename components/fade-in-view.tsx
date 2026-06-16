@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 
 const defaultViewport = { once: true, margin: "-40px" as const };
 
@@ -19,13 +19,15 @@ export function FadeInView({
   duration = 0.5,
   y = 20,
 }: FadeInViewProps) {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 0, y }}
+      initial={{ opacity: 1, y: prefersReducedMotion ? 0 : y }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={defaultViewport}
-      transition={{ duration, delay }}
+      transition={{ duration: prefersReducedMotion ? 0 : duration, delay }}
     >
       {children}
     </motion.div>
@@ -38,7 +40,7 @@ interface StaggerContainerProps {
 }
 
 const staggerContainer = {
-  hidden: { opacity: 0 },
+  hidden: { opacity: 1 },
   show: {
     opacity: 1,
     transition: { staggerChildren: 0.08, delayChildren: 0.1 },
@@ -46,7 +48,7 @@ const staggerContainer = {
 };
 
 const staggerItem = {
-  hidden: { opacity: 0, y: 16 },
+  hidden: { opacity: 1, y: 0 },
   show: { opacity: 1, y: 0 },
 };
 
@@ -55,7 +57,7 @@ export function StaggerContainer({ children, className }: StaggerContainerProps)
     <motion.div
       className={className}
       variants={staggerContainer}
-      initial="hidden"
+      initial="show"
       whileInView="show"
       viewport={defaultViewport}
     >
