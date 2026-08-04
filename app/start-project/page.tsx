@@ -39,8 +39,19 @@ function SubmitButton() {
   );
 }
 
-export default function StartProject() {
+/**
+ * `searchParams` is passed by Next to page components, client ones included, so the
+ * homepage email hand-off needs no `useSearchParams` Suspense boundary.
+ */
+export default function StartProject({
+  searchParams,
+}: {
+  searchParams?: { email?: string | string[] };
+}) {
   const [state, formAction] = useFormState(submitProjectEnquiry, initialState);
+  const emailParam = Array.isArray(searchParams?.email)
+    ? searchParams?.email[0]
+    : searchParams?.email;
 
   // Success feedback handled via conditional rendering in JSX below
 
@@ -157,6 +168,7 @@ export default function StartProject() {
                     name="email"
                     type="email"
                     required
+                    defaultValue={emailParam}
                     className="w-full border-b-2 border-black/10 bg-transparent py-0.5 text-sm font-bold text-black outline-none focus:border-black"
                     placeholder="EMAIL@COMPANY.COM"
                   />

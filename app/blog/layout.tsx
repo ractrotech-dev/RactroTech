@@ -1,12 +1,12 @@
-import { RetroFooter } from '@/components/retro-footer';
-import { RetroHeader } from '@/components/retro-header';
+import { SiteFooter } from '@/components/marketing/site-footer';
+import { SiteHeader } from '@/components/marketing/site-header';
 
 export default function BlogLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="journal-shell flex min-h-screen flex-col text-black">
-      <RetroHeader />
+      <SiteHeader />
       <div className="flex-1">{children}</div>
-      <RetroFooter />
+      <SiteFooter />
     </div>
   );
 }

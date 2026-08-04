@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 
-import { RetroHeader } from '@/components/retro-header';
-import { RetroFooter } from '@/components/retro-footer';
+import { SiteHeader } from '@/components/marketing/site-header';
+import { SiteFooter } from '@/components/marketing/site-footer';
 import { constructMetadata } from '@/lib/seo';
 import { isEmailVerified } from '@/lib/auth/verification';
 import { createClient } from '@/utils/supabase/server';
@@ -30,9 +30,9 @@ export default async function AccountLayout({ children }: { children: React.Reac
 
   return (
     <div className="flex min-h-screen flex-col bg-white text-black">
-      <RetroHeader />
+      <SiteHeader />
       <main className="flex-1">{children}</main>
-      <RetroFooter />
+      <SiteFooter />
     </div>
   );
 }

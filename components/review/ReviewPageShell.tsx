@@ -5,8 +5,8 @@ import Link from 'next/link';
 import { ArrowLeft, ExternalLink } from 'lucide-react';
 
 import { ReviewForm } from '@/components/review/ReviewForm';
-import { RetroFooter } from '@/components/retro-footer';
-import { RetroHeader } from '@/components/retro-header';
+import { SiteFooter } from '@/components/marketing/site-footer';
+import { SiteHeader } from '@/components/marketing/site-header';
 
 const gridPattern = {
   backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M0 0h2v2H0V0zm4 4h2v2H4V4zm4 4h2v2H8V8zm4 4h2v2h-2v-2zm4 4h2v2h-2v-2zm4 4h2v2h-2v-2zm4 4h2v2h-2v-2zm4 4h2v2h-2v-2z'/%3E%3C/g%3E%3C/svg%3E")`,
@@ -19,7 +19,7 @@ type ReviewPageShellProps = {
 export function ReviewPageShell({ googleReviewUrl }: ReviewPageShellProps) {
   return (
     <div className="flex min-h-screen flex-col bg-white font-sans text-black">
-      <RetroHeader />
+      <SiteHeader />
 
       <div className="relative flex flex-1 flex-col items-center justify-center overflow-hidden bg-yellow-400 py-10 selection:bg-black selection:text-yellow-400 sm:py-14">
         <div className="pointer-events-none absolute inset-0 opacity-[0.07]" style={gridPattern} />
@@ -76,7 +76,7 @@ export function ReviewPageShell({ googleReviewUrl }: ReviewPageShellProps) {
         </div>
       </div>
 
-      <RetroFooter />
+      <SiteFooter />
     </div>
   );
 }

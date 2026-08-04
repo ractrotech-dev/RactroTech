@@ -51,6 +51,25 @@
     --rt-foreground: 15 23 42;
     --rt-muted: 100 116 139;
     --rt-accent: 79 70 229;
+
+    /* Marketing design system — fixed brand colours, intentionally not theme-reactive.
+       Consumed via the `mkt` scale in tailwind.config.ts. */
+    --mkt-ink: #0b0b10;
+    --mkt-ink-soft: #14141c;
+    --mkt-ink-line: #23232e;
+    --mkt-muted: #5c5c6b;
+    --mkt-violet: #5b3df5;
+    --mkt-violet-soft: #7c63f7;
+    --mkt-violet-deep: #3316c4;
+    --mkt-lavender: #f2effc;
+    --mkt-lavender-deep: #e4defa;
+    --mkt-cream: #f8f5ef;
+    --mkt-line: #e7e5ef;
+    --mkt-mint: #cff3df;
+    --mkt-pink: #fbdceb;
+    --mkt-butter: #fbefb8;
+    --mkt-lilac: #ddd6fb;
+    --mkt-sky: #d2e6fc;
   }
 
   .dark {
@@ -125,5 +144,67 @@
 
   .journal-prose {
     @apply text-[15px] font-medium leading-[1.75] text-black/90 md:text-base;
+  }
+}
+
+/* Marketing landing system (separate from .retro-* above) */
+@layer components {
+  .mkt-shell {
+    @apply mx-auto w-full max-w-[1200px] px-5 sm:px-6 lg:px-8;
+  }
+
+  .mkt-display {
+    @apply font-display font-semibold tracking-[-0.03em] text-mkt-ink;
+  }
+
+  .mkt-eyebrow {
+    @apply inline-flex items-center gap-2 rounded-full border border-mkt-line bg-white px-3.5 py-1.5 text-[13px] font-medium text-mkt-muted;
+  }
+
+  .mkt-card {
+    @apply rounded-3xl border border-mkt-line bg-white;
+  }
+
+  .mkt-btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full text-[15px] font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mkt-violet focus-visible:ring-offset-2;
+  }
+
+  .mkt-btn-primary {
+    @apply mkt-btn bg-mkt-violet px-6 py-3 text-white shadow-[0_8px_20px_-8px_rgba(91,61,245,0.7)] hover:bg-mkt-violet-soft hover:shadow-[0_10px_26px_-8px_rgba(91,61,245,0.8)];
+  }
+
+  .mkt-btn-ghost {
+    @apply mkt-btn border border-mkt-line bg-white px-6 py-3 text-mkt-ink hover:border-mkt-ink/25 hover:bg-mkt-lavender;
+  }
+
+  .mkt-btn-onDark {
+    @apply mkt-btn border border-white/20 bg-white/5 px-6 py-3 text-white hover:border-white/40 hover:bg-white/10;
+  }
+
+  /* Fades the marquee out at both edges without painting over the parent background. */
+  .mkt-marquee-mask {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 8%,
+      #000 92%,
+      transparent
+    );
+    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  }
+
+  .mkt-marquee-track {
+    animation: mkt-marquee var(--mkt-marquee-duration, 42s) linear infinite;
+  }
+
+  .mkt-marquee-mask:hover .mkt-marquee-track {
+    animation-play-state: paused;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mkt-marquee-track {
+    animation: none !important;
+    transform: none !important;
   }
 }
