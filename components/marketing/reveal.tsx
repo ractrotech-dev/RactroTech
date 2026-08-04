@@ -6,26 +6,30 @@ import { motion, useReducedMotion, type Variants } from 'framer-motion';
 /**
  * Scroll reveal for the marketing landing sections.
  *
- * Deliberately separate from `components/fade-in-view.tsx`, whose variants are no-ops
- * that ~15 retro components still rely on. Children stay in the SSR HTML — only opacity
- * and transform animate — so crawlers still index the full content.
+ * The hard rule here: the hidden state must never reach the server-rendered HTML.
+ * framer-motion serialises `initial` into a style attribute, so `initial={{opacity:0}}`
+ * ships a blank page to anyone whose JS is slow, blocked, or whose viewport callback
+ * never fires. This site has already shipped that bug once — commit 0467cab, "Fix
+ * invisible marketing text", which is why `fade-in-view.tsx` had its variants gutted.
  *
- * The fade starts at opacity 0, so a viewport callback that never fires would leave a
- * whole section invisible. That has bitten this site before (commit 0467cab, "Fix
- * invisible marketing text"), hence `useAboveFoldFallback`: anything already on screen
- * at mount is force-shown shortly after, since it has no scroll event coming to rescue
- * it. Content below the fold is left alone so its reveal still plays on scroll.
+ * So: everything renders visible. After mount we arm the fade only on elements that are
+ * still below the fold — content the visitor cannot see yet, and which therefore has a
+ * scroll event coming. Anything already on screen is left exactly as rendered.
  */
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 const VIEWPORT = { once: true, amount: 0.2 } as const;
-const FALLBACK_MS = 900;
 
-function useAboveFoldFallback(enabled: boolean) {
+/**
+ * Returns true once this element is confirmed below the fold and safe to animate in.
+ * Stays false during SSR, during the first client render, for above-fold content, and
+ * whenever reduced motion is requested.
+ */
+function useArmedBelowFold(enabled: boolean) {
   const nodeRef = useRef<HTMLElement | null>(null);
-  const [show, setShow] = useState(false);
+  const [armed, setArmed] = useState(false);
 
-  // Callback ref so the same hook works for div/section/ul/li without casting.
+  // Callback ref so one hook serves div/section/ul/li without casting.
   const ref = (node: HTMLElement | null) => {
     nodeRef.current = node;
   };
@@ -34,15 +38,10 @@ function useAboveFoldFallback(enabled: boolean) {
     if (!enabled) return;
     const node = nodeRef.current;
     if (!node) return;
-
-    const onScreen = node.getBoundingClientRect().top < window.innerHeight;
-    if (!onScreen) return;
-
-    const timer = setTimeout(() => setShow(true), FALLBACK_MS);
-    return () => clearTimeout(timer);
+    if (node.getBoundingClientRect().top > window.innerHeight) setArmed(true);
   }, [enabled]);
 
-  return { ref, show };
+  return { ref, armed };
 }
 
 type RevealProps = {
@@ -55,18 +54,22 @@ type RevealProps = {
 
 export function Reveal({ children, className, delay = 0, y = 18, as = 'div' }: RevealProps) {
   const reduced = useReducedMotion();
-  const { ref, show } = useAboveFoldFallback(!reduced);
+  const { ref, armed } = useArmedBelowFold(!reduced);
+  const [revealed, setRevealed] = useState(false);
   const Comp = motion[as];
+
+  const hidden = armed && !revealed;
 
   return (
     <Comp
       ref={ref}
       className={className}
-      initial={reduced ? false : { opacity: 0, y }}
-      animate={show ? { opacity: 1, y: 0 } : undefined}
-      whileInView={{ opacity: 1, y: 0 }}
+      // Never `initial` — that is what would serialise into the SSR markup.
+      animate={hidden ? { opacity: 0, y } : { opacity: 1, y: 0 }}
+      onViewportEnter={() => setRevealed(true)}
       viewport={VIEWPORT}
-      transition={{ duration: 0.6, delay, ease: EASE }}
+      // Hiding happens off-screen, so it should be instant; only the reveal eases in.
+      transition={hidden ? { duration: 0 } : { duration: 0.6, delay, ease: EASE }}
     >
       {children}
     </Comp>
@@ -74,12 +77,12 @@ export function Reveal({ children, className, delay = 0, y = 18, as = 'div' }: R
 }
 
 const groupVariants: Variants = {
-  hidden: {},
+  hidden: { transition: { duration: 0 } },
   show: { transition: { staggerChildren: 0.08, delayChildren: 0.05 } },
 };
 
 const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 18 },
+  hidden: { opacity: 0, y: 18, transition: { duration: 0 } },
   show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: EASE } },
 };
 
@@ -91,7 +94,8 @@ type RevealGroupProps = {
 
 export function RevealGroup({ children, className, as = 'div' }: RevealGroupProps) {
   const reduced = useReducedMotion();
-  const { ref, show } = useAboveFoldFallback(!reduced);
+  const { ref, armed } = useArmedBelowFold(!reduced);
+  const [revealed, setRevealed] = useState(false);
   const Comp = motion[as];
 
   return (
@@ -99,9 +103,8 @@ export function RevealGroup({ children, className, as = 'div' }: RevealGroupProp
       ref={ref}
       className={className}
       variants={groupVariants}
-      initial={reduced ? false : 'hidden'}
-      animate={show ? 'show' : undefined}
-      whileInView="show"
+      animate={armed && !revealed ? 'hidden' : 'show'}
+      onViewportEnter={() => setRevealed(true)}
       viewport={VIEWPORT}
     >
       {children}
