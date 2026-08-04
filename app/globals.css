@@ -195,10 +195,25 @@
 
   .mkt-marquee-track {
     animation: mkt-marquee var(--mkt-marquee-duration, 42s) linear infinite;
+    /* Promote to its own layer so the loop stays smooth on long tracks. */
+    will-change: transform;
   }
 
   .mkt-marquee-mask:hover .mkt-marquee-track {
     animation-play-state: paused;
+  }
+}
+
+/* Defined here rather than in tailwind.config.ts: Tailwind only emits a @keyframes
+   block for keyframes referenced by an `animation` utility, so a config-only entry
+   consumed by hand-written CSS silently produces no animation at all. */
+@keyframes mkt-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    /* The track renders its children twice, so -50% is exactly one seamless loop. */
+    transform: translate3d(-50%, 0, 0);
   }
 }
 

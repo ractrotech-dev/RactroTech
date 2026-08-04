@@ -29,7 +29,7 @@ export function LogoMarquee() {
       <p className="mkt-shell mb-7 text-center text-[13px] font-medium uppercase tracking-[0.14em] text-mkt-muted">
         Built on a stack you can hire for
       </p>
-      <Marquee durationSeconds={38}>
+      <Marquee durationSeconds={32}>
         {LOGOS.map(({ Icon, label }) => (
           <div
             key={label}

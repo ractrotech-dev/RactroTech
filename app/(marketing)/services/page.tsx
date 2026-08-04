@@ -1,5 +1,6 @@
-import { MarketingPageHeader } from '@/components/marketing-page-header';
-import { ServicesHub } from '@/components/marketing/services-hub';
+import { PageHero } from '@/components/marketing/sections/page-hero';
+import { ServicesGrid } from '@/components/marketing/sections/services-grid';
+import { FinalCta } from '@/components/marketing/sections/final-cta';
 import { constructMetadata, generateBreadcrumbSchema, sitePath } from '@/lib/seo';
 
 export const metadata = constructMetadata({
@@ -21,11 +22,16 @@ export default function ServicesPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <MarketingPageHeader
-        title="What We Build For You"
+      <PageHero
+        eyebrow="Services"
+        title="What we build"
+        titleAccent="for you"
         description="Websites, apps, SaaS, stores, design, and more — tell us your goal and we will find the right way to get you there."
+        primaryCta={{ label: 'Tell us your idea', href: '/start-project' }}
+        secondaryCta={{ label: 'See how we work', href: '/about' }}
       />
-      <ServicesHub />
+      <ServicesGrid />
+      <FinalCta />
     </>
   );
 }
