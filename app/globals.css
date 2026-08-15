@@ -52,24 +52,43 @@
     --rt-muted: 100 116 139;
     --rt-accent: 79 70 229;
 
-    /* Marketing design system — fixed brand colours, intentionally not theme-reactive.
+    /* Marketing design system. Space-separated RGB channels so `.dark` below can
+       re-point them and Tailwind's opacity modifiers keep working.
        Consumed via the `mkt` scale in tailwind.config.ts. */
-    --mkt-ink: #0b0b10;
-    --mkt-ink-soft: #14141c;
-    --mkt-ink-line: #23232e;
-    --mkt-muted: #5c5c6b;
-    --mkt-violet: #5b3df5;
-    --mkt-violet-soft: #7c63f7;
-    --mkt-violet-deep: #3316c4;
-    --mkt-lavender: #f2effc;
-    --mkt-lavender-deep: #e4defa;
-    --mkt-cream: #f8f5ef;
-    --mkt-line: #e7e5ef;
-    --mkt-mint: #cff3df;
-    --mkt-pink: #fbdceb;
-    --mkt-butter: #fbefb8;
-    --mkt-lilac: #ddd6fb;
-    --mkt-sky: #d2e6fc;
+
+    /* Surfaces that follow the theme. */
+    --mkt-surface: 255 255 255;
+    --mkt-surface-2: 255 255 255;
+    /* Bands that stay dark in BOTH themes (footer, CTA, testimonials). */
+    --mkt-contrast: 11 11 16;
+    --mkt-contrast-soft: 20 20 28;
+    /* Foreground + hairlines. */
+    --mkt-ink: 11 11 16;
+    --mkt-ink-soft: 20 20 28;
+    --mkt-ink-line: 35 35 46;
+    --mkt-muted: 92 92 107;
+    --mkt-line: 231 229 239;
+    /* Dot colour for the global page backdrop (components/layout/global-background.tsx).
+       Kept separate from --mkt-ink so the grid can be tuned without shifting body text,
+       and so dark mode can swap to a cool grey instead of inverting to pure white. */
+    --mkt-dot: 11 11 16;
+    /* Brand accents. `brand` is the logo blue — lightened in dark so the wordmark
+       keeps contrast against a near-black surface. */
+    --mkt-brand: 24 0 172;
+    --mkt-violet: 91 61 245;
+    --mkt-violet-soft: 124 99 247;
+    --mkt-violet-deep: 51 22 196;
+    --mkt-lavender: 242 239 252;
+    --mkt-lavender-deep: 228 222 250;
+    --mkt-cream: 248 245 239;
+    /* Pastel fills. These carry foreground text, so they invert with the theme. */
+    --mkt-mint: 207 243 223;
+    --mkt-pink: 251 220 235;
+    --mkt-butter: 251 239 184;
+    --mkt-lilac: 221 214 251;
+    --mkt-sky: 210 230 252;
+    /* Success accent used on the mint confirmation chips. */
+    --mkt-success: 28 122 77;
   }
 
   .dark {
@@ -97,6 +116,49 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+
+    /* Journal / blog — same paper metaphor, inked down. */
+    --journal-bg: 240 10% 7%;
+    --journal-line: 240 8% 26%;
+    --journal-surface: 240 12% 10%;
+    --journal-ink-muted: 240 8% 66%;
+
+    /* Component library tokens. */
+    --rt-surface: 22 22 31;
+    --rt-foreground: 241 241 246;
+    --rt-muted: 154 154 176;
+    --rt-accent: 124 99 247;
+
+    /* Marketing design system — dark.
+       `contrast` stays dark but lifts ABOVE the page surface so those bands still
+       read as a distinct block instead of merging into the background. The pastels
+       become deep tints of the same hue: they carry `text-mkt-ink`, which is light
+       here, so leaving them bright would put white text on a pastel fill. */
+    --mkt-surface: 13 13 18;
+    --mkt-surface-2: 22 22 31;
+    --mkt-contrast: 22 22 31;
+    --mkt-contrast-soft: 30 30 41;
+    --mkt-ink: 244 244 248;
+    --mkt-ink-soft: 28 28 38;
+    --mkt-ink-line: 42 42 56;
+    --mkt-muted: 156 156 176;
+    --mkt-line: 43 43 58;
+    /* Lifted rather than inverted: pure white dots over the near-black surface read as
+       noise, while this cool grey lands at ~rgb(36,36,45) at the backdrop's alpha. */
+    --mkt-dot: 168 168 196;
+    --mkt-brand: 141 125 255;
+    --mkt-violet: 124 99 247;
+    --mkt-violet-soft: 154 134 249;
+    --mkt-violet-deep: 91 61 245;
+    --mkt-lavender: 28 24 48;
+    --mkt-lavender-deep: 38 32 64;
+    --mkt-cream: 20 19 24;
+    --mkt-mint: 22 48 33;
+    --mkt-pink: 56 30 43;
+    --mkt-butter: 56 48 22;
+    --mkt-lilac: 41 36 61;
+    --mkt-sky: 26 41 58;
+    --mkt-success: 110 231 183;
   }
 }
 
@@ -105,7 +167,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-white text-foreground;
+    @apply bg-background text-foreground;
   }
 }
 
@@ -158,11 +220,11 @@
   }
 
   .mkt-eyebrow {
-    @apply inline-flex items-center gap-2 rounded-full border border-mkt-line bg-white px-3.5 py-1.5 text-[13px] font-medium text-mkt-muted;
+    @apply inline-flex items-center gap-2 rounded-full border border-mkt-line bg-mkt-surface px-3.5 py-1.5 text-[13px] font-medium text-mkt-muted;
   }
 
   .mkt-card {
-    @apply rounded-3xl border border-mkt-line bg-white;
+    @apply rounded-3xl border border-mkt-line bg-mkt-surface;
   }
 
   .mkt-btn {
@@ -174,11 +236,31 @@
   }
 
   .mkt-btn-ghost {
-    @apply mkt-btn border border-mkt-line bg-white px-6 py-3 text-mkt-ink hover:border-mkt-ink/25 hover:bg-mkt-lavender;
+    @apply mkt-btn border border-mkt-line bg-mkt-surface px-6 py-3 text-mkt-ink hover:border-mkt-ink/25 hover:bg-mkt-lavender;
   }
 
   .mkt-btn-onDark {
     @apply mkt-btn border border-white/20 bg-white/5 px-6 py-3 text-white hover:border-white/40 hover:bg-white/10;
+  }
+
+  /* Fades the global dot grid out toward the viewport edges so the pattern reads as
+     texture behind the content rather than a border-to-border tile.
+     Written longhand with the -webkit- pair on purpose: there is no autoprefixer in
+     postcss.config.mjs, so a Tailwind `[mask-image:…]` arbitrary value would ship
+     unprefixed and drop the mask in Safari — same reason as .mkt-marquee-mask below. */
+  .mkt-dot-mask {
+    -webkit-mask-image: radial-gradient(
+      ellipse 75% 60% at 50% 35%,
+      #000 0%,
+      rgba(0, 0, 0, 0.6) 55%,
+      transparent 100%
+    );
+    mask-image: radial-gradient(
+      ellipse 75% 60% at 50% 35%,
+      #000 0%,
+      rgba(0, 0, 0, 0.6) 55%,
+      transparent 100%
+    );
   }
 
   /* Fades the marquee out at both edges without painting over the parent background. */
@@ -204,6 +286,44 @@
   }
 }
 
+/* Section entrance animation. Pure CSS on purpose — see components/marketing/reveal.tsx
+   for why this must never depend on JS to become visible. */
+@keyframes mkt-fade-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.mkt-reveal,
+.mkt-reveal-group > * {
+  animation: mkt-fade-up 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Stagger the first several children of a group; anything beyond shares the last delay. */
+.mkt-reveal-group > *:nth-child(2) {
+  animation-delay: 0.06s;
+}
+.mkt-reveal-group > *:nth-child(3) {
+  animation-delay: 0.12s;
+}
+.mkt-reveal-group > *:nth-child(4) {
+  animation-delay: 0.18s;
+}
+.mkt-reveal-group > *:nth-child(5) {
+  animation-delay: 0.24s;
+}
+.mkt-reveal-group > *:nth-child(6) {
+  animation-delay: 0.3s;
+}
+.mkt-reveal-group > *:nth-child(n + 7) {
+  animation-delay: 0.36s;
+}
+
 /* Defined here rather than in tailwind.config.ts: Tailwind only emits a @keyframes
    block for keyframes referenced by an `animation` utility, so a config-only entry
    consumed by hand-written CSS silently produces no animation at all. */
@@ -218,7 +338,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .mkt-marquee-track {
+  .mkt-marquee-track,
+  .mkt-reveal,
+  .mkt-reveal-group > * {
     animation: none !important;
     transform: none !important;
   }

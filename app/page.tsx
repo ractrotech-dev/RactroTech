@@ -1,12 +1,12 @@
 import { SiteHeader } from '@/components/marketing/site-header';
 import { SiteFooter } from '@/components/marketing/site-footer';
+import { GlobalBackground } from '@/components/layout/global-background';
 import { Hero } from '@/components/marketing/sections/hero';
-import { LogoMarquee } from '@/components/marketing/sections/logo-marquee';
-import { QuoteStrip } from '@/components/marketing/sections/quote-strip';
-import { ProcessShowcase } from '@/components/marketing/sections/process-showcase';
+import { ProjectShowcase } from '@/components/marketing/sections/project-showcase';
 import { CapabilityBento } from '@/components/marketing/sections/capability-bento';
-import { JourneyBand } from '@/components/marketing/sections/journey-band';
 import { AudienceGrid } from '@/components/marketing/sections/audience-grid';
+import { LogoMarquee } from '@/components/marketing/sections/logo-marquee';
+import { ProcessShowcase } from '@/components/marketing/sections/process-showcase';
 import { ResultsGrid } from '@/components/marketing/sections/results-grid';
 import { TestimonialWall } from '@/components/marketing/sections/testimonial-wall';
 import { Faq } from '@/components/marketing/sections/faq';
@@ -49,7 +49,7 @@ export default async function Home() {
   const reviews = await loadReviews();
   const googleReviewUrl = getGoogleBusinessReviewUrl();
 
-  // Longest review reads best as the standalone pull quote.
+  // Longest review reads best as the featured pull quote inside the wall.
   const featured =
     reviews.length > 0
       ? reviews.reduce((best, r) => (r.text.length > best.text.length ? r : best), reviews[0])
@@ -57,7 +57,8 @@ export default async function Home() {
   const wallReviews = featured ? reviews.filter((r) => r.id !== featured.id) : reviews;
 
   return (
-    <div className="flex min-h-screen flex-col bg-white text-mkt-ink">
+    <div className="relative isolate flex min-h-screen flex-col text-mkt-ink">
+      <GlobalBackground />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
@@ -65,14 +66,17 @@ export default async function Home() {
       <SiteHeader />
       <main className="flex-1">
         <Hero />
-        <LogoMarquee />
-        <QuoteStrip review={featured} />
-        <ProcessShowcase />
+        <ProjectShowcase />
         <CapabilityBento />
-        <JourneyBand />
         <AudienceGrid />
+        <LogoMarquee />
+        <ProcessShowcase />
         <ResultsGrid />
-        <TestimonialWall reviews={wallReviews} googleReviewUrl={googleReviewUrl} />
+        <TestimonialWall
+          featured={featured}
+          reviews={wallReviews}
+          googleReviewUrl={googleReviewUrl}
+        />
         <Faq />
         <FinalCta />
       </main>

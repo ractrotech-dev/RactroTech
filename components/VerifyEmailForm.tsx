@@ -12,7 +12,7 @@ export default function VerifyEmailForm({ email }: { email: string }) {
       <input type="hidden" name="email" value={email} />
       <Button
         type="submit"
-        className="w-full border-2 border-black bg-black py-5 text-sm font-black tracking-widest text-yellow-400"
+        className="mkt-btn-primary w-full !py-3.5"
         disabled={!email}
       >
         Resend verification email

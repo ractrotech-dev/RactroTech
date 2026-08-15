@@ -1,22 +1,25 @@
-"use client"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { useFormState, useFormStatus } from "react-dom"
-import { loginUser } from "@/app/auth/actions"
+'use client';
+import { Loader2 } from 'lucide-react';
+import { useFormState, useFormStatus } from 'react-dom';
+
+import { Label } from '@/components/ui/label';
+import { loginUser } from '@/app/auth/actions';
+import { authFieldClass, authLabelClass } from '@/components/marketing/auth-shell';
 
 function LoginSubmitButton() {
   const { pending } = useFormStatus();
 
   return (
-    <Button
-      className="w-full mt-3 border-2 border-black bg-black py-4 text-sm font-black tracking-wide text-yellow-400 hover:bg-black/95"
-      type="submit"
-      aria-disabled={pending}
-      disabled={pending}
-    >
-      {pending ? "Signing in..." : "Submit Login"}
-    </Button>
+    <button type="submit" aria-disabled={pending} disabled={pending} className="mkt-btn-primary mt-2 w-full !py-3.5">
+      {pending ? (
+        <>
+          <Loader2 className="h-4 w-4 animate-spin" />
+          Signing in…
+        </>
+      ) : (
+        'Log in'
+      )}
+    </button>
   );
 }
 
@@ -27,38 +30,43 @@ export default function LoginForm() {
   const [formState, formAction] = useFormState(loginUser, initialState);
 
   return (
-    <form action={formAction} className="space-y-2.5">
-      <div className="retro-card border-2 bg-white p-2 transition-colors hover:bg-yellow-50">
-        <Label htmlFor="email" className="mb-1 block text-[9px] font-black tracking-wide text-black/40">
-          01. Email
+    <form action={formAction} className="space-y-5">
+      <div>
+        <Label htmlFor="email" className={authLabelClass}>
+          Email
         </Label>
-        <Input
+        <input
           id="email"
           type="email"
-          placeholder="EMAIL@COMPANY.COM"
+          placeholder="you@company.com"
           name="email"
           required
-          className="h-auto w-full border-0 border-b-2 border-black/10 bg-transparent px-0 py-0.5 text-base font-bold tracking-tight text-black shadow-none outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+          autoComplete="email"
+          className={authFieldClass}
         />
       </div>
-      <div className="retro-card border-2 bg-white p-2 transition-colors hover:bg-yellow-50">
-        <Label htmlFor="password" className="mb-1 block text-[9px] font-black tracking-wide text-black/40">
-          02. Password
+
+      <div>
+        <Label htmlFor="password" className={authLabelClass}>
+          Password
         </Label>
-        <Input
+        <input
           id="password"
           type="password"
           name="password"
           required
-          className="h-auto w-full border-0 border-b-2 border-black/10 bg-transparent px-0 py-0.5 text-base font-bold tracking-tight text-black shadow-none outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+          autoComplete="current-password"
+          className={authFieldClass}
         />
       </div>
 
       <LoginSubmitButton />
 
-      {formState?.message && (
-        <p className="py-2 text-center text-sm text-red-500">{formState.message}</p>
-      )}
+      {formState?.message ? (
+        <p role="alert" className="rounded-xl bg-red-50 px-4 py-3 text-center text-[14px] font-medium text-red-700">
+          {formState.message}
+        </p>
+      ) : null}
     </form>
-  )
+  );
 }

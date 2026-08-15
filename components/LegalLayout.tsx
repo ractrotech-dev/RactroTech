@@ -2,6 +2,10 @@ import { ReactNode } from 'react';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 
+import { SiteHeader } from '@/components/marketing/site-header';
+import { SiteFooter } from '@/components/marketing/site-footer';
+import { GlobalBackground } from '@/components/layout/global-background';
+
 interface LegalLayoutProps {
   title: string;
   lastUpdated: string;
@@ -10,44 +14,52 @@ interface LegalLayoutProps {
 
 export function LegalLayout({ title, lastUpdated, children }: LegalLayoutProps) {
   return (
-    <div className="min-h-screen bg-[#0a0a0a] font-sans text-gray-400">
-      <div className="mx-auto max-w-4xl px-4 py-6 md:py-8">
-        <Link
-          href="/"
-          className="mb-4 inline-flex items-center gap-1.5 text-xs font-medium text-gray-500 transition-colors hover:text-white"
-        >
-          <ArrowLeft className="h-3 w-3" />
-          Back to Home
-        </Link>
-        <div className="mb-4 border-b border-white/10 pb-2">
-          <h1 className="mb-1 text-xl font-semibold tracking-tight text-white md:text-2xl">
-            {title}
-          </h1>
-          <p className="text-xs text-gray-500">Last Updated: {lastUpdated}</p>
+    <div className="relative isolate flex min-h-screen flex-col text-mkt-ink">
+      <GlobalBackground />
+      <SiteHeader />
+
+      <main className="flex-1">
+        <div className="mkt-shell max-w-3xl py-12 lg:py-16">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-1.5 text-[14px] font-medium text-mkt-muted transition-colors hover:text-mkt-ink"
+          >
+            <ArrowLeft className="h-3.5 w-3.5" />
+            Back to home
+          </Link>
+
+          <header className="mt-6 border-b border-mkt-line pb-6">
+            <h1 className="mkt-display text-[32px] leading-[1.1] sm:text-[40px]">{title}</h1>
+            <p className="mt-3 text-[14px] text-mkt-muted">Last updated: {lastUpdated}</p>
+          </header>
+
+          <div className="mt-8 space-y-8">{children}</div>
+
+          <div className="mt-12 flex flex-col gap-2 rounded-2xl bg-mkt-lavender p-6 sm:flex-row sm:items-center sm:justify-between">
+            <h2 className="text-[15px] font-semibold text-mkt-ink">RactroTech Technologies</h2>
+            <p className="text-[14px] text-mkt-muted">
+              For legal inquiries:{' '}
+              <a
+                href="mailto:legal@ractrotech.com"
+                className="font-medium text-mkt-violet underline-offset-4 hover:underline"
+              >
+                legal@ractrotech.com
+              </a>
+            </p>
+          </div>
         </div>
-        <div className="space-y-3">{children}</div>
-        <div className="mt-6 flex items-center justify-between border-t border-white/10 pt-3 text-xs text-gray-500">
-          <h3 className="font-semibold text-gray-300">RactroTech Technologies</h3>
-          <p>
-            For legal inquiries:{' '}
-            <a
-              href="mailto:legal@ractrotech.com"
-              className="text-gray-300 underline transition-colors hover:text-white"
-            >
-              legal@ractrotech.com
-            </a>
-          </p>
-        </div>
-      </div>
+      </main>
+
+      <SiteFooter />
     </div>
   );
 }
 
 export function LegalSection({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <section className="space-y-1">
-      <h2 className="text-sm font-semibold text-gray-200">{title}</h2>
-      <div className="space-y-1 text-sm leading-snug text-gray-400">{children}</div>
+    <section className="space-y-3">
+      <h2 className="mkt-display text-[19px]">{title}</h2>
+      <div className="space-y-3 text-[15px] leading-relaxed text-mkt-muted">{children}</div>
     </section>
   );
 }
@@ -59,11 +71,13 @@ export function LegalParagraph({
   children: ReactNode;
   className?: string;
 }) {
-  return <p className={`text-sm ${className}`}>{children}</p>;
+  return <p className={`text-[15px] leading-relaxed ${className}`}>{children}</p>;
 }
 
 export function LegalList({ children }: { children: ReactNode }) {
   return (
-    <ul className="ml-5 list-outside list-disc space-y-0.5 text-sm text-gray-400">{children}</ul>
+    <ul className="ml-5 list-outside list-disc space-y-1.5 text-[15px] leading-relaxed text-mkt-muted">
+      {children}
+    </ul>
   );
 }

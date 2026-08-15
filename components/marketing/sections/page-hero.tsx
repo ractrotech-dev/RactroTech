@@ -29,7 +29,7 @@ export function PageHero({
   secondaryCta,
 }: PageHeroProps) {
   return (
-    <section className="relative overflow-hidden bg-white pb-14 pt-14 sm:pb-20 sm:pt-20">
+    <section className="relative overflow-hidden pb-14 pt-14 sm:pb-20 sm:pt-20">
       <HeroGlow />
       <Sparkle className="absolute left-[10%] top-[30%] hidden h-5 w-5 text-mkt-violet/35 lg:block" />
       <Sparkle className="absolute right-[12%] top-[42%] hidden h-4 w-4 text-mkt-violet/25 lg:block" />

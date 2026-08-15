@@ -13,7 +13,7 @@ import { HOMEPAGE_FAQS } from '@/lib/marketing/service-pages';
  */
 export function Faq() {
   return (
-    <section id="faq" className="bg-white py-20 lg:py-28">
+    <section id="faq" className="py-20 lg:py-28">
       <div className="mkt-shell max-w-3xl">
         <Reveal className="text-center">
           <span className="mkt-eyebrow">

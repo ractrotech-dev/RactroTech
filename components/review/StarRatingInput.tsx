@@ -42,7 +42,7 @@ export function StarRatingInput({ value, onChange, disabled, error }: StarRating
           <Star
             className={cn(
               'h-8 w-8 sm:h-9 sm:w-9',
-              display >= n ? 'fill-yellow-400 text-black' : 'fill-black/5 text-black/25',
+              display >= n ? 'fill-mkt-violet text-mkt-violet' : 'fill-mkt-line/60 text-mkt-line',
             )}
             strokeWidth={2}
           />

@@ -25,7 +25,7 @@ const LOGOS = [
 
 export function LogoMarquee() {
   return (
-    <section className="border-y border-mkt-line bg-white py-10" aria-label="Technology stack">
+    <section className="border-y border-mkt-line py-10" aria-label="Technology stack">
       <p className="mkt-shell mb-7 text-center text-[13px] font-medium uppercase tracking-[0.14em] text-mkt-muted">
         Built on a stack you can hire for
       </p>

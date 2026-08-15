@@ -1,6 +1,6 @@
-import { MarketingPageHeader } from '@/components/marketing-page-header';
-import { RetroContact } from '@/components/retro-contact';
-import { RetroCTA } from '@/components/retro-cta';
+import { PageHero } from '@/components/marketing/sections/page-hero';
+import { ContactChannels } from '@/components/marketing/sections/contact-channels';
+import { FinalCta } from '@/components/marketing/sections/final-cta';
 import { constructMetadata, generateBreadcrumbSchema, siteConfig } from '@/lib/seo';
 
 export const metadata = constructMetadata({
@@ -22,12 +22,15 @@ export default function ContactPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <MarketingPageHeader
-        title="Contact Us"
-        description="Tell us what you are building. We will help you scope it, estimate it, and ship it."
+      <PageHero
+        eyebrow="Contact"
+        title="Tell us what"
+        titleAccent="you're building"
+        description="We will help you scope it, estimate it, and ship it. Every enquiry gets a reply within one business day."
+        primaryCta={{ label: 'Start a project', href: '/start-project' }}
       />
-      <RetroContact />
-      <RetroCTA />
+      <ContactChannels />
+      <FinalCta />
     </>
   );
 }

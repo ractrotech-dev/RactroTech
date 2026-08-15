@@ -18,7 +18,7 @@ export function NotificationBell({ href = '/account', count = 0, className }: No
       variant="ghost"
       size="icon"
       className={cn(
-        'relative h-9 w-9 shrink-0 rounded-full border-2 border-black bg-white hover:bg-yellow-50',
+        'relative h-9 w-9 shrink-0 rounded-full border-2 border-black bg-white text-black hover:bg-yellow-50',
         className,
       )}
       asChild

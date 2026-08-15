@@ -28,7 +28,7 @@ export const siteConfig = {
     return `${getSiteUrl()}/opengraph-image`;
   },
   get logoUrl() {
-    return `${getSiteUrl()}/icon.svg`;
+    return `${getSiteUrl()}/logo.png`;
   },
   links: {
     twitter: "https://twitter.com/ractrotech",

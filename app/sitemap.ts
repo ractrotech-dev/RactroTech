@@ -13,6 +13,7 @@ const STATIC_ROUTES = [
   "/ui-ux-design",
   "/startup-development",
   "/contact",
+  "/projects",
   "/templates",
   "/components",
   "/components/new",

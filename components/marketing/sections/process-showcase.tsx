@@ -8,7 +8,7 @@ import { PROCESS } from '@/lib/marketing/home-content';
 
 export function ProcessShowcase() {
   return (
-    <section className="relative overflow-hidden bg-mkt-ink py-20 text-white lg:py-28">
+    <section className="relative overflow-hidden bg-mkt-contrast py-20 text-white lg:py-28">
       {/* Soft violet bloom behind the board */}
       <div
         className="pointer-events-none absolute inset-x-0 top-0 h-[520px]"
@@ -33,7 +33,7 @@ export function ProcessShowcase() {
           </p>
         </Reveal>
 
-        <Reveal className="mx-auto mt-12 max-w-4xl" delay={0.1} y={26}>
+        <Reveal className="mx-auto mt-12 max-w-4xl" delay={0.1}>
           <BrowserFrame tone="dark" url="app.ractrotech.com/board">
             <KanbanMock />
           </BrowserFrame>

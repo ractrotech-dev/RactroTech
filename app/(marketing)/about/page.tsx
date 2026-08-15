@@ -1,7 +1,6 @@
-import { MarketingPageHeader } from '@/components/marketing-page-header';
-import { RetroAbout } from '@/components/retro-about';
-import { RetroWhyUs } from '@/components/retro-why-us';
-import { RetroCTA } from '@/components/retro-cta';
+import { PageHero } from '@/components/marketing/sections/page-hero';
+import { AboutStory } from '@/components/marketing/sections/about-story';
+import { FinalCta } from '@/components/marketing/sections/final-cta';
 import { constructMetadata, generateBreadcrumbSchema, siteConfig } from '@/lib/seo';
 
 export const metadata = constructMetadata({
@@ -23,13 +22,16 @@ export default function AboutPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <MarketingPageHeader
-        title="About Ractrotech"
-        description="We turn ideas into real products — websites, apps, and SaaS that ship and perform."
+      <PageHero
+        eyebrow="About"
+        title="We turn ideas into"
+        titleAccent="real products"
+        description="Websites, apps, and SaaS that ship and perform — built by the people who design and code them."
+        primaryCta={{ label: 'Tell us your idea', href: '/start-project' }}
+        secondaryCta={{ label: 'See our services', href: '/services' }}
       />
-      <RetroAbout />
-      <RetroWhyUs />
-      <RetroCTA />
+      <AboutStory />
+      <FinalCta />
     </>
   );
 }

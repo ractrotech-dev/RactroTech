@@ -345,7 +345,7 @@ export const HOMEPAGE_FAQS: ServiceFAQ[] = [
   {
     question: "Who is Ractrotech for?",
     answer:
-      "Founders launching a product, small businesses that need a professional online presence, startups building an MVP, and product teams that need a reliable partner for design, development, and launch.",
+      "Founders, growing businesses, and product teams. See Who we work with above for how we help each group.",
   },
   {
     question: "I only have an idea — can you still help?",

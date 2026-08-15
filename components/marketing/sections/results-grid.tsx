@@ -1,8 +1,5 @@
-import Link from 'next/link';
-import { ArrowUpRight } from 'lucide-react';
-
 import { Reveal, RevealGroup, RevealItem } from '@/components/marketing/reveal';
-import { PROJECT_TYPES, RESULTS, type ResultCard } from '@/lib/marketing/home-content';
+import { RESULTS, type ResultCard } from '@/lib/marketing/home-content';
 import { cn } from '@/lib/utils';
 
 const TONE: Record<ResultCard['tone'], string> = {
@@ -20,7 +17,7 @@ const TONE: Record<ResultCard['tone'], string> = {
  */
 export function ResultsGrid() {
   return (
-    <section className="bg-white py-20 lg:py-28">
+    <section className="py-20 lg:py-28">
       <div className="mkt-shell">
         <Reveal className="mx-auto max-w-2xl text-center">
           <span className="mkt-eyebrow">
@@ -53,32 +50,6 @@ export function ResultsGrid() {
               <p className="mt-2 max-w-md text-[15px] leading-relaxed text-mkt-ink/65">
                 {card.body}
               </p>
-            </RevealItem>
-          ))}
-
-          {PROJECT_TYPES.map((project) => (
-            <RevealItem
-              key={project.href}
-              as="li"
-              className="group flex flex-col rounded-3xl bg-mkt-ink p-6 text-white sm:p-7"
-            >
-              <Link href={project.href} className="flex h-full flex-col">
-                <div className="flex items-start justify-between gap-4">
-                  <h3 className="font-display text-[19px] font-semibold tracking-[-0.02em] sm:text-[21px]">
-                    {project.title}
-                  </h3>
-                  <ArrowUpRight
-                    className="h-5 w-5 shrink-0 text-white/50 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                    aria-hidden
-                  />
-                </div>
-                <p className="mt-3 flex-1 text-[15px] leading-relaxed text-white/55">
-                  {project.body}
-                </p>
-                <span className="mt-5 text-[14px] font-medium text-white/80 group-hover:underline">
-                  See how we build it
-                </span>
-              </Link>
             </RevealItem>
           ))}
         </RevealGroup>

@@ -64,10 +64,9 @@ export type Capability = {
   description: string;
   href: string;
   /** Which in-code panel mockup renders inside the card, if any. */
-  panel?: 'chat' | 'design' | 'status' | 'checkout' | 'code';
+  panel?: 'chat' | 'design' | 'status' | 'checkout';
   /** Bento cards marked `feature` span two columns on desktop. */
   size: 'feature' | 'standard';
-  tone?: 'violet' | 'plain';
 };
 
 /** Source: the services array in components/retro-services.tsx. */
@@ -103,15 +102,6 @@ export const CAPABILITIES: Capability[] = [
     href: '/ui-ux-design',
     panel: 'chat',
     size: 'standard',
-  },
-  {
-    name: 'Modern, hireable stack',
-    description:
-      'Next.js, TypeScript, Supabase, Stripe and Tailwind — tools that scale and that you can hire for later.',
-    href: '/nextjs-development',
-    panel: 'code',
-    size: 'feature',
-    tone: 'violet',
   },
 ];
 
@@ -186,20 +176,6 @@ export const RESULTS: ResultCard[] = [
     body: 'You work directly with the developers and designers building your product. No account manager relay.',
     tone: 'sky',
     source: 'retro-why-us.tsx',
-  },
-];
-
-/** Project archetypes, not case studies — no client names or metrics are claimed. */
-export const PROJECT_TYPES = [
-  {
-    title: 'Multi-tenant SaaS platforms',
-    body: 'Auth, roles, subscription billing, admin dashboards and customer portals on a Next.js foundation.',
-    href: '/saas-development',
-  },
-  {
-    title: 'Investor-ready MVPs',
-    body: 'Core workflows, onboarding, payments or waitlist, analytics and deployment — scoped to validate fast.',
-    href: '/mvp-development',
   },
 ];
 

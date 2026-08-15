@@ -37,7 +37,7 @@ const COLUMNS = [
 
 export function KanbanMock({ className }: { className?: string }) {
   return (
-    <div className={cn('bg-mkt-ink-soft p-3 sm:p-4', className)} aria-hidden>
+    <div className={cn('bg-mkt-contrast-soft p-3 sm:p-4', className)} aria-hidden>
       <div className="mb-3 flex items-center justify-between">
         <div>
           <div className="text-[13px] font-semibold text-white">Sprint 4 · Client SaaS</div>

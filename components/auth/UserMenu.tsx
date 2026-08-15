@@ -53,7 +53,7 @@ export function UserMenu({ className, showNotification = true }: UserMenuProps) 
         <DropdownMenuContent
           align="end"
           sideOffset={8}
-          className="retro-border w-64 border-4 border-black bg-white p-0 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+          className="retro-border w-64 border-4 border-black bg-white p-0 text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
         >
           <motion.div
             initial={{ opacity: 0, y: -8 }}

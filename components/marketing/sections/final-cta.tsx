@@ -7,7 +7,7 @@ import { FINAL_CTA } from '@/lib/marketing/home-content';
 
 export function FinalCta() {
   return (
-    <section id="contact" className="relative overflow-hidden bg-mkt-ink py-24 text-white lg:py-32">
+    <section id="contact" className="relative overflow-hidden bg-mkt-contrast py-24 text-white lg:py-32">
       <div
         className="pointer-events-none absolute inset-0"
         aria-hidden
@@ -38,7 +38,7 @@ export function FinalCta() {
           <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
               href={FINAL_CTA.primaryCta.href}
-              className="mkt-btn w-full bg-white px-7 py-3.5 text-mkt-ink hover:bg-white/90 sm:w-auto"
+              className="mkt-btn w-full bg-white px-7 py-3.5 text-mkt-contrast hover:bg-white/90 sm:w-auto"
             >
               {FINAL_CTA.primaryCta.label}
               <ArrowRight className="h-4 w-4" />

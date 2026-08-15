@@ -26,15 +26,15 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`light bg-white ${inter.variable} ${interTight.variable}`}
+      className={`${inter.variable} ${interTight.variable}`}
       suppressHydrationWarning
     >
       <head>
         <link rel="icon" href="/icon.svg" type="image/svg+xml" sizes="any" />
         <link rel="shortcut icon" href="/icon.svg" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/icon.svg" />
+        <link rel="apple-touch-icon" href="/apple-icon.png" sizes="180x180" />
       </head>
-      <body className={`${inter.className} min-h-screen bg-white text-black antialiased`}>
+      <body className={`${inter.className} min-h-screen bg-background text-foreground antialiased`}>
         <AppProviders>
           <script
             type="application/ld+json"

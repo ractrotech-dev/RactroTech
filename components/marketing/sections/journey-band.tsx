@@ -23,7 +23,7 @@ export function JourneyBand() {
   };
 
   return (
-    <section className="bg-white py-6">
+    <section className="py-6">
       <div className="mkt-shell">
         <Reveal className="relative overflow-hidden rounded-[32px] bg-mkt-violet-deep px-6 py-16 text-center sm:px-12 sm:py-20">
           {/* Depth wash + grain-free highlight */}

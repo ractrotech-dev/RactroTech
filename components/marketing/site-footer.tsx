@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { Linkedin, Instagram } from 'lucide-react';
 
+import { BrandLogo } from '@/components/marketing/brand-logo';
+
 /** Link map carried over verbatim from components/retro-footer.tsx. */
 const COLUMNS: Array<{ title: string; links: Array<{ href: string; label: string }> }> = [
   {
@@ -26,6 +28,7 @@ const COLUMNS: Array<{ title: string; links: Array<{ href: string; label: string
   {
     title: 'Resources',
     links: [
+      { href: '/projects', label: 'Projects' },
       { href: '/templates', label: 'Templates' },
       { href: '/components', label: 'UI kit' },
       { href: '/start-project', label: 'Start a project' },
@@ -50,17 +53,12 @@ const SOCIALS = [
 
 export function SiteFooter() {
   return (
-    <footer className="bg-mkt-ink text-white">
+    <footer className="bg-mkt-contrast text-white">
       <div className="mkt-shell py-16 lg:py-20">
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-8">
           <div className="lg:col-span-4">
-            <Link href="/" className="flex items-center gap-2.5" aria-label="Ractrotech home">
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-white text-[15px] font-bold text-mkt-ink">
-                R
-              </span>
-              <span className="font-display text-[19px] font-semibold tracking-[-0.02em]">
-                Ractrotech
-              </span>
+            <Link href="/" className="flex items-center" aria-label="Ractrotech home">
+              <BrandLogo className="h-[26px] text-white" />
             </Link>
             <p className="mt-5 max-w-xs text-[15px] leading-relaxed text-white/55">
               Your partner for websites, apps, SaaS, design, and digital products — built by
@@ -69,7 +67,7 @@ export function SiteFooter() {
             <div className="mt-6 flex flex-wrap items-center gap-3">
               <Link
                 href="/start-project"
-                className="inline-flex items-center rounded-full bg-white px-5 py-2.5 text-[15px] font-medium text-mkt-ink transition-colors hover:bg-white/90"
+                className="inline-flex items-center rounded-full bg-white px-5 py-2.5 text-[15px] font-medium text-mkt-contrast transition-colors hover:bg-white/90"
               >
                 Start a project
               </Link>

@@ -24,14 +24,14 @@ export function BrowserFrame({
     <div
       className={cn(
         'overflow-hidden rounded-2xl border shadow-[0_30px_80px_-30px_rgba(11,11,16,0.35)]',
-        dark ? 'border-white/10 bg-mkt-ink-soft' : 'border-mkt-line bg-white',
+        dark ? 'border-white/10 bg-mkt-contrast-soft' : 'border-mkt-line bg-mkt-surface',
         className
       )}
     >
       <div
         className={cn(
           'flex items-center gap-3 border-b px-4 py-3',
-          dark ? 'border-white/10 bg-white/[0.04]' : 'border-mkt-line bg-[#fafafd]'
+          dark ? 'border-white/10 bg-white/[0.04]' : 'border-mkt-line bg-mkt-lavender/40'
         )}
       >
         <div className="flex shrink-0 gap-1.5">
@@ -42,7 +42,7 @@ export function BrowserFrame({
         <div
           className={cn(
             'mx-auto flex h-6 w-full max-w-[240px] items-center justify-center rounded-md text-[11px] font-medium',
-            dark ? 'bg-white/[0.06] text-white/50' : 'bg-white text-mkt-muted ring-1 ring-mkt-line'
+            dark ? 'bg-white/[0.06] text-white/50' : 'bg-mkt-surface text-mkt-muted ring-1 ring-mkt-line'
           )}
         >
           {url}

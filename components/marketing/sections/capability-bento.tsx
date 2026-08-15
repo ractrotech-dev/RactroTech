@@ -5,7 +5,6 @@ import { Reveal, RevealGroup, RevealItem } from '@/components/marketing/reveal';
 import {
   ChatPanelMock,
   CheckoutPanelMock,
-  CodePanelMock,
   DesignPanelMock,
   StatusPanelMock,
 } from '@/components/marketing/mockups/panel-mocks';
@@ -22,25 +21,18 @@ function Panel({ panel }: { panel: Capability['panel'] }) {
       return <StatusPanelMock />;
     case 'checkout':
       return <CheckoutPanelMock />;
-    case 'code':
-      return <CodePanelMock />;
     default:
       return null;
   }
 }
 
 function Card({ item }: { item: Capability }) {
-  const violet = item.tone === 'violet';
-
   return (
     <RevealItem
       as="li"
       className={cn(
-        'group relative flex flex-col overflow-hidden rounded-3xl border p-6 transition-shadow duration-200 sm:p-7',
-        item.size === 'feature' && 'sm:col-span-2',
-        violet
-          ? 'border-transparent bg-mkt-violet text-white shadow-[0_20px_50px_-24px_rgba(91,61,245,0.9)]'
-          : 'border-mkt-line bg-white hover:shadow-[0_18px_44px_-26px_rgba(11,11,16,0.4)]'
+        'group relative flex flex-col overflow-hidden rounded-3xl border border-mkt-line bg-mkt-surface p-6 transition-shadow duration-200 hover:shadow-[0_18px_44px_-26px_rgba(11,11,16,0.4)] sm:p-7',
+        item.size === 'feature' && 'sm:col-span-2'
       )}
     >
       <Link href={item.href} className="flex h-full flex-col focus-visible:outline-none">
@@ -48,31 +40,16 @@ function Card({ item }: { item: Capability }) {
         <span className="absolute inset-0 rounded-3xl ring-mkt-violet ring-offset-2 group-focus-within:ring-2" />
 
         <div className="relative flex items-start justify-between gap-4">
-          <h3
-            className={cn(
-              'font-display text-[19px] font-semibold tracking-[-0.02em] sm:text-[21px]',
-              violet ? 'text-white' : 'text-mkt-ink'
-            )}
-          >
+          <h3 className="font-display text-[19px] font-semibold tracking-[-0.02em] text-mkt-ink sm:text-[21px]">
             {item.name}
           </h3>
           <ArrowUpRight
-            className={cn(
-              'h-5 w-5 shrink-0 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5',
-              violet ? 'text-white/70' : 'text-mkt-muted'
-            )}
+            className="h-5 w-5 shrink-0 text-mkt-muted transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
             aria-hidden
           />
         </div>
 
-        <p
-          className={cn(
-            'relative mt-3 text-[15px] leading-relaxed',
-            violet ? 'text-white/75' : 'text-mkt-muted'
-          )}
-        >
-          {item.description}
-        </p>
+        <p className="relative mt-3 text-[15px] leading-relaxed text-mkt-muted">{item.description}</p>
 
         {item.panel ? (
           <div className="relative mt-6 flex-1">
@@ -94,7 +71,7 @@ export function CapabilityBento() {
             What we build
           </span>
           <h2 className="mkt-display mt-6 text-[32px] leading-[1.1] sm:text-[44px]">
-            One team for the whole product
+            Services that take you to launch
           </h2>
           <p className="mx-auto mt-5 max-w-xl text-[17px] leading-relaxed text-mkt-muted">
             Design, engineering, payments and infrastructure under one roof — so what gets
@@ -114,7 +91,7 @@ export function CapabilityBento() {
 
           <RevealItem
             as="li"
-            className="flex flex-col justify-between rounded-3xl border border-dashed border-mkt-ink/15 bg-transparent p-6 sm:p-7"
+            className="flex flex-col justify-between rounded-3xl border border-dashed border-mkt-ink/15 bg-transparent p-6 sm:p-7 sm:col-span-2 lg:col-span-1"
           >
             <div>
               <h3 className="mkt-display text-[19px] sm:text-[21px]">Plus five more</h3>
@@ -132,6 +109,16 @@ export function CapabilityBento() {
             </Link>
           </RevealItem>
         </RevealGroup>
+
+        <Reveal className="mt-12 flex flex-col items-center justify-center gap-3 text-center sm:flex-row">
+          <Link href="/start-project" className="mkt-btn-primary w-full sm:w-auto">
+            Tell us your idea
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+          <Link href="/services" className="mkt-btn-ghost w-full sm:w-auto">
+            Explore all services
+          </Link>
+        </Reveal>
       </div>
     </section>
   );

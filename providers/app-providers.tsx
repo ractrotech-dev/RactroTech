@@ -14,9 +14,8 @@ export function AppProviders({ children }: AppProvidersProps) {
   return (
     <ThemeProvider
       attribute="class"
-      defaultTheme="light"
-      forcedTheme="light"
-      enableSystem={false}
+      defaultTheme="system"
+      enableSystem
       disableTransitionOnChange
     >
       <AuthProviderBoundary>

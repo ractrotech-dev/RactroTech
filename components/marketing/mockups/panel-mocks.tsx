@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 /** Stacked chat thread — used by the "one team, direct access" style cards. */
 export function ChatPanelMock({ className }: { className?: string }) {
   return (
-    <div className={cn('space-y-2 rounded-xl bg-white p-3 ring-1 ring-mkt-line', className)} aria-hidden>
+    <div className={cn('space-y-2 rounded-xl bg-mkt-surface p-3 ring-1 ring-mkt-line', className)} aria-hidden>
       <div className="flex gap-2">
         <div className="h-5 w-5 shrink-0 rounded-full bg-mkt-lavender-deep" />
         <div className="max-w-[80%] rounded-xl rounded-tl-sm bg-mkt-lavender px-2.5 py-1.5">
@@ -41,7 +41,7 @@ export function DesignPanelMock({ className }: { className?: string }) {
         { label: 'UI design', fill: 'bg-mkt-lilac' },
         { label: 'Shipped', fill: 'bg-mkt-violet' },
       ].map((step) => (
-        <div key={step.label} className="rounded-xl bg-white p-2 ring-1 ring-mkt-line">
+        <div key={step.label} className="rounded-xl bg-mkt-surface p-2 ring-1 ring-mkt-line">
           <div className={cn('mb-1.5 h-1 w-6 rounded-full', step.fill)} />
           <div className="space-y-1">
             <div className="h-1.5 w-full rounded-full bg-mkt-ink/10" />
@@ -64,7 +64,7 @@ export function StatusPanelMock({ className }: { className?: string }) {
   ];
 
   return (
-    <div className={cn('rounded-xl bg-white p-2.5 ring-1 ring-mkt-line', className)} aria-hidden>
+    <div className={cn('rounded-xl bg-mkt-surface p-2.5 ring-1 ring-mkt-line', className)} aria-hidden>
       {rows.map((r, i) => (
         <div
           key={r.label}
@@ -85,10 +85,10 @@ export function StatusPanelMock({ className }: { className?: string }) {
 /** Checkout / payments summary card. */
 export function CheckoutPanelMock({ className }: { className?: string }) {
   return (
-    <div className={cn('rounded-xl bg-white p-3 ring-1 ring-mkt-line', className)} aria-hidden>
+    <div className={cn('rounded-xl bg-mkt-surface p-3 ring-1 ring-mkt-line', className)} aria-hidden>
       <div className="mb-2 flex items-center justify-between">
         <div className="h-1.5 w-16 rounded-full bg-mkt-ink/15" />
-        <div className="rounded-full bg-mkt-mint px-1.5 py-0.5 text-[8px] font-semibold text-[#1c7a4d]">
+        <div className="rounded-full bg-mkt-mint px-1.5 py-0.5 text-[8px] font-semibold text-mkt-success">
           Paid
         </div>
       </div>
@@ -108,36 +108,6 @@ export function CheckoutPanelMock({ className }: { className?: string }) {
         <div className="h-2 w-10 rounded-full bg-mkt-violet" />
       </div>
       <div className="mt-2 h-6 rounded-lg bg-mkt-violet" />
-    </div>
-  );
-}
-
-/** Terminal-style build log — used by the "modern stack" card. */
-export function CodePanelMock({ className }: { className?: string }) {
-  const lines: Array<[string, string]> = [
-    ['w-10', 'bg-[#c792ea]'],
-    ['w-24', 'bg-[#82aaff]'],
-    ['w-16', 'bg-[#c3e88d]'],
-    ['w-20', 'bg-white/25'],
-    ['w-12', 'bg-[#ffcb6b]'],
-  ];
-
-  return (
-    <div className={cn('rounded-xl bg-mkt-ink p-3', className)} aria-hidden>
-      <div className="mb-2 flex gap-1">
-        <span className="h-1.5 w-1.5 rounded-full bg-white/20" />
-        <span className="h-1.5 w-1.5 rounded-full bg-white/20" />
-        <span className="h-1.5 w-1.5 rounded-full bg-white/20" />
-      </div>
-      <div className="space-y-1.5">
-        {lines.map(([w, tone], i) => (
-          <div key={i} className="flex items-center gap-1.5">
-            <span className="font-mono text-[8px] text-white/20">{i + 1}</span>
-            <span className={cn('h-1.5 rounded-full', w, tone)} />
-            {i % 2 === 0 && <span className="h-1.5 w-8 rounded-full bg-white/10" />}
-          </div>
-        ))}
-      </div>
     </div>
   );
 }

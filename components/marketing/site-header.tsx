@@ -4,11 +4,14 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
 
+import { BrandLogo } from '@/components/marketing/brand-logo';
 import { SiteHeaderAuth } from '@/components/marketing/site-header-auth';
+import { MarketingThemeToggle } from '@/components/marketing/theme-toggle';
 import { cn } from '@/lib/utils';
 
 const NAV_LINKS = [
   { href: '/services', label: 'Services' },
+  { href: '/projects', label: 'Projects' },
   { href: '/templates', label: 'Templates' },
   { href: '/components', label: 'Components' },
   { href: '/blog', label: 'Blog' },
@@ -40,18 +43,13 @@ export function SiteHeader() {
   return (
     <header
       className={cn(
-        'sticky top-0 z-50 w-full bg-white/85 backdrop-blur-md transition-shadow duration-200',
+        'sticky top-0 z-50 w-full bg-mkt-surface/85 backdrop-blur-md transition-shadow duration-200',
         scrolled ? 'border-b border-mkt-line shadow-[0_1px_16px_-8px_rgba(11,11,16,0.25)]' : 'border-b border-transparent'
       )}
     >
       <div className="mkt-shell flex h-16 items-center justify-between gap-4">
-        <Link href="/" className="flex shrink-0 items-center gap-2.5" aria-label="Ractrotech home">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-mkt-ink text-[15px] font-bold text-white">
-            R
-          </span>
-          <span className="font-display text-[19px] font-semibold tracking-[-0.02em] text-mkt-ink">
-            Ractrotech
-          </span>
+        <Link href="/" className="flex shrink-0 items-center" aria-label="Ractrotech home">
+          <BrandLogo className="h-[26px] text-mkt-brand" />
         </Link>
 
         <nav className="hidden items-center gap-1 lg:flex" aria-label="Main">
@@ -66,7 +64,8 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <div className="hidden shrink-0 lg:block">
+        <div className="hidden shrink-0 items-center gap-2 lg:flex">
+          <MarketingThemeToggle />
           <SiteHeaderAuth variant="desktop" />
         </div>
 
@@ -82,7 +81,7 @@ export function SiteHeader() {
       </div>
 
       {open ? (
-        <div className="max-h-[calc(100vh-4rem)] overflow-y-auto border-t border-mkt-line bg-white lg:hidden">
+        <div className="max-h-[calc(100vh-4rem)] overflow-y-auto border-t border-mkt-line bg-mkt-surface lg:hidden">
           <nav className="mkt-shell flex flex-col py-4" aria-label="Mobile">
             {NAV_LINKS.map(({ href, label }) => (
               <Link
@@ -94,6 +93,7 @@ export function SiteHeader() {
                 {label}
               </Link>
             ))}
+            <MarketingThemeToggle variant="mobile" />
             <div className="pt-3">
               <SiteHeaderAuth variant="mobile" onNavigate={() => setOpen(false)} />
             </div>

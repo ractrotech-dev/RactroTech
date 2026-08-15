@@ -8,6 +8,7 @@ import { useState, useTransition, type FormEvent } from 'react';
 import { submitReview } from '@/app/review/actions';
 import { REVIEW_PROJECT_TYPES } from '@/lib/reviews/constants';
 import { StarRatingInput } from '@/components/review/StarRatingInput';
+import { authFieldClass, authLabelClass } from '@/components/marketing/auth-shell';
 
 type ReviewFormProps = {
   googleReviewUrl?: string | null;
@@ -50,16 +51,16 @@ export function ReviewForm({ googleReviewUrl }: ReviewFormProps) {
           transition={{ type: 'spring', stiffness: 320, damping: 26 }}
           className="py-8 text-center sm:py-10"
         >
-          <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full border-4 border-black bg-yellow-400 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-mkt-mint text-mkt-success">
             <Send className="h-10 w-10 text-black" />
           </div>
-          <h2 className="retro-heading mb-3 text-xl">THANK YOU!</h2>
+          <h2 className="mkt-display mb-3 text-[24px]">Thank you!</h2>
           <p className="mx-auto mb-8 max-w-sm text-sm font-bold leading-relaxed text-black/60">
             Your review has been submitted. Our team may publish it on the site after a quick check.
           </p>
           <Link
             href="/"
-            className="retro-button inline-flex items-center gap-2 border-black bg-black !px-8 !py-3 text-sm font-black text-yellow-400"
+            className="mkt-btn-primary"
           >
             RETURN TO HQ
             <ArrowLeft className="h-4 w-4 rotate-180" />
@@ -69,7 +70,7 @@ export function ReviewForm({ googleReviewUrl }: ReviewFormProps) {
               href={googleReviewUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-4 inline-flex items-center justify-center gap-2 text-[10px] font-black tracking-widest text-black/50 underline decoration-2 underline-offset-4 hover:text-black"
+              className="mt-4 inline-flex items-center justify-center gap-2 text-[14px] font-medium text-mkt-violet underline-offset-4 hover:underline"
             >
               Also rate us on Google
               <ExternalLink className="h-3 w-3" aria-hidden />
@@ -86,16 +87,16 @@ export function ReviewForm({ googleReviewUrl }: ReviewFormProps) {
           className="space-y-3"
         >
           {error ? (
-            <p className="border-2 border-red-500 bg-red-50 px-3 py-2 text-center text-[10px] font-black tracking-widest text-red-600">
+            <p className="rounded-xl bg-red-50 px-4 py-3 text-center text-[14px] font-medium text-red-700">
               {error}
             </p>
           ) : null}
 
           <div className="grid gap-3 sm:grid-cols-2">
-            <div className="retro-card border-2 bg-white p-2 transition-colors hover:bg-yellow-50">
+            <div>
               <label
                 htmlFor="fullName"
-                className="mb-1 block text-[8px] font-black tracking-widest text-black/40"
+                className={authLabelClass}
               >
                 01. FULL NAME
               </label>
@@ -107,14 +108,14 @@ export function ReviewForm({ googleReviewUrl }: ReviewFormProps) {
                 minLength={2}
                 maxLength={120}
                 autoComplete="name"
-                className="w-full border-b-2 border-black/10 bg-transparent py-0.5 text-sm font-bold text-black outline-none focus:border-black"
+                className={authFieldClass}
                 placeholder="YOUR NAME..."
               />
             </div>
-            <div className="retro-card border-2 bg-white p-2 transition-colors hover:bg-yellow-50">
+            <div>
               <label
                 htmlFor="companyName"
-                className="mb-1 block text-[8px] font-black tracking-widest text-black/40"
+                className={authLabelClass}
               >
                 02. COMPANY / BRAND
               </label>
@@ -125,16 +126,16 @@ export function ReviewForm({ googleReviewUrl }: ReviewFormProps) {
                 required
                 maxLength={160}
                 autoComplete="organization"
-                className="w-full border-b-2 border-black/10 bg-transparent py-0.5 text-sm font-bold text-black outline-none focus:border-black"
+                className={authFieldClass}
                 placeholder="COMPANY..."
               />
             </div>
           </div>
 
-          <div className="retro-card border-2 bg-white p-2 transition-colors hover:bg-yellow-50">
+          <div>
             <label
               htmlFor="projectType"
-              className="mb-1 block text-[8px] font-black tracking-widest text-black/40"
+              className={authLabelClass}
             >
               03. PROJECT TYPE
             </label>
@@ -156,8 +157,8 @@ export function ReviewForm({ googleReviewUrl }: ReviewFormProps) {
             </select>
           </div>
 
-          <div className="retro-card border-2 bg-white p-2 transition-colors hover:bg-yellow-50">
-            <span className="mb-2 block text-[8px] font-black tracking-widest text-black/40">
+          <div>
+            <span className={authLabelClass}>
               04. RATING
             </span>
             <StarRatingInput
@@ -172,10 +173,10 @@ export function ReviewForm({ googleReviewUrl }: ReviewFormProps) {
             />
           </div>
 
-          <div className="retro-card border-2 bg-white p-2 transition-colors hover:bg-yellow-50">
+          <div>
             <label
               htmlFor="reviewText"
-              className="mb-1 block text-[8px] font-black tracking-widest text-black/40"
+              className={authLabelClass}
             >
               05. YOUR REVIEW
             </label>
@@ -186,15 +187,15 @@ export function ReviewForm({ googleReviewUrl }: ReviewFormProps) {
               minLength={20}
               maxLength={4000}
               rows={5}
-              className="w-full resize-none border-b-2 border-black/10 bg-transparent py-1 text-sm font-bold text-black outline-none focus:border-black"
+              className={authFieldClass}
               placeholder="WHAT STOOD OUT ABOUT WORKING WITH US?"
             />
           </div>
 
-          <div className="retro-card border-2 bg-white p-2 transition-colors hover:bg-yellow-50">
+          <div>
             <label
               htmlFor="image"
-              className="mb-1 block text-[8px] font-black tracking-widest text-black/40"
+              className={authLabelClass}
             >
               06. LOGO OR PHOTO <span className="font-bold opacity-50">(OPTIONAL)</span>
             </label>
@@ -203,19 +204,19 @@ export function ReviewForm({ googleReviewUrl }: ReviewFormProps) {
               name="image"
               type="file"
               accept="image/jpeg,image/png,image/webp,image/gif"
-              className="w-full cursor-pointer text-xs font-bold file:mr-3 file:border-2 file:border-black file:bg-yellow-400 file:px-3 file:py-1.5 file:text-[10px] file:font-black file:uppercase"
+              className="w-full cursor-pointer text-[14px] text-mkt-muted file:mr-3 file:rounded-full file:border-0 file:bg-mkt-lavender file:px-4 file:py-2 file:text-[13px] file:font-medium file:text-mkt-violet"
             />
             <p className="mt-1 text-[9px] font-bold tracking-wide text-black/35">
               JPG, PNG, WEBP, GIF · MAX 2MB
             </p>
           </div>
 
-          <label className="retro-card flex cursor-pointer items-start gap-3 border-2 bg-white p-3 transition-colors hover:bg-yellow-50">
+          <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-mkt-line bg-mkt-surface p-4 transition-colors hover:border-mkt-violet/40">
             <input
               type="checkbox"
               name="permission"
               required
-              className="mt-0.5 h-4 w-4 shrink-0 border-2 border-black accent-yellow-400"
+              className="mt-0.5 h-4 w-4 shrink-0 accent-mkt-violet"
             />
             <span className="text-[11px] font-bold leading-snug text-black/70">
               I AGREE THAT RACTROTECH MAY DISPLAY MY FEEDBACK, NAME, AND COMPANY ON THIS WEBSITE AS A
@@ -226,7 +227,7 @@ export function ReviewForm({ googleReviewUrl }: ReviewFormProps) {
           <button
             type="submit"
             disabled={pending}
-            className={`retro-button group flex w-full items-center justify-center gap-3 border-black bg-black !py-3 text-base text-yellow-400 transition-opacity ${
+            className={`mkt-btn-primary w-full !py-3.5 ${
               pending ? 'opacity-70' : ''
             }`}
           >
@@ -244,7 +245,7 @@ export function ReviewForm({ googleReviewUrl }: ReviewFormProps) {
           </button>
 
           <div className="border-t border-black/5 pt-4 text-center">
-            <p className="text-[10px] font-black tracking-[0.3em] text-black/25">RACTROTECH</p>
+            
           </div>
         </motion.form>
       )}

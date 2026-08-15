@@ -31,9 +31,9 @@ const BARS = [38, 52, 44, 68, 58, 82, 71, 94, 76, 88];
 
 export function DashboardMock({ className }: { className?: string }) {
   return (
-    <div className={cn('flex bg-white text-mkt-ink', className)} aria-hidden>
+    <div className={cn('flex bg-mkt-surface text-mkt-ink', className)} aria-hidden>
       {/* Sidebar */}
-      <div className="hidden w-[168px] shrink-0 flex-col gap-1 border-r border-mkt-line bg-[#fbfaff] p-3 sm:flex">
+      <div className="hidden w-[168px] shrink-0 flex-col gap-1 border-r border-mkt-line bg-mkt-lavender/40 p-3 sm:flex">
         <div className="mb-3 flex items-center gap-2 px-2">
           <div className="flex h-6 w-6 items-center justify-center rounded-md bg-mkt-violet text-[10px] font-bold text-white">
             R
@@ -45,7 +45,7 @@ export function DashboardMock({ className }: { className?: string }) {
             key={item.label}
             className={cn(
               'flex items-center gap-2 rounded-lg px-2 py-1.5 text-[11px]',
-              item.active ? 'bg-white font-medium text-mkt-ink shadow-sm' : 'text-mkt-muted'
+              item.active ? 'bg-mkt-surface font-medium text-mkt-ink shadow-sm' : 'text-mkt-muted'
             )}
           >
             <span

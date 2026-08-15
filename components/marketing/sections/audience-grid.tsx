@@ -21,14 +21,14 @@ function AudienceArt({ tone }: { tone: 'mint' | 'butter' | 'sky' }) {
     >
       <Squiggle className="absolute left-4 top-4 h-4 w-20 text-mkt-ink/20" />
       {tone === 'mint' ? (
-        <div className="mb-0 flex w-full max-w-[180px] flex-col gap-1.5 rounded-t-xl bg-white p-3 shadow-sm">
+        <div className="mb-0 flex w-full max-w-[180px] flex-col gap-1.5 rounded-t-xl bg-mkt-surface p-3 shadow-sm">
           <div className="h-1.5 w-16 rounded-full bg-mkt-ink/20" />
           <div className="h-1.5 w-24 rounded-full bg-mkt-ink/10" />
           <div className="mt-1 h-6 w-full rounded-md bg-mkt-violet/85" />
         </div>
       ) : null}
       {tone === 'butter' ? (
-        <div className="mb-0 flex w-full max-w-[190px] items-end gap-1.5 rounded-t-xl bg-white p-3 shadow-sm">
+        <div className="mb-0 flex w-full max-w-[190px] items-end gap-1.5 rounded-t-xl bg-mkt-surface p-3 shadow-sm">
           {[40, 62, 48, 80, 96].map((h, i) => (
             <div
               key={i}
@@ -39,7 +39,7 @@ function AudienceArt({ tone }: { tone: 'mint' | 'butter' | 'sky' }) {
         </div>
       ) : null}
       {tone === 'sky' ? (
-        <div className="mb-0 flex w-full max-w-[180px] flex-col gap-1.5 rounded-t-xl bg-white p-3 shadow-sm">
+        <div className="mb-0 flex w-full max-w-[180px] flex-col gap-1.5 rounded-t-xl bg-mkt-surface p-3 shadow-sm">
           {[0, 1, 2].map((i) => (
             <div key={i} className="flex items-center gap-2">
               <div
@@ -80,7 +80,7 @@ export function AudienceGrid() {
             <RevealItem
               key={item.title}
               as="li"
-              className="flex flex-col rounded-3xl border border-mkt-line bg-white p-5"
+              className="flex flex-col rounded-3xl border border-mkt-line bg-mkt-surface p-5"
             >
               <AudienceArt tone={item.tone} />
               <h3 className="mkt-display mt-6 text-[21px]">{item.title}</h3>

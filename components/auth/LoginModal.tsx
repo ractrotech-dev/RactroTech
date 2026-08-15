@@ -67,7 +67,7 @@ export function LoginModal({ open, onOpenChange }: LoginModalProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className="max-w-md border-0 bg-white/80 p-0 shadow-2xl backdrop-blur-xl sm:rounded-2xl [&>button]:hidden"
+        className="max-w-md border-0 bg-white/80 p-0 text-black shadow-2xl backdrop-blur-xl sm:rounded-2xl [&>button]:hidden"
         overlayClassName="bg-black/30 backdrop-blur-lg"
       >
         <div className="relative border border-white/40 bg-white/70 p-6 backdrop-blur-xl sm:p-8">

@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 
-import { ServicePageContent } from '@/components/marketing/service-page-content';
+import { ServiceDetail } from '@/components/marketing/sections/service-detail';
 import {
   constructMetadata,
   generateBreadcrumbSchema,
@@ -50,7 +50,7 @@ export function ServicePage({ slug }: Props) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
         />
       ))}
-      <ServicePageContent service={service} />
+      <ServiceDetail service={service} />
     </>
   );
 }

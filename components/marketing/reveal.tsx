@@ -1,115 +1,58 @@
-'use client';
-
-import { useEffect, useRef, useState } from 'react';
-import { motion, useReducedMotion, type Variants } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 /**
- * Scroll reveal for the marketing landing sections.
+ * Entrance animation for the marketing sections.
  *
- * The hard rule here: the hidden state must never reach the server-rendered HTML.
- * framer-motion serialises `initial` into a style attribute, so `initial={{opacity:0}}`
- * ships a blank page to anyone whose JS is slow, blocked, or whose viewport callback
- * never fires. This site has already shipped that bug once — commit 0467cab, "Fix
- * invisible marketing text", which is why `fade-in-view.tsx` had its variants gutted.
+ * Pure CSS by design — no IntersectionObserver, no state, no client JS. Earlier
+ * framer-motion versions of this component hid content at opacity 0 and relied on a
+ * viewport callback to bring it back, which blanked whole pages when that callback did
+ * not fire (and shipped `opacity:0` into the SSR markup). This site had already been
+ * burned by that once, in commit 0467cab.
  *
- * So: everything renders visible. After mount we arm the fade only on elements that are
- * still below the fold — content the visitor cannot see yet, and which therefore has a
- * scroll event coming. Anything already on screen is left exactly as rendered.
+ * With a plain CSS animation there is nothing left to fail: if the stylesheet loads the
+ * content fades up, and if it does not, the rule simply is not there and the content
+ * renders normally. These are server components, so they add no JavaScript at all.
+ *
+ * The trade-off is that the animation plays on load rather than on scroll. Content far
+ * down the page has finished animating by the time it is reached, which is invisible to
+ * the visitor and worth it for never showing a blank page.
  */
 
-const EASE = [0.22, 1, 0.36, 1] as const;
-const VIEWPORT = { once: true, amount: 0.2 } as const;
-
-/**
- * Returns true once this element is confirmed below the fold and safe to animate in.
- * Stays false during SSR, during the first client render, for above-fold content, and
- * whenever reduced motion is requested.
- */
-function useArmedBelowFold(enabled: boolean) {
-  const nodeRef = useRef<HTMLElement | null>(null);
-  const [armed, setArmed] = useState(false);
-
-  // Callback ref so one hook serves div/section/ul/li without casting.
-  const ref = (node: HTMLElement | null) => {
-    nodeRef.current = node;
-  };
-
-  useEffect(() => {
-    if (!enabled) return;
-    const node = nodeRef.current;
-    if (!node) return;
-    if (node.getBoundingClientRect().top > window.innerHeight) setArmed(true);
-  }, [enabled]);
-
-  return { ref, armed };
-}
+type As = 'div' | 'section' | 'li' | 'article' | 'ul';
 
 type RevealProps = {
   children: React.ReactNode;
   className?: string;
+  /** Seconds to hold before this element fades up. */
   delay?: number;
-  y?: number;
-  as?: 'div' | 'section' | 'li' | 'article';
+  as?: As;
 };
 
-export function Reveal({ children, className, delay = 0, y = 18, as = 'div' }: RevealProps) {
-  const reduced = useReducedMotion();
-  const { ref, armed } = useArmedBelowFold(!reduced);
-  const [revealed, setRevealed] = useState(false);
-  const Comp = motion[as];
-
-  const hidden = armed && !revealed;
-
+export function Reveal({ children, className, delay, as = 'div' }: RevealProps) {
+  const Comp = as;
   return (
     <Comp
-      ref={ref}
-      className={className}
-      // Never `initial` — that is what would serialise into the SSR markup.
-      animate={hidden ? { opacity: 0, y } : { opacity: 1, y: 0 }}
-      onViewportEnter={() => setRevealed(true)}
-      viewport={VIEWPORT}
-      // Hiding happens off-screen, so it should be instant; only the reveal eases in.
-      transition={hidden ? { duration: 0 } : { duration: 0.6, delay, ease: EASE }}
+      className={cn('mkt-reveal', className)}
+      style={delay ? { animationDelay: `${delay}s` } : undefined}
     >
       {children}
     </Comp>
   );
 }
 
-const groupVariants: Variants = {
-  hidden: { transition: { duration: 0 } },
-  show: { transition: { staggerChildren: 0.08, delayChildren: 0.05 } },
-};
-
-const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 18, transition: { duration: 0 } },
-  show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: EASE } },
-};
-
 type RevealGroupProps = {
   children: React.ReactNode;
   className?: string;
-  as?: 'div' | 'ul' | 'section';
+  as?: As;
 };
 
+/**
+ * Staggers its direct children. The stagger is a `:nth-child` rule in globals.css, so
+ * items need no index prop and the whole thing stays server-rendered.
+ */
 export function RevealGroup({ children, className, as = 'div' }: RevealGroupProps) {
-  const reduced = useReducedMotion();
-  const { ref, armed } = useArmedBelowFold(!reduced);
-  const [revealed, setRevealed] = useState(false);
-  const Comp = motion[as];
-
-  return (
-    <Comp
-      ref={ref}
-      className={className}
-      variants={groupVariants}
-      animate={armed && !revealed ? 'hidden' : 'show'}
-      onViewportEnter={() => setRevealed(true)}
-      viewport={VIEWPORT}
-    >
-      {children}
-    </Comp>
-  );
+  const Comp = as;
+  return <Comp className={cn('mkt-reveal-group', className)}>{children}</Comp>;
 }
 
 type RevealItemProps = {
@@ -118,12 +61,8 @@ type RevealItemProps = {
   as?: 'div' | 'li' | 'article';
 };
 
-/** Must be a direct descendant of `RevealGroup` to inherit the stagger. */
+/** Must be a direct child of `RevealGroup` — the stagger selector targets `> *`. */
 export function RevealItem({ children, className, as = 'div' }: RevealItemProps) {
-  const Comp = motion[as];
-  return (
-    <Comp className={className} variants={itemVariants}>
-      {children}
-    </Comp>
-  );
+  const Comp = as;
+  return <Comp className={className}>{children}</Comp>;
 }

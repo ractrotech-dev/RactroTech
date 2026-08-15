@@ -1,4 +1,5 @@
-import { MarketingPageHeader } from '@/components/marketing-page-header';
+import { PageHero } from '@/components/marketing/sections/page-hero';
+import { FinalCta } from '@/components/marketing/sections/final-cta';
 import { constructMetadata, sitePath } from '@/lib/seo';
 
 export const metadata = constructMetadata({
@@ -9,9 +10,16 @@ export const metadata = constructMetadata({
 
 export default function ProductPage() {
   return (
-    <MarketingPageHeader
-      title="Product"
-      description="Product will be added soon."
-    />
+    <>
+      <PageHero
+        eyebrow="Product"
+        title="Something new is"
+        titleAccent="on the way"
+        description="We are building a product of our own. Until it lands, tell us what you need and we will build it with you."
+        primaryCta={{ label: 'Tell us your idea', href: '/start-project' }}
+        secondaryCta={{ label: 'See our services', href: '/services' }}
+      />
+      <FinalCta />
+    </>
   );
 }
