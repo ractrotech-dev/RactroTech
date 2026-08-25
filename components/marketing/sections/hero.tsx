@@ -33,7 +33,7 @@ export function Hero() {
             </span>
           </h1>
 
-          <p className="mx-auto mt-6 max-w-2xl text-[17px] leading-relaxed text-mkt-muted sm:text-[18px]">
+          <p className="mx-auto mt-6 max-w-2xl text-[17px] leading-relaxed text-white/75 sm:text-[18px]">
             {HERO.subhead}
           </p>
 
@@ -47,7 +47,7 @@ export function Hero() {
             </Link>
           </div>
 
-          <p className="mt-5 text-[13px] text-mkt-muted">{HERO.note}</p>
+          <p className="mt-5 text-[13px] text-white/70">{HERO.note}</p>
         </Reveal>
 
         <Reveal className="relative mx-auto mt-14 max-w-5xl" delay={0.15}>
@@ -57,11 +57,11 @@ export function Hero() {
 
           {/* Floating stat chips. Sit in the gutter beside the frame — only xl+ has the
               room, and anything narrower would cover the mockup's own content. */}
-          <div className="absolute -left-24 top-[24%] hidden rounded-xl border border-mkt-line bg-mkt-surface px-3.5 py-2.5 shadow-[0_12px_30px_-12px_rgba(11,11,16,0.3)] xl:block">
+          <div className="absolute -left-24 top-[24%] hidden rounded-xl border border-mkt-line bg-mkt-surface px-3.5 py-2.5 shadow-[0_12px_30px_-12px_rgba(11,11,16,0.3)] xl:block text-mkt-ink">
             <div className="text-[11px] font-medium text-mkt-muted">Design + dev</div>
             <div className="text-[13px] font-semibold text-mkt-ink">One team</div>
           </div>
-          <div className="absolute -right-24 bottom-[22%] hidden rounded-xl border border-mkt-line bg-mkt-surface px-3.5 py-2.5 shadow-[0_12px_30px_-12px_rgba(11,11,16,0.3)] xl:block">
+          <div className="absolute -right-24 bottom-[22%] hidden rounded-xl border border-mkt-line bg-mkt-surface px-3.5 py-2.5 shadow-[0_12px_30px_-12px_rgba(11,11,16,0.3)] xl:block text-mkt-ink">
             <div className="text-[11px] font-medium text-mkt-muted">Typical MVP</div>
             <div className="text-[13px] font-semibold text-mkt-ink">4–8 weeks</div>
           </div>

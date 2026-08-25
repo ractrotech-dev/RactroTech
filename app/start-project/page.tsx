@@ -72,8 +72,8 @@ export default function StartProject({
 
   return (
     <div className="relative isolate flex min-h-screen flex-col text-mkt-ink">
-      <GlobalBackground />
-      <SiteHeader />
+      <GlobalBackground tone="surface" />
+      <SiteHeader tone="surface" />
 
       <main className="relative flex-1 overflow-hidden py-12 lg:py-16">
         <HeroGlow />
@@ -90,7 +90,7 @@ export default function StartProject({
           </Link>
 
           {state.success ? (
-            <div className="mkt-reveal mt-8 rounded-3xl border border-mkt-line bg-mkt-surface p-8 text-center sm:p-12">
+            <div className="mkt-reveal mt-8 rounded-3xl border border-mkt-line bg-mkt-surface p-8 text-center sm:p-12 text-mkt-ink">
               <span className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-mkt-mint text-mkt-success">
                 <Check className="h-8 w-8" strokeWidth={2.5} aria-hidden />
               </span>
@@ -133,7 +133,7 @@ export default function StartProject({
 
               <form
                 action={formAction}
-                className="mkt-reveal mt-10 rounded-3xl border border-mkt-line bg-mkt-surface p-6 sm:p-8"
+                className="mkt-reveal mt-10 rounded-3xl border border-mkt-line bg-mkt-surface p-6 sm:p-8 text-mkt-ink"
                 style={{ animationDelay: '0.1s' }}
               >
                 {state?.message && !state.success ? (

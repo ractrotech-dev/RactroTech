@@ -37,14 +37,14 @@ const SOCIALS = [
 
 export function ContactChannels() {
   return (
-    <section className="bg-mkt-lavender py-20 lg:py-24">
+    <section className="bg-mkt-lavender py-20 lg:py-24 text-mkt-ink">
       <div className="mkt-shell">
         <RevealGroup as="ul" className="grid gap-4 md:grid-cols-3">
           {CHANNELS.map((channel) => {
             const Icon = channel.icon;
             const inner = (
               <>
-                <span className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-mkt-lavender text-mkt-violet">
+                <span className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-mkt-lavender text-mkt-violet text-mkt-ink">
                   <Icon className="h-5 w-5" strokeWidth={2} aria-hidden />
                 </span>
                 <h2 className="mkt-display text-[21px]">{channel.title}</h2>
@@ -60,12 +60,12 @@ export function ContactChannels() {
                 {channel.href ? (
                   <Link
                     href={channel.href}
-                    className="flex h-full flex-col rounded-3xl border border-mkt-line bg-mkt-surface p-6 transition-shadow duration-200 hover:shadow-[0_18px_44px_-26px_rgba(11,11,16,0.4)] sm:p-7"
+                    className="flex h-full flex-col rounded-3xl border border-mkt-line bg-mkt-surface p-6 transition-shadow duration-200 hover:shadow-[0_18px_44px_-26px_rgba(11,11,16,0.4)] sm:p-7 text-mkt-ink"
                   >
                     {inner}
                   </Link>
                 ) : (
-                  <div className="flex h-full flex-col rounded-3xl border border-mkt-line bg-mkt-surface p-6 sm:p-7">
+                  <div className="flex h-full flex-col rounded-3xl border border-mkt-line bg-mkt-surface p-6 sm:p-7 text-mkt-ink">
                     {inner}
                   </div>
                 )}

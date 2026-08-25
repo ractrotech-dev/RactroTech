@@ -41,7 +41,7 @@ export function AboutStory() {
               <h2 className="mkt-display mt-6 text-[30px] leading-[1.1] sm:text-[40px]">
                 A developer-led team that builds real products
               </h2>
-              <div className="mt-6 space-y-4 text-[16px] leading-relaxed text-mkt-muted">
+              <div className="mt-6 space-y-4 text-[16px] leading-relaxed text-white/75">
                 <p>
                   We build websites, web apps, SaaS platforms, stores, and internal tools — for
                   people who are tired of agencies that overpromise and underdeliver.
@@ -62,9 +62,9 @@ export function AboutStory() {
               {PROCESS.steps.map((step, i) => (
                 <RevealItem
                   key={step.title}
-                  className="flex gap-5 rounded-3xl border border-mkt-line bg-mkt-surface p-6"
+                  className="flex gap-5 rounded-3xl border border-mkt-line bg-mkt-surface p-6 text-mkt-ink"
                 >
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-mkt-lavender text-[14px] font-semibold tabular-nums text-mkt-violet">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-mkt-lavender text-[14px] font-semibold tabular-nums text-mkt-violet text-mkt-ink">
                     {i + 1}
                   </span>
                   <div>
@@ -78,7 +78,7 @@ export function AboutStory() {
         </div>
       </section>
 
-      <section className="bg-mkt-cream py-20 lg:py-24">
+      <section className="bg-mkt-cream py-20 lg:py-24 text-mkt-ink">
         <div className="mkt-shell">
           <Reveal className="mx-auto max-w-2xl text-center">
             <span className="mkt-eyebrow">
@@ -88,7 +88,7 @@ export function AboutStory() {
             <h2 className="mkt-display mt-6 text-[32px] leading-[1.1] sm:text-[42px]">
               Why teams choose Ractrotech
             </h2>
-            <p className="mx-auto mt-5 max-w-xl text-[17px] leading-relaxed text-mkt-muted">
+            <p className="mx-auto mt-5 max-w-xl text-[17px] leading-relaxed text-white/75">
               Hiring a dev team is stressful. Here is what our clients tell us they value most.
             </p>
           </Reveal>
@@ -100,9 +100,9 @@ export function AboutStory() {
                 <RevealItem
                   key={reason.title}
                   as="li"
-                  className="rounded-3xl border border-mkt-line bg-mkt-surface p-6"
+                  className="rounded-3xl border border-mkt-line bg-mkt-surface p-6 text-mkt-ink"
                 >
-                  <span className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-mkt-lavender text-mkt-violet">
+                  <span className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-mkt-lavender text-mkt-violet text-mkt-ink">
                     <Icon className="h-5 w-5" strokeWidth={2} aria-hidden />
                   </span>
                   <h3 className="mkt-display text-[18px]">{reason.title}</h3>

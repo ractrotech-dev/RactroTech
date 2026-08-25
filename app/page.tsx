@@ -57,7 +57,7 @@ export default async function Home() {
   const wallReviews = featured ? reviews.filter((r) => r.id !== featured.id) : reviews;
 
   return (
-    <div className="relative isolate flex min-h-screen flex-col text-mkt-ink">
+    <div className="relative isolate flex min-h-screen flex-col text-white">
       <GlobalBackground />
       <script
         type="application/ld+json"

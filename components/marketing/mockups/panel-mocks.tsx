@@ -11,7 +11,7 @@ export function ChatPanelMock({ className }: { className?: string }) {
     <div className={cn('space-y-2 rounded-xl bg-mkt-surface p-3 ring-1 ring-mkt-line', className)} aria-hidden>
       <div className="flex gap-2">
         <div className="h-5 w-5 shrink-0 rounded-full bg-mkt-lavender-deep" />
-        <div className="max-w-[80%] rounded-xl rounded-tl-sm bg-mkt-lavender px-2.5 py-1.5">
+        <div className="max-w-[80%] rounded-xl rounded-tl-sm bg-mkt-lavender px-2.5 py-1.5 text-mkt-ink">
           <div className="h-1.5 w-24 rounded-full bg-mkt-ink/15" />
           <div className="mt-1 h-1.5 w-16 rounded-full bg-mkt-ink/10" />
         </div>
@@ -24,7 +24,7 @@ export function ChatPanelMock({ className }: { className?: string }) {
       </div>
       <div className="flex gap-2">
         <div className="h-5 w-5 shrink-0 rounded-full bg-mkt-mint" />
-        <div className="max-w-[80%] rounded-xl rounded-tl-sm bg-mkt-lavender px-2.5 py-1.5">
+        <div className="max-w-[80%] rounded-xl rounded-tl-sm bg-mkt-lavender px-2.5 py-1.5 text-mkt-ink">
           <div className="h-1.5 w-14 rounded-full bg-mkt-ink/15" />
         </div>
       </div>
@@ -41,7 +41,7 @@ export function DesignPanelMock({ className }: { className?: string }) {
         { label: 'UI design', fill: 'bg-mkt-lilac' },
         { label: 'Shipped', fill: 'bg-mkt-violet' },
       ].map((step) => (
-        <div key={step.label} className="rounded-xl bg-mkt-surface p-2 ring-1 ring-mkt-line">
+        <div key={step.label} className="rounded-xl bg-mkt-surface p-2 ring-1 ring-mkt-line text-mkt-ink">
           <div className={cn('mb-1.5 h-1 w-6 rounded-full', step.fill)} />
           <div className="space-y-1">
             <div className="h-1.5 w-full rounded-full bg-mkt-ink/10" />

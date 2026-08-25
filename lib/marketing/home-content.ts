@@ -1,3 +1,5 @@
+import type { Tone } from './tones';
+
 /**
  * Homepage copy for the landing sections, kept as typed data the way SERVICE_PAGES is
  * in ./service-pages.ts. Every claim here is either descriptive of what Ractrotech does
@@ -132,7 +134,10 @@ export type ResultCard = {
   stat: string;
   label: string;
   body: string;
-  tone: 'mint' | 'pink' | 'butter' | 'lilac' | 'sky';
+  tone: Tone;
+  /** Corner mark on the card. Mapped to a component in sections/results-grid.tsx — a name
+      rather than an icon so this stays a plain data file with no React import. */
+  icon: 'timeline' | 'reply' | 'services' | 'quote' | 'direct';
   /** Where the claim comes from, so it stays auditable. */
   source: string;
 };
@@ -147,13 +152,15 @@ export const RESULTS: ResultCard[] = [
     label: 'Typical MVP timeline',
     body: 'Most MVPs ship in four to eight weeks. A full v1 with billing, admin and integrations runs eight to sixteen.',
     tone: 'mint',
+    icon: 'timeline',
     source: 'service-pages.ts — SaaS + MVP FAQ',
   },
   {
     stat: '1 day',
     label: 'Response time',
     body: 'Questions answered within one business day. You are never left wondering what is happening.',
-    tone: 'butter',
+    tone: 'peach',
+    icon: 'reply',
     source: 'retro-why-us.tsx + retro-cta.tsx',
   },
   {
@@ -161,6 +168,7 @@ export const RESULTS: ResultCard[] = [
     label: 'Services under one roof',
     body: 'Web, SaaS, MVP, mobile, UI/UX, e-commerce, AI, cloud, templates and consulting — one team, one contract.',
     tone: 'lilac',
+    icon: 'services',
     source: 'retro-services.tsx — services array length',
   },
   {
@@ -168,6 +176,7 @@ export const RESULTS: ResultCard[] = [
     label: 'Scope and quote',
     body: 'We give you a fixed-scope quote after discovery, so the number you approve is the number you pay.',
     tone: 'pink',
+    icon: 'quote',
     source: 'service-pages.ts — SaaS cost FAQ',
   },
   {
@@ -175,6 +184,7 @@ export const RESULTS: ResultCard[] = [
     label: 'Sales middlemen',
     body: 'You work directly with the developers and designers building your product. No account manager relay.',
     tone: 'sky',
+    icon: 'direct',
     source: 'retro-why-us.tsx',
   },
 ];

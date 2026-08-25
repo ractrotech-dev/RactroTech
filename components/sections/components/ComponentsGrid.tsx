@@ -14,11 +14,11 @@ type ComponentsGridProps = {
 function PreviewCardSkeleton() {
   return (
     <div className="mkt-card overflow-hidden">
-      <div className="h-48 animate-pulse bg-mkt-lavender" />
+      <div className="h-48 animate-pulse bg-mkt-lavender text-mkt-ink" />
       <div className="space-y-3 p-5">
-        <div className="h-5 w-24 animate-pulse rounded-full bg-mkt-lavender" />
-        <div className="h-4 w-3/4 animate-pulse rounded-full bg-mkt-lavender" />
-        <div className="h-4 w-full animate-pulse rounded-full bg-mkt-lavender" />
+        <div className="h-5 w-24 animate-pulse rounded-full bg-mkt-lavender text-mkt-ink" />
+        <div className="h-4 w-3/4 animate-pulse rounded-full bg-mkt-lavender text-mkt-ink" />
+        <div className="h-4 w-full animate-pulse rounded-full bg-mkt-lavender text-mkt-ink" />
       </div>
     </div>
   );
@@ -40,7 +40,7 @@ export function ComponentsGrid({ components, categories, isLoading }: Components
   if (components.length === 0) {
     return (
       <div className="mkt-card mt-6 flex flex-col items-center px-6 py-14 text-center">
-        <span className="flex h-12 w-12 items-center justify-center rounded-full bg-mkt-lavender text-mkt-violet">
+        <span className="flex h-12 w-12 items-center justify-center rounded-full bg-mkt-lavender text-mkt-violet text-mkt-ink">
           <SearchX className="h-5 w-5" aria-hidden />
         </span>
         <p className="mkt-display mt-5 text-[19px]">No components found</p>
@@ -52,7 +52,7 @@ export function ComponentsGrid({ components, categories, isLoading }: Components
         </Link>
         <p className="mt-6 text-[13px] text-mkt-muted">
           Seeding a fresh install? Run{' '}
-          <code className="rounded-md bg-mkt-lavender px-1.5 py-0.5 font-mono text-mkt-violet">
+          <code className="rounded-md bg-mkt-lavender px-1.5 py-0.5 font-mono text-mkt-violet text-mkt-ink">
             npm run library:generate
           </code>
           .

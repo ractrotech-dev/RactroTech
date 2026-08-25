@@ -62,7 +62,7 @@ function ProjectCard({ project }: { project: ShowcaseProject }) {
             {project.tags.map((tag) => (
               <span
                 key={tag}
-                className="rounded-full border border-mkt-line bg-mkt-surface px-2.5 py-1 text-[12px] font-medium text-mkt-muted"
+                className="rounded-full border border-mkt-line bg-mkt-surface px-2.5 py-1 text-[12px] font-medium text-mkt-muted text-mkt-ink"
               >
                 {tag}
               </span>
@@ -94,7 +94,7 @@ export function ProjectsGrid() {
           >
             Products we design and ship
           </h2>
-          <p className="mx-auto mt-5 max-w-xl text-[17px] leading-relaxed text-mkt-muted">
+          <p className="mx-auto mt-5 max-w-xl text-[17px] leading-relaxed text-white/75">
             A look at the kinds of builds we take from idea to production — SaaS, MVPs, marketing
             sites, stores and internal tools.
           </p>

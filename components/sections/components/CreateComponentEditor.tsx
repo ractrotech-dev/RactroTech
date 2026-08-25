@@ -358,7 +358,7 @@ export function CreateComponentEditor() {
               </div>
             </div>
 
-            <div className="flex flex-1 items-center justify-center overflow-x-auto bg-mkt-surface-2 p-4 sm:p-6">
+            <div className="flex flex-1 items-center justify-center overflow-x-auto bg-mkt-surface-2 p-4 sm:p-6 text-mkt-ink">
               <div
                 className={cn(
                   'h-[320px] overflow-hidden rounded-2xl border border-mkt-line bg-mkt-surface shadow-[0_18px_44px_-26px_rgba(11,11,16,0.4)]',

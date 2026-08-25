@@ -107,6 +107,17 @@ const config = {
           butter: "rgb(var(--mkt-butter) / <alpha-value>)",
           lilac: "rgb(var(--mkt-lilac) / <alpha-value>)",
           sky: "rgb(var(--mkt-sky) / <alpha-value>)",
+          peach: "rgb(var(--mkt-peach) / <alpha-value>)",
+          canvas: "rgb(var(--mkt-canvas) / <alpha-value>)",
+          /* Tone-paired ink — `text-mkt-on-mint` on a `bg-mkt-mint` card, and so on.
+             Applying it as the card's colour lets everything inside it use currentColor
+             (border-current/15, text-current/70) and stay in tone automatically. */
+          "on-mint": "rgb(var(--mkt-on-mint) / <alpha-value>)",
+          "on-sky": "rgb(var(--mkt-on-sky) / <alpha-value>)",
+          "on-butter": "rgb(var(--mkt-on-butter) / <alpha-value>)",
+          "on-pink": "rgb(var(--mkt-on-pink) / <alpha-value>)",
+          "on-lilac": "rgb(var(--mkt-on-lilac) / <alpha-value>)",
+          "on-peach": "rgb(var(--mkt-on-peach) / <alpha-value>)",
           success: "rgb(var(--mkt-success) / <alpha-value>)",
         },
       },

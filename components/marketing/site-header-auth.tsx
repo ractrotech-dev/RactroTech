@@ -8,6 +8,7 @@ import { useAuthModal } from '@/contexts/auth-modal-context';
 import { useAuth } from '@/hooks/use-auth';
 import { Skeleton } from '@/components/ui/skeleton';
 import { createClient } from '@/utils/supabase/client';
+import { cn } from '@/lib/utils';
 
 /**
  * Auth strip for the marketing header. Same behaviour as components/auth/NavbarAuth.tsx —
@@ -17,10 +18,33 @@ import { createClient } from '@/utils/supabase/client';
 
 type Props = {
   variant?: 'desktop' | 'mobile';
+  /** Matches the header's own tone — see `HeaderTone` in components/marketing/site-header.tsx. */
+  tone?: 'canvas' | 'surface';
   onNavigate?: () => void;
 };
 
-export function SiteHeaderAuth({ variant = 'desktop', onNavigate }: Props) {
+/* The guest strip is the only part that changes with the tone: on the violet canvas the
+   call to action is a white pill, on a light surface it is the violet one. Signed-in
+   chrome (UserMenu) carries its own surface either way. */
+const AUTH_TONE = {
+  canvas: {
+    ghost: 'text-white/80 hover:bg-white/10 hover:text-white',
+    /* --mkt-contrast, not --mkt-ink: this pill is white in both themes, so its label needs
+       a token that stays dark in both. --mkt-ink flips to near-white and disappears here. */
+    cta: 'bg-white text-mkt-contrast hover:bg-white/90',
+    skeleton: 'bg-white/10',
+    outline: 'border-white/20 text-white hover:bg-white/10',
+  },
+  surface: {
+    ghost: 'text-mkt-ink hover:bg-mkt-lavender',
+    cta: 'bg-mkt-violet text-white shadow-[0_8px_20px_-8px_rgba(91,61,245,0.7)] hover:bg-mkt-violet-soft',
+    skeleton: 'bg-mkt-lavender',
+    outline: 'border-mkt-line text-mkt-ink hover:bg-mkt-lavender',
+  },
+} as const;
+
+export function SiteHeaderAuth({ variant = 'desktop', tone = 'canvas', onNavigate }: Props) {
+  const t = AUTH_TONE[tone];
   const { isAuthenticated, loading, initialized } = useAuth();
   const { openLoginModal } = useAuthModal();
   const [isAdmin, setIsAdmin] = useState(false);
@@ -50,8 +74,8 @@ export function SiteHeaderAuth({ variant = 'desktop', onNavigate }: Props) {
   if (!initialized || loading) {
     return (
       <div className={mobile ? 'flex gap-2' : 'flex items-center gap-2'} aria-hidden>
-        <Skeleton className="h-9 w-9 rounded-full bg-mkt-lavender" />
-        {!mobile ? <Skeleton className="hidden h-9 w-24 rounded-full bg-mkt-lavender md:block" /> : null}
+        <Skeleton className={cn('h-9 w-9 rounded-full', t.skeleton)} />
+        {!mobile ? <Skeleton className={cn('hidden h-9 w-28 rounded-full md:block', t.skeleton)} /> : null}
       </div>
     );
   }
@@ -66,11 +90,15 @@ export function SiteHeaderAuth({ variant = 'desktop', onNavigate }: Props) {
               openLoginModal();
               onNavigate?.();
             }}
-            className="mkt-btn-ghost w-full"
+            className={cn('mkt-btn w-full border px-6 py-3', t.outline)}
           >
             Log in
           </button>
-          <Link href="/start-project" onClick={onNavigate} className="mkt-btn-primary w-full">
+          <Link
+            href="/start-project"
+            onClick={onNavigate}
+            className={cn('mkt-btn w-full px-6 py-3', t.cta)}
+          >
             Start a project
           </Link>
         </div>
@@ -78,15 +106,21 @@ export function SiteHeaderAuth({ variant = 'desktop', onNavigate }: Props) {
     }
 
     return (
-      <div className="flex items-center gap-1.5">
+      <div className="flex items-center gap-1">
         <button
           type="button"
           onClick={() => openLoginModal()}
-          className="rounded-full px-4 py-2 text-[15px] font-medium text-mkt-ink transition-colors hover:bg-mkt-lavender"
+          className={cn(
+            'rounded-full px-3.5 py-2 text-[14px] font-medium transition-colors duration-200',
+            t.ghost
+          )}
         >
           Log in
         </button>
-        <Link href="/start-project" className="mkt-btn-primary !px-5 !py-2.5">
+        <Link
+          href="/start-project"
+          className={cn('mkt-btn px-4 py-2 text-[14px] font-semibold', t.cta)}
+        >
           Start a project
         </Link>
       </div>
@@ -95,9 +129,9 @@ export function SiteHeaderAuth({ variant = 'desktop', onNavigate }: Props) {
 
   if (mobile) {
     return (
-      <div className="flex flex-col gap-3 border-t border-mkt-line pt-4">
+      <div className={cn('flex flex-col gap-3 border-t pt-4', tone === 'canvas' ? 'border-white/12' : 'border-mkt-line')}>
         {isAdmin ? (
-          <Link href="/dashboard" onClick={onNavigate} className="mkt-btn-primary w-full">
+          <Link href="/dashboard" onClick={onNavigate} className={cn('mkt-btn w-full px-6 py-3', t.cta)}>
             Go to dashboard
           </Link>
         ) : null}
@@ -111,7 +145,10 @@ export function SiteHeaderAuth({ variant = 'desktop', onNavigate }: Props) {
       {isAdmin ? (
         <Link
           href="/dashboard"
-          className="hidden rounded-full border border-mkt-line px-4 py-2 text-[15px] font-medium text-mkt-ink transition-colors hover:bg-mkt-lavender sm:inline-flex"
+          className={cn(
+            'hidden rounded-full border px-4 py-2 text-[14px] font-medium transition-colors sm:inline-flex',
+            t.outline
+          )}
         >
           Dashboard
         </Link>

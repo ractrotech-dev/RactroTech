@@ -33,7 +33,7 @@ export function DashboardMock({ className }: { className?: string }) {
   return (
     <div className={cn('flex bg-mkt-surface text-mkt-ink', className)} aria-hidden>
       {/* Sidebar */}
-      <div className="hidden w-[168px] shrink-0 flex-col gap-1 border-r border-mkt-line bg-mkt-lavender/40 p-3 sm:flex">
+      <div className="hidden w-[168px] shrink-0 flex-col gap-1 border-r border-mkt-line bg-mkt-lavender/40 p-3 sm:flex text-mkt-ink">
         <div className="mb-3 flex items-center gap-2 px-2">
           <div className="flex h-6 w-6 items-center justify-center rounded-md bg-mkt-violet text-[10px] font-bold text-white">
             R
@@ -57,7 +57,7 @@ export function DashboardMock({ className }: { className?: string }) {
             {item.label}
           </div>
         ))}
-        <div className="mt-auto rounded-lg bg-mkt-lavender p-2.5">
+        <div className="mt-auto rounded-lg bg-mkt-lavender p-2.5 text-mkt-ink">
           <div className="text-[10px] font-semibold text-mkt-ink">Next review</div>
           <div className="mt-0.5 text-[10px] text-mkt-muted">Thursday, 10:00</div>
         </div>
@@ -129,7 +129,7 @@ export function DashboardMock({ className }: { className?: string }) {
                 <div className="truncate text-[11px] font-medium">{p.name}</div>
                 <div className="text-[9px] text-mkt-muted">{p.phase}</div>
               </div>
-              <div className="hidden h-1.5 w-24 overflow-hidden rounded-full bg-mkt-lavender sm:block">
+              <div className="hidden h-1.5 w-24 overflow-hidden rounded-full bg-mkt-lavender sm:block text-mkt-ink">
                 <div className={cn('h-full rounded-full', p.tone)} style={{ width: `${p.progress}%` }} />
               </div>
               <div className="w-8 shrink-0 text-right text-[10px] font-semibold tabular-nums">

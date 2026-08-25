@@ -73,7 +73,7 @@ export default async function BlogPostPage({ params }: Props) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }}
         />
-        <div className="border-b border-mkt-line bg-mkt-lavender">
+        <div className="border-b border-mkt-line bg-mkt-lavender text-mkt-ink">
           <div className="mkt-shell max-w-3xl py-12 lg:py-14">
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[14px] font-medium text-mkt-muted">
               <Link href="/blog" className="hover:underline">
@@ -86,7 +86,7 @@ export default async function BlogPostPage({ params }: Props) {
                 Home
               </Link>
             </div>
-            <p className="mt-6 inline-block rounded-full bg-mkt-surface px-3 py-1 text-[13px] font-medium text-mkt-violet">
+            <p className="mt-6 inline-block rounded-full bg-mkt-surface px-3 py-1 text-[13px] font-medium text-mkt-violet text-mkt-ink">
               {post.category || 'Article'}
             </p>
             <h1 className="mkt-display mt-4 text-[32px] leading-[1.12] sm:text-[42px]">{post.title}</h1>
@@ -102,7 +102,7 @@ export default async function BlogPostPage({ params }: Props) {
                 {tagList.map((tag) => (
                   <li
                     key={tag}
-                    className="rounded-full bg-mkt-surface px-2.5 py-1 text-[13px] text-mkt-muted"
+                    className="rounded-full bg-mkt-surface px-2.5 py-1 text-[13px] text-mkt-muted text-mkt-ink"
                   >
                     {tag}
                   </li>

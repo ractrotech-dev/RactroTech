@@ -23,7 +23,7 @@ const ADDITIONAL = [
 export function ServicesGrid() {
   return (
     <>
-      <section className="bg-mkt-lavender py-20 lg:py-24">
+      <section className="bg-mkt-lavender py-20 lg:py-24 text-mkt-ink">
         <div className="mkt-shell">
           <Reveal className="mx-auto max-w-2xl text-center">
             <span className="mkt-eyebrow">
@@ -45,7 +45,7 @@ export function ServicesGrid() {
               <RevealItem key={service.slug} as="li" className="h-full">
                 <Link
                   href={`/${service.slug}`}
-                  className="group flex h-full flex-col rounded-3xl border border-mkt-line bg-mkt-surface p-6 transition-shadow duration-200 hover:shadow-[0_18px_44px_-26px_rgba(11,11,16,0.4)] sm:p-7"
+                  className="group flex h-full flex-col rounded-3xl border border-mkt-line bg-mkt-surface p-6 transition-shadow duration-200 hover:shadow-[0_18px_44px_-26px_rgba(11,11,16,0.4)] sm:p-7 text-mkt-ink"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <h3 className="mkt-display text-[19px] sm:text-[21px]">{service.name}</h3>
@@ -85,7 +85,7 @@ export function ServicesGrid() {
               <RevealItem
                 key={item.name}
                 as="li"
-                className="rounded-2xl border border-mkt-line bg-mkt-surface p-5"
+                className="rounded-2xl border border-mkt-line bg-mkt-surface p-5 text-mkt-ink"
               >
                 <h3 className="text-[16px] font-semibold text-mkt-ink">{item.name}</h3>
                 <p className="mt-2 text-[15px] leading-relaxed text-mkt-muted">{item.body}</p>

@@ -63,7 +63,7 @@ function Card({ item }: { item: Capability }) {
 
 export function CapabilityBento() {
   return (
-    <section className="bg-mkt-lavender py-20 lg:py-28">
+    <section className="bg-mkt-lavender py-20 lg:py-28 text-mkt-ink">
       <div className="mkt-shell">
         <Reveal className="mx-auto max-w-2xl text-center">
           <span className="mkt-eyebrow">

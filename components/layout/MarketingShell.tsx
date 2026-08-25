@@ -9,7 +9,7 @@ import { GlobalBackground } from '@/components/layout/global-background';
  */
 export function MarketingShell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="relative isolate flex min-h-screen flex-col text-mkt-ink">
+    <div className="relative isolate flex min-h-screen flex-col text-white">
       <GlobalBackground />
       <SiteHeader />
       <main className="flex-1">{children}</main>

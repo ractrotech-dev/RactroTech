@@ -7,7 +7,7 @@ import { useMounted } from '@/hooks/use-mounted';
 import { cn } from '@/lib/utils';
 
 type MarketingThemeToggleProps = {
-  variant?: 'desktop' | 'mobile';
+  variant?: 'desktop' | 'mobile' | 'inline';
   className?: string;
 };
 
@@ -25,6 +25,30 @@ export function MarketingThemeToggle({
   const { setTheme, resolvedTheme } = useTheme();
   const mounted = useMounted();
   const isDark = resolvedTheme === 'dark';
+
+  /* Bare icon sized to sit inside the header's nav capsule, after its hairline divider.
+     Carries no colour of its own — the header passes the tone's item classes in, so one
+     variant serves both the white-on-violet and the ink-on-surface headers. */
+  if (variant === 'inline') {
+    return (
+      <button
+        type="button"
+        disabled={!mounted}
+        onClick={() => setTheme(isDark ? 'light' : 'dark')}
+        aria-label={mounted && isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+        className={cn(
+          'flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current',
+          className
+        )}
+      >
+        {mounted && isDark ? (
+          <Sun className="h-4 w-4" aria-hidden />
+        ) : (
+          <Moon className="h-4 w-4" aria-hidden />
+        )}
+      </button>
+    );
+  }
 
   if (variant === 'mobile') {
     return (

@@ -87,6 +87,23 @@
     --mkt-butter: 251 239 184;
     --mkt-lilac: 221 214 251;
     --mkt-sky: 210 230 252;
+    --mkt-peach: 252 217 176;
+    /* The violet canvas the colourful card walls sit on. A medium tint on purpose: dark
+       enough that white type clears AA on it, light enough that the pastel cards still
+       read as lighter blocks floating on top rather than sinking into it. */
+    --mkt-canvas: 141 126 240;
+    /* Tone-paired ink. Each pastel fill carries a deep shade of a related hue instead
+       of the neutral --mkt-ink, which is what makes a wall of coloured cards read as one
+       editorial set rather than five random swatches. Two families only, so the mix stays
+       coherent: a plum for the cool/warm neutrals and a forest green for the greens.
+       Set as the card's `color`, so its children can lean on `currentColor`
+       (border-current/15, bg-current/10) instead of needing a token each. */
+    --mkt-on-mint: 20 88 58;
+    --mkt-on-sky: 139 39 74;
+    --mkt-on-butter: 61 80 26;
+    --mkt-on-pink: 146 34 84;
+    --mkt-on-lilac: 72 42 156;
+    --mkt-on-peach: 150 52 40;
     /* Success accent used on the mint confirmation chips. */
     --mkt-success: 28 122 77;
   }
@@ -158,6 +175,18 @@
     --mkt-butter: 56 48 22;
     --mkt-lilac: 41 36 61;
     --mkt-sky: 26 41 58;
+    --mkt-peach: 58 36 26;
+    /* Same band, inked down. Still unmistakably violet rather than collapsing to the
+       neutral --mkt-contrast, so the section keeps its identity in dark mode. */
+    --mkt-canvas: 47 39 92;
+    /* Inks invert with the fills: on a deep tint the pairing has to be a LIGHT shade of
+       the same hue, or the card ends up dark-on-dark. Same two families, lifted. */
+    --mkt-on-mint: 134 227 178;
+    --mkt-on-sky: 164 204 250;
+    --mkt-on-butter: 226 219 140;
+    --mkt-on-pink: 247 178 208;
+    --mkt-on-lilac: 191 176 250;
+    --mkt-on-peach: 246 190 150;
     --mkt-success: 110 231 183;
   }
 }
@@ -215,16 +244,49 @@
     @apply mx-auto w-full max-w-[1200px] px-5 sm:px-6 lg:px-8;
   }
 
+  /* No colour of its own — it inherits. A heading inside a card picks up that card's ink,
+     and the same class on the violet canvas picks up the shell's white. Hard-coding
+     text-mkt-ink here would have forced every canvas heading to override it. */
   .mkt-display {
-    @apply font-display font-semibold tracking-[-0.03em] text-mkt-ink;
+    @apply font-display font-semibold tracking-[-0.03em];
   }
 
   .mkt-eyebrow {
     @apply inline-flex items-center gap-2 rounded-full border border-mkt-line bg-mkt-surface px-3.5 py-1.5 text-[13px] font-medium text-mkt-muted;
   }
 
+  /* Self-contained: carries its own ink so it stays legible whatever the page behind it
+     is set to. The violet canvas sets a white default at the shell root, and a surface
+     that relied on inheriting from there would render white-on-white. */
   .mkt-card {
-    @apply rounded-3xl border border-mkt-line bg-mkt-surface;
+    @apply rounded-3xl border border-mkt-line bg-mkt-surface text-mkt-ink;
+  }
+
+  /* Faint square grid for the violet band — the ruled backdrop the reference uses behind
+     its card walls. Drawn with two 1px gradients rather than an SVG so it tiles at any
+     size and costs no request. White at low alpha, so it works over any canvas tint. */
+  /* Faint square grid for the violet canvas. Two 1px gradients rather than an SVG so it
+     tiles at any size and costs no request. White at low alpha, so it works over any tint.
+     The backdrop that carries this is viewport-fixed, so the ruling is continuous down the
+     whole page and needs no per-section seam handling; the vignette comes from pairing it
+     with .mkt-dot-mask at the call site. */
+  .mkt-grid {
+    /* Wide cells on purpose. At 64px the ruling read as a texture and needed a vignette to
+       stop it buzzing; at this size it reads as architecture — a few calm lines crossing
+       the viewport — which is what lets it run border to border with no mask at all.
+       Exposed as a custom property so a section can tighten the ruling locally without
+       redefining the gradients. */
+    --mkt-grid-size: 132px;
+    background-image:
+      linear-gradient(to right, rgb(255 255 255 / 0.085) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(255 255 255 / 0.085) 1px, transparent 1px);
+    background-size: var(--mkt-grid-size) var(--mkt-grid-size);
+  }
+
+  /* Eyebrow pill for dark or violet bands, where .mkt-eyebrow's white fill would punch a
+     hole in the band. Was hand-rolled identically in three sections before this. */
+  .mkt-eyebrow-onDark {
+    @apply inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3.5 py-1.5 text-[13px] font-medium text-white/75;
   }
 
   .mkt-btn {
@@ -283,6 +345,12 @@
 
   .mkt-marquee-mask:hover .mkt-marquee-track {
     animation-play-state: paused;
+  }
+
+  /* Counter-scrolling second row. Runs the same keyframe backwards rather than needing a
+     mirrored one — the track renders its children twice, so it loops seamlessly either way. */
+  .mkt-marquee-track-reverse {
+    animation-direction: reverse;
   }
 }
 

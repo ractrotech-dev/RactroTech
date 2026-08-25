@@ -33,11 +33,11 @@ export function ComponentPreviewCard({
   return (
     <Link
       href={`/components/${id}`}
-      className="group flex flex-col overflow-hidden rounded-3xl border border-mkt-line bg-mkt-surface transition-shadow duration-200 hover:shadow-[0_18px_44px_-26px_rgba(11,11,16,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mkt-violet focus-visible:ring-offset-2"
+      className="group flex flex-col overflow-hidden rounded-3xl border border-mkt-line bg-mkt-surface transition-shadow duration-200 hover:shadow-[0_18px_44px_-26px_rgba(11,11,16,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mkt-violet focus-visible:ring-offset-2 text-mkt-ink"
     >
       <div
         ref={ref}
-        className="relative h-48 overflow-hidden border-b border-mkt-line bg-mkt-surface-2"
+        className="relative h-48 overflow-hidden border-b border-mkt-line bg-mkt-surface-2 text-mkt-ink"
       >
         {isVisible && srcDoc ? (
           <iframe
@@ -58,7 +58,7 @@ export function ComponentPreviewCard({
       <div className="flex flex-1 flex-col p-5">
         <div className="flex flex-wrap gap-1.5">
           {categoryName && (
-            <span className="rounded-full bg-mkt-lavender px-2.5 py-1 text-[12px] font-medium text-mkt-violet">
+            <span className="rounded-full bg-mkt-lavender px-2.5 py-1 text-[12px] font-medium text-mkt-violet text-mkt-ink">
               {categoryName}
             </span>
           )}

@@ -211,7 +211,7 @@ export function ReviewForm({ googleReviewUrl }: ReviewFormProps) {
             </p>
           </div>
 
-          <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-mkt-line bg-mkt-surface p-4 transition-colors hover:border-mkt-violet/40">
+          <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-mkt-line bg-mkt-surface p-4 transition-colors hover:border-mkt-violet/40 text-mkt-ink">
             <input
               type="checkbox"
               name="permission"

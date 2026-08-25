@@ -25,13 +25,16 @@ export function Faq() {
           </h2>
         </Reveal>
 
-        <Reveal className="mt-10" delay={0.1}>
+        {/* On its own surface rather than naked on the canvas: question rows are set in
+            near-black ink, which does not clear contrast on the violet. Giving the list a
+            card also matches how the rest of the page puts content on a surface. */}
+        <Reveal className="mkt-card mt-10 px-6 py-2 sm:px-8" delay={0.1}>
           <Accordion type="single" collapsible className="w-full">
             {HOMEPAGE_FAQS.map((faq, i) => (
               <AccordionItem
                 key={faq.question}
                 value={`faq-${i}`}
-                className="border-b border-mkt-line"
+                className="border-b border-mkt-line last:border-b-0"
               >
                 <AccordionTrigger className="py-5 text-left text-[17px] font-medium text-mkt-ink hover:no-underline">
                   {faq.question}

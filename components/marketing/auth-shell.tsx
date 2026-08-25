@@ -30,7 +30,7 @@ export function AuthShell({
 }: AuthShellProps) {
   return (
     <div className="relative isolate flex min-h-screen flex-col overflow-hidden text-mkt-ink">
-      <GlobalBackground />
+      <GlobalBackground tone="surface" />
       <HeroGlow />
       <Sparkle className="absolute left-[8%] top-[16%] hidden h-5 w-5 text-mkt-violet/30 lg:block" />
       <Sparkle className="absolute right-[10%] top-[28%] hidden h-4 w-4 text-mkt-violet/25 lg:block" />
@@ -77,7 +77,7 @@ export function AuthShell({
             </div>
 
             <div
-              className="mkt-reveal mt-8 rounded-3xl border border-mkt-line bg-mkt-surface p-6 shadow-[0_18px_44px_-30px_rgba(11,11,16,0.4)] sm:p-8"
+              className="mkt-reveal mt-8 rounded-3xl border border-mkt-line bg-mkt-surface p-6 shadow-[0_18px_44px_-30px_rgba(11,11,16,0.4)] sm:p-8 text-mkt-ink"
               style={{ animationDelay: '0.1s' }}
             >
               {children}
@@ -112,7 +112,7 @@ export function AuthDivider({ label = 'Or continue with' }: { label?: string }) 
         <span className="w-full border-t border-mkt-line" />
       </div>
       <div className="relative flex justify-center">
-        <span className="bg-mkt-surface px-3 text-[13px] text-mkt-muted">{label}</span>
+        <span className="bg-mkt-surface px-3 text-[13px] text-mkt-muted text-mkt-ink">{label}</span>
       </div>
     </div>
   );

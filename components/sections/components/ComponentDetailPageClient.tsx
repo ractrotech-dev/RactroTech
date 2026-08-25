@@ -84,7 +84,7 @@ export function ComponentDetailPageClient({ id }: ComponentDetailPageClientProps
     return (
       <div className="mkt-shell py-16 lg:py-24">
         <div className="mkt-card mx-auto flex max-w-lg flex-col items-center px-6 py-14 text-center">
-          <span className="flex h-12 w-12 items-center justify-center rounded-full bg-mkt-lavender text-mkt-violet">
+          <span className="flex h-12 w-12 items-center justify-center rounded-full bg-mkt-lavender text-mkt-violet text-mkt-ink">
             <FileQuestion className="h-5 w-5" aria-hidden />
           </span>
           <p className="mkt-display mt-5 text-[21px]">Component not found</p>

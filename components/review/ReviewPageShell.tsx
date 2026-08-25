@@ -14,8 +14,8 @@ type ReviewPageShellProps = {
 export function ReviewPageShell({ googleReviewUrl }: ReviewPageShellProps) {
   return (
     <div className="relative isolate flex min-h-screen flex-col text-mkt-ink">
-      <GlobalBackground />
-      <SiteHeader />
+      <GlobalBackground tone="surface" />
+      <SiteHeader tone="surface" />
 
       <main className="relative flex-1 overflow-hidden py-12 lg:py-16">
         <HeroGlow />
@@ -46,7 +46,7 @@ export function ReviewPageShell({ googleReviewUrl }: ReviewPageShellProps) {
           </div>
 
           <div
-            className="mkt-reveal mt-8 rounded-3xl border border-mkt-line bg-mkt-surface p-6 sm:p-8"
+            className="mkt-reveal mt-8 rounded-3xl border border-mkt-line bg-mkt-surface p-6 sm:p-8 text-mkt-ink"
             style={{ animationDelay: '0.1s' }}
           >
             <ReviewForm googleReviewUrl={googleReviewUrl} />
@@ -54,7 +54,7 @@ export function ReviewPageShell({ googleReviewUrl }: ReviewPageShellProps) {
 
           {googleReviewUrl ? (
             <div
-              className="mkt-reveal mt-4 rounded-3xl border border-mkt-line bg-mkt-lavender p-6"
+              className="mkt-reveal mt-4 rounded-3xl border border-mkt-line bg-mkt-lavender p-6 text-mkt-ink"
               style={{ animationDelay: '0.15s' }}
             >
               <p className="text-[13px] font-semibold uppercase tracking-[0.12em] text-mkt-muted">

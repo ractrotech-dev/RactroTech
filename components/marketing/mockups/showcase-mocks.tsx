@@ -15,13 +15,13 @@ import { cn } from '@/lib/utils';
 export function LandingMock({ className }: { className?: string }) {
   return (
     <div className={cn('h-full bg-mkt-surface p-4 sm:p-5', className)} aria-hidden>
-      <div className="rounded-xl bg-mkt-lavender px-4 py-5 text-center sm:py-6">
+      <div className="rounded-xl bg-mkt-lavender px-4 py-5 text-center sm:py-6 text-mkt-ink">
         <div className="mx-auto h-2 w-20 rounded-full bg-mkt-violet/40" />
         <div className="mx-auto mt-3 h-3 w-[70%] rounded-full bg-mkt-ink/25" />
         <div className="mx-auto mt-2 h-3 w-[45%] rounded-full bg-mkt-ink/15" />
         <div className="mt-4 flex justify-center gap-2">
           <div className="h-6 w-20 rounded-full bg-mkt-violet" />
-          <div className="h-6 w-16 rounded-full bg-mkt-surface ring-1 ring-mkt-line" />
+          <div className="h-6 w-16 rounded-full bg-mkt-surface ring-1 ring-mkt-line text-mkt-ink" />
         </div>
       </div>
 
@@ -45,7 +45,7 @@ export function StorefrontMock({ className }: { className?: string }) {
   return (
     <div className={cn('h-full bg-mkt-surface p-4 sm:p-5', className)} aria-hidden>
       <div className="mb-3 flex items-center gap-2.5">
-        <div className="h-6 flex-1 rounded-full bg-mkt-lavender/60 ring-1 ring-mkt-line" />
+        <div className="h-6 flex-1 rounded-full bg-mkt-lavender/60 ring-1 ring-mkt-line text-mkt-ink" />
         <div className="relative h-6 w-6 shrink-0 rounded-full bg-mkt-violet">
           <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full bg-mkt-mint ring-2 ring-mkt-surface" />
         </div>
@@ -85,7 +85,7 @@ export function EditorialMock({ className }: { className?: string }) {
             <div className="h-1.5 w-10 rounded-full bg-mkt-ink/10" />
           </div>
 
-          <div className="mt-3.5 h-[52px] rounded-xl bg-mkt-lavender sm:h-[64px]" />
+          <div className="mt-3.5 h-[52px] rounded-xl bg-mkt-lavender sm:h-[64px] text-mkt-ink" />
 
           <div className="mt-3 space-y-1.5">
             {['w-full', 'w-full', 'w-[88%]', 'w-[60%]'].map((w, i) => (
@@ -119,14 +119,14 @@ export function ComponentGridMock({ className }: { className?: string }) {
         {/* Buttons */}
         <div className="space-y-1.5 rounded-xl border border-mkt-line p-2.5">
           <div className="h-5 w-full rounded-full bg-mkt-violet" />
-          <div className="h-5 w-full rounded-full bg-mkt-surface ring-1 ring-mkt-line" />
-          <div className="h-5 w-2/3 rounded-full bg-mkt-lavender" />
+          <div className="h-5 w-full rounded-full bg-mkt-surface ring-1 ring-mkt-line text-mkt-ink" />
+          <div className="h-5 w-2/3 rounded-full bg-mkt-lavender text-mkt-ink" />
         </div>
 
         {/* Input + toggle */}
         <div className="space-y-2 rounded-xl border border-mkt-line p-2.5">
-          <div className="h-5 w-full rounded-md bg-mkt-lavender/50 ring-1 ring-mkt-line" />
-          <div className="h-5 w-full rounded-md bg-mkt-surface ring-1 ring-mkt-violet" />
+          <div className="h-5 w-full rounded-md bg-mkt-lavender/50 ring-1 ring-mkt-line text-mkt-ink" />
+          <div className="h-5 w-full rounded-md bg-mkt-surface ring-1 ring-mkt-violet text-mkt-ink" />
           <div className="flex items-center gap-1.5">
             <div className="flex h-3.5 w-6 items-center rounded-full bg-mkt-violet p-0.5">
               <span className="ml-auto h-2.5 w-2.5 rounded-full bg-white" />
@@ -165,7 +165,7 @@ export function ComponentGridMock({ className }: { className?: string }) {
         </div>
 
         {/* Stat tile */}
-        <div className="rounded-xl bg-mkt-lavender p-2.5">
+        <div className="rounded-xl bg-mkt-lavender p-2.5 text-mkt-ink">
           <div className="h-1.5 w-8 rounded-full bg-mkt-ink/20" />
           <div className="mt-2 h-4 w-12 rounded-full bg-mkt-violet" />
           <div className="mt-2 h-1.5 w-full rounded-full bg-mkt-ink/12" />

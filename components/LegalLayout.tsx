@@ -15,8 +15,8 @@ interface LegalLayoutProps {
 export function LegalLayout({ title, lastUpdated, children }: LegalLayoutProps) {
   return (
     <div className="relative isolate flex min-h-screen flex-col text-mkt-ink">
-      <GlobalBackground />
-      <SiteHeader />
+      <GlobalBackground tone="surface" />
+      <SiteHeader tone="surface" />
 
       <main className="flex-1">
         <div className="mkt-shell max-w-3xl py-12 lg:py-16">
@@ -35,7 +35,7 @@ export function LegalLayout({ title, lastUpdated, children }: LegalLayoutProps) 
 
           <div className="mt-8 space-y-8">{children}</div>
 
-          <div className="mt-12 flex flex-col gap-2 rounded-2xl bg-mkt-lavender p-6 sm:flex-row sm:items-center sm:justify-between">
+          <div className="mt-12 flex flex-col gap-2 rounded-2xl bg-mkt-lavender p-6 sm:flex-row sm:items-center sm:justify-between text-mkt-ink">
             <h2 className="text-[15px] font-semibold text-mkt-ink">RactroTech Technologies</h2>
             <p className="text-[14px] text-mkt-muted">
               For legal inquiries:{' '}

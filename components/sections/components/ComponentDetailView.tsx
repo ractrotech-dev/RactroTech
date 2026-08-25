@@ -53,7 +53,7 @@ export function ComponentDetailView({ component, categoryName }: ComponentDetail
       <header>
         <div className="flex flex-wrap items-center gap-1.5">
           {categoryName && (
-            <span className="rounded-full bg-mkt-lavender px-2.5 py-1 text-[12px] font-medium text-mkt-violet">
+            <span className="rounded-full bg-mkt-lavender px-2.5 py-1 text-[12px] font-medium text-mkt-violet text-mkt-ink">
               {categoryName}
             </span>
           )}
@@ -95,7 +95,7 @@ export function ComponentDetailView({ component, categoryName }: ComponentDetail
             {tags.map((tag) => (
               <span
                 key={tag}
-                className="rounded-full bg-mkt-surface-2 px-2.5 py-1 text-[12px] text-mkt-muted"
+                className="rounded-full bg-mkt-surface-2 px-2.5 py-1 text-[12px] text-mkt-muted text-mkt-ink"
               >
                 {tag}
               </span>
@@ -176,7 +176,7 @@ export function ComponentDetailView({ component, categoryName }: ComponentDetail
           </div>
         </div>
 
-        <div className="bg-mkt-surface-2 p-4 sm:p-6">
+        <div className="bg-mkt-surface-2 p-4 sm:p-6 text-mkt-ink">
           <div className="flex h-[380px] min-w-0 justify-center overflow-x-auto">
             {srcDoc ? (
               <div

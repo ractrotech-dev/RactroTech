@@ -45,7 +45,7 @@ const TEMPLATES = [
 
 export function TemplatesGrid() {
   return (
-    <section className="bg-mkt-lavender py-20 lg:py-24">
+    <section className="bg-mkt-lavender py-20 lg:py-24 text-mkt-ink">
       <div className="mkt-shell">
         <Reveal className="mx-auto max-w-2xl text-center">
           <span className="mkt-eyebrow">
@@ -66,7 +66,7 @@ export function TemplatesGrid() {
             <RevealItem key={template.name} as="li" className="h-full">
               <Link
                 href={template.href}
-                className="group flex h-full flex-col rounded-3xl border border-mkt-line bg-mkt-surface p-6 transition-shadow duration-200 hover:shadow-[0_18px_44px_-26px_rgba(11,11,16,0.4)] sm:p-7"
+                className="group flex h-full flex-col rounded-3xl border border-mkt-line bg-mkt-surface p-6 transition-shadow duration-200 hover:shadow-[0_18px_44px_-26px_rgba(11,11,16,0.4)] sm:p-7 text-mkt-ink"
               >
                 <div className="flex items-start justify-between gap-4">
                   <h3 className="mkt-display text-[19px] sm:text-[21px]">{template.name}</h3>
@@ -82,7 +82,7 @@ export function TemplatesGrid() {
                   {template.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="rounded-full bg-mkt-lavender px-2.5 py-1 text-[12px] font-medium text-mkt-violet"
+                      className="rounded-full bg-mkt-lavender px-2.5 py-1 text-[12px] font-medium text-mkt-violet text-mkt-ink"
                     >
                       {tag}
                     </span>

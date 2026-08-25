@@ -55,7 +55,7 @@ export function PageHero({
           ) : null}
         </h1>
 
-        <p className="mx-auto mt-6 max-w-2xl text-[17px] leading-relaxed text-mkt-muted sm:text-[18px]">
+        <p className="mx-auto mt-6 max-w-2xl text-[17px] leading-relaxed text-white/75 sm:text-[18px]">
           {description}
         </p>
 

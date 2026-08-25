@@ -32,7 +32,7 @@ export default async function BlogIndexPage() {
 
     return (
       <main className="flex-1 pb-16">
-        <div className="border-b border-mkt-line bg-mkt-lavender">
+        <div className="border-b border-mkt-line bg-mkt-lavender text-mkt-ink">
           <div className="mkt-shell max-w-3xl py-14 lg:py-16">
             <span className="mkt-eyebrow">
               <span className="h-1.5 w-1.5 rounded-full bg-mkt-violet" />
@@ -47,7 +47,7 @@ export default async function BlogIndexPage() {
 
         <div className="mkt-shell max-w-3xl py-14">
           {posts.length === 0 ? (
-            <p className="rounded-3xl border border-mkt-line bg-mkt-surface p-10 text-center text-[15px] text-mkt-muted">
+            <p className="rounded-3xl border border-mkt-line bg-mkt-surface p-10 text-center text-[15px] text-mkt-muted text-mkt-ink">
               No published posts yet. Check back soon.
             </p>
           ) : (
@@ -56,7 +56,7 @@ export default async function BlogIndexPage() {
                 <li key={p.id}>
                   <Link
                     href={`/blog/${p.slug}`}
-                    className="group block rounded-3xl border border-mkt-line bg-mkt-surface p-6 transition-shadow duration-200 hover:shadow-[0_18px_44px_-26px_rgba(11,11,16,0.4)] sm:p-7"
+                    className="group block rounded-3xl border border-mkt-line bg-mkt-surface p-6 transition-shadow duration-200 hover:shadow-[0_18px_44px_-26px_rgba(11,11,16,0.4)] sm:p-7 text-mkt-ink"
                   >
                     <p className="text-[13px] font-medium text-mkt-violet">
                       {p.category || 'Update'}

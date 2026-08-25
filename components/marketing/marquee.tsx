@@ -11,6 +11,8 @@ type MarqueeProps = {
    * line up instead of floating at each card's own centre.
    */
   align?: 'center' | 'stretch';
+  /** Scroll right-to-left instead. Used to counter-scroll a second row against the first. */
+  reverse?: boolean;
 };
 
 /**
@@ -24,13 +26,14 @@ export function Marquee({
   durationSeconds = 42,
   className,
   align = 'center',
+  reverse = false,
 }: MarqueeProps) {
   const items = cn('flex shrink-0', align === 'stretch' ? 'items-stretch' : 'items-center');
 
   return (
     <div className={cn('mkt-marquee-mask w-full overflow-hidden', className)}>
       <div
-        className="mkt-marquee-track flex w-max"
+        className={cn('mkt-marquee-track flex w-max', reverse && 'mkt-marquee-track-reverse')}
         style={{ '--mkt-marquee-duration': `${durationSeconds}s` } as React.CSSProperties}
       >
         <div className={items}>{children}</div>

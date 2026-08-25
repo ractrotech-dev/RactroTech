@@ -30,7 +30,7 @@ export default async function AccountLayout({ children }: { children: React.Reac
 
   return (
     <div className="flex min-h-screen flex-col bg-white text-black">
-      <SiteHeader />
+      <SiteHeader tone="surface" />
       <main className="flex-1">{children}</main>
       <SiteFooter />
     </div>
