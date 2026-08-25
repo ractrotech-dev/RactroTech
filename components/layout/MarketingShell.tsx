@@ -1,32 +1,19 @@
-'use client';
+import { SiteHeader } from '@/components/marketing/site-header';
+import { SiteFooter } from '@/components/marketing/site-footer';
+import { GlobalBackground } from '@/components/layout/global-background';
 
-import dynamic from 'next/dynamic';
-
-const RetroHeader = dynamic(
-  () => import('@/components/retro-header').then((mod) => ({ default: mod.RetroHeader })),
-  {
-    ssr: false,
-    loading: () => (
-      <header className="retro-border border-b-4 bg-white">
-        <div className="mx-auto max-w-7xl px-4 py-4 sm:py-6">
-          <div className="h-8 w-48 rounded bg-yellow-200/80" aria-hidden />
-        </div>
-      </header>
-    ),
-  }
-);
-
-const RetroFooter = dynamic(
-  () => import('@/components/retro-footer').then((mod) => ({ default: mod.RetroFooter })),
-  { ssr: false }
-);
-
+/**
+ * Header and footer render server-side. They were previously loaded with
+ * `dynamic(..., { ssr: false })`, which kept every nav and footer link out of the
+ * SSR HTML and made the header pop in after hydration.
+ */
 export function MarketingShell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex min-h-screen flex-col bg-white text-black">
-      <RetroHeader />
+    <div className="relative isolate flex min-h-screen flex-col text-white">
+      <GlobalBackground />
+      <SiteHeader />
       <main className="flex-1">{children}</main>
-      <RetroFooter />
+      <SiteFooter />
     </div>
   );
 }

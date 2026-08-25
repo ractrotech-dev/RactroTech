@@ -93,17 +93,12 @@ export function ComponentsLibraryPage() {
   }, [components, activeCategory, activeStyle, activeIndustry, search]);
 
   return (
-    <section className="relative w-full overflow-x-hidden border-b-4 border-black bg-yellow-100/60">
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.04]"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M0 0h2v2H0V0zm4 4h2v2H4V4zm4 4h2v2H8V8zm4 4h2v2h-2v-2zm4 4h2v2h-2v-2zm4 4h2v2h-2v-2zm4 4h2v2h-2v-2zm4 4h2v2h-2v-2z'/%3E%3C/g%3E%3C/svg%3E")`,
-        }}
-      />
-
+    <section className="w-full overflow-x-hidden pb-20 lg:pb-28">
       <ComponentsLibraryHeader totalCount={components.length} />
 
-      <div className="relative mx-auto flex w-full min-w-0">
+      {/* The dot-grid backdrop and page surface come from `GlobalBackground` in the
+          marketing shell, so this section paints nothing of its own. */}
+      <div className="mkt-shell flex min-w-0 items-start gap-8">
         <ComponentsCategorySidebar
           categories={categories}
           components={components}

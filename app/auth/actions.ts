@@ -16,6 +16,7 @@ import { parseFormData } from '@/lib/validation/parse-form'
 import { loginSchema, signupSchema } from '@/lib/validation/schemas'
 import { sanitizePlainText } from '@/lib/validation/sanitize'
 import { isEmailVerified } from '@/lib/auth/verification'
+import { ensureAuthUserInDb } from '@/utils/auth-user-sync'
 
 import { getSiteUrl } from "@/lib/seo";
 
@@ -144,8 +145,12 @@ export async function signup(_currentState: AuthFormState, formData: FormData) {
     redirect(`/signup/verify-email?email=${encodeURIComponent(data.email)}`)
   }
 
+  if (signUpData.user) {
+    await ensureAuthUserInDb(signUpData.user)
+  }
+
   revalidatePath('/', 'layout')
-  redirect('/')
+  redirect('/?welcome=1')
 }
 
 export async function loginUser(_currentState: AuthFormState, formData: FormData) {
@@ -191,15 +196,33 @@ export async function loginUser(_currentState: AuthFormState, formData: FormData
     return { message: AUTH_ERRORS.emailNotVerified }
   }
 
+  if (data.user) {
+    await ensureAuthUserInDb(data.user)
+  }
+
   logSecurityEvent({ type: 'auth_attempt', success: true, ip, action: 'login', email })
   revalidatePath('/', 'layout')
-  redirect('/')
+  redirect('/?welcome=1')
+}
+
+export async function syncCurrentUser() {
+  const supabase = createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (user) {
+    await ensureAuthUserInDb(user)
+  }
+
+  revalidatePath('/', 'layout')
 }
 
 export async function logout() {
   const supabase = createClient()
   await supabase.auth.signOut()
-  redirect('/signup')
+  revalidatePath('/', 'layout')
+  redirect('/?signed_out=1')
 }
 
 export async function signInWithGoogle() {

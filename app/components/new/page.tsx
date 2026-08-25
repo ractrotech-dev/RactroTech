@@ -5,7 +5,7 @@ import { constructMetadata, siteConfig } from '@/lib/seo';
 export const dynamic = 'force-dynamic';
 
 export const metadata = constructMetadata({
-  title: 'MAKE YOUR OWN COMPONENT',
+  title: 'Make Your Own Component',
   description:
     'Build custom Tailwind HTML components with live preview. Save and share them in the RactroTech component library.',
   canonicalUrl: `${siteConfig.url}/components/new`,
@@ -15,8 +15,8 @@ export default function NewComponentPage() {
   return (
     <Suspense
       fallback={
-        <div className="px-6 py-12 text-center text-sm font-medium text-black/60">
-          Loading editor...
+        <div className="mkt-shell py-24 text-center text-[15px] text-mkt-muted">
+          Loading editor…
         </div>
       }
     >

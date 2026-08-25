@@ -20,7 +20,7 @@ export function sitePath(path: string): string {
 export const siteConfig = {
   name: "Ractrotech",
   description:
-    "Ractrotech builds custom web apps, SaaS products, and ready-to-use Next.js templates. Ship faster with a developer-led team focused on performance and modern stacks.",
+    "Ractrotech builds websites, web apps, SaaS products, e-commerce, mobile apps, and UI/UX for founders and businesses — plus templates and components to launch faster.",
   get url() {
     return getSiteUrl();
   },
@@ -28,22 +28,25 @@ export const siteConfig = {
     return `${getSiteUrl()}/opengraph-image`;
   },
   get logoUrl() {
-    return `${getSiteUrl()}/icon.svg`;
+    return `${getSiteUrl()}/logo.png`;
   },
   links: {
     twitter: "https://twitter.com/ractrotech",
     github: "https://github.com/ractrotech",
   },
   keywords: [
-    "web development services",
-    "custom SaaS development",
-    "Next.js development",
-    "SaaS templates",
-    "React component library",
-    "web development agency",
-    "digital products",
-    "web optimization",
+    "web development company",
+    "custom software development",
+    "SaaS development company",
+    "app development agency",
+    "MVP development",
+    "UI UX design services",
+    "e-commerce development",
+    "digital product studio",
+    "startup development",
+    "web application development",
   ],
+  contactEmail: "hello@ractrotech.com",
   author: "Ractrotech",
   /** Google Search Console HTML tag verification */
   googleSiteVerification:
@@ -125,7 +128,56 @@ export function generateOrganizationSchema() {
     url: siteConfig.url,
     logo: siteConfig.logoUrl,
     description: siteConfig.description,
-    sameAs: [siteConfig.links.twitter, siteConfig.links.github],
+    email: siteConfig.contactEmail,
+    contactPoint: {
+      "@type": "ContactPoint",
+      contactType: "sales",
+      email: siteConfig.contactEmail,
+      availableLanguage: "English",
+    },
+    sameAs: [
+      "https://www.linkedin.com/company/ractrotech/",
+      "https://www.instagram.com/ractrotech/",
+      siteConfig.links.twitter,
+      siteConfig.links.github,
+    ],
+  };
+}
+
+export function generateServiceSchema(input: {
+  name: string;
+  description: string;
+  url: string;
+  areaServed?: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    name: input.name,
+    description: input.description,
+    url: input.url,
+    provider: {
+      "@type": "Organization",
+      name: siteConfig.name,
+      url: siteConfig.url,
+    },
+    areaServed: input.areaServed ?? "Worldwide",
+    serviceType: input.name,
+  };
+}
+
+export function generateFAQSchema(faqs: { question: string; answer: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.answer,
+      },
+    })),
   };
 }
 

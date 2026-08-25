@@ -40,7 +40,7 @@ export default async function DashboardLayout({
   }
 
   try {
-    await ensureAuthUserInDb(user, supabase);
+    await ensureAuthUserInDb(user);
   } catch (error) {
     return (
       <div className="flex min-h-screen flex-col">

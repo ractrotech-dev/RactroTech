@@ -30,6 +30,16 @@ async function requireUser() {
   return { supabase, user };
 }
 
+/*
+ * The `&& parsed.error` in the guards below is load-bearing, not defensive padding.
+ * TypeScript normalises the parser's inferred return union by giving every branch the
+ * other branches' keys as optional-undefined, so the success branch carries
+ * `error?: undefined`. `'error' in parsed` therefore does NOT exclude it, and
+ * `parsed.error` widens to `string | undefined`, which will not go into
+ * ClientActionState['message']. The extra check narrows it back to `string`.
+ * No runtime change: every error branch returns a non-empty string literal.
+ * The alternative fix is an explicit return-type annotation on the parser.
+ */
 function parseClientForm(formData: FormData) {
   const name = (formData.get('name') as string)?.trim();
   const email = (formData.get('email') as string)?.trim().toLowerCase();
@@ -84,7 +94,7 @@ export async function createClientRecord(
   try {
     const { supabase, user } = await requireUser();
     const parsed = parseClientForm(formData);
-    if ('error' in parsed) return { message: parsed.error, success: false };
+    if ('error' in parsed && parsed.error) return { message: parsed.error, success: false };
 
     const { error } = await supabase.from('clients').insert({
       id: randomUUID(),
@@ -116,7 +126,7 @@ export async function updateClientRecord(
     if (!id) return { message: 'Client id is required.', success: false };
 
     const parsed = parseClientForm(formData);
-    if ('error' in parsed) return { message: parsed.error, success: false };
+    if ('error' in parsed && parsed.error) return { message: parsed.error, success: false };
 
     const { error } = await supabase
       .from('clients')

@@ -1,47 +1,48 @@
 'use client';
 
-import { AlertTriangle, RefreshCw, Database } from "lucide-react";
+import { AlertTriangle, Database, RefreshCw } from 'lucide-react';
 
 export default function DatabaseError({ message }: { message?: string }) {
   return (
-    <div className="flex min-h-[400px] flex-col items-center justify-center p-6 text-center">
-      <div className="mb-6 flex h-20 w-20 items-center justify-center border-4 border-black bg-red-500 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-        <Database size={40} className="text-white" />
-      </div>
-      
-      <h2 className="text-2xl font-black tracking-tight text-black">
-        Database Connection Failed
+    <div className="mkt-shell flex min-h-[420px] max-w-xl flex-col items-center justify-center py-16 text-center">
+      <span className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-red-50 text-red-600">
+        <Database size={30} strokeWidth={1.75} aria-hidden />
+      </span>
+
+      <h2 className="mkt-display text-[26px] leading-[1.15] sm:text-[30px]">
+        Database connection failed
       </h2>
-      
-      <div className="mt-4 max-w-md border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-        <div className="flex items-start gap-3 text-left">
-          <AlertTriangle className="mt-1 shrink-0 text-red-600" size={20} />
+
+      <div className="mt-6 w-full rounded-2xl border border-mkt-line bg-white p-5 text-left">
+        <div className="flex items-start gap-3">
+          <AlertTriangle className="mt-0.5 shrink-0 text-red-600" size={18} aria-hidden />
           <div>
-            <p className="text-[11px] font-black tracking-wider text-black/40">Error Detail</p>
-            <p className="mt-1 text-xs font-bold leading-relaxed text-black/70">
-              {message || "The application could not establish a connection to the database. This usually happens if the DATABASE_URL is missing or the database server is offline."}
+            <p className="text-[13px] font-semibold uppercase tracking-[0.12em] text-mkt-muted">
+              Error detail
+            </p>
+            <p className="mt-1.5 text-[15px] leading-relaxed text-mkt-muted">
+              {message ||
+                'The application could not establish a connection to the database. This usually happens if the DATABASE_URL is missing or the database server is offline.'}
             </p>
           </div>
         </div>
       </div>
 
-      <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-        <button 
-          onClick={() => window.location.reload()}
-          className="flex items-center gap-2 border-4 border-black bg-yellow-400 px-6 py-3 text-[10px] font-black tracking-[0.2em] transition-all hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-y-0 active:shadow-none"
-        >
-          <RefreshCw size={14} /> Retry Connection
+      <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+        <button onClick={() => window.location.reload()} className="mkt-btn-primary">
+          <RefreshCw size={15} aria-hidden /> Retry connection
         </button>
-        <a 
-          href="https://supabase.com/dashboard" 
-          target="_blank" 
-          className="flex items-center gap-2 border-4 border-black bg-black px-6 py-3 text-[10px] font-black tracking-[0.2em] text-white transition-all hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-y-0 active:shadow-none"
+        <a
+          href="https://supabase.com/dashboard"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mkt-btn-ghost"
         >
-          Open Supabase Dashboard
+          Open Supabase dashboard
         </a>
       </div>
 
-      <p className="mt-8 text-[9px] font-bold tracking-widest text-black/30">
+      <p className="mt-8 text-[13px] text-mkt-muted/70">
         Check your .env file and ensure DATABASE_URL is set correctly.
       </p>
     </div>

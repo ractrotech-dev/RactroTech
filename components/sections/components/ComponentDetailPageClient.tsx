@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, FileQuestion } from 'lucide-react';
 import { createClient } from '@/utils/supabase/client';
 import { ComponentDetailView } from './ComponentDetailView';
 import { LIBRARY_SELECT_FIELDS, type Category, type LibraryComponent } from './types';
@@ -74,40 +74,44 @@ export function ComponentDetailPageClient({ id }: ComponentDetailPageClientProps
 
   if (isLoading) {
     return (
-      <div className="px-6 py-12 text-center text-sm font-medium text-black/60">
-        Loading component...
+      <div className="mkt-shell py-24 text-center text-[15px] text-mkt-muted">
+        Loading component…
       </div>
     );
   }
 
   if (notFound || !component) {
     return (
-      <div className="retro-card mx-6 my-8 border-4 bg-white p-8 text-center">
-        <p className="text-base font-bold text-black">Component not found</p>
-        <p className="mt-2 text-sm text-black/60">
-          This component may have been removed or the link is incorrect.
-        </p>
-        <Link
-          href="/components"
-          className="retro-button mt-6 inline-flex items-center gap-2 border-2 border-black bg-black px-4 py-2 text-sm font-semibold text-yellow-400"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back to library
-        </Link>
+      <div className="mkt-shell py-16 lg:py-24">
+        <div className="mkt-card mx-auto flex max-w-lg flex-col items-center px-6 py-14 text-center">
+          <span className="flex h-12 w-12 items-center justify-center rounded-full bg-mkt-lavender text-mkt-violet text-mkt-ink">
+            <FileQuestion className="h-5 w-5" aria-hidden />
+          </span>
+          <p className="mkt-display mt-5 text-[21px]">Component not found</p>
+          <p className="mt-2 text-[15px] leading-relaxed text-mkt-muted">
+            This component may have been removed, or the link is incorrect.
+          </p>
+          <Link href="/components" className="mkt-btn-primary mt-6">
+            <ArrowLeft className="h-4 w-4" />
+            Back to library
+          </Link>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="px-6 py-8">
+    <div className="mkt-shell py-10 lg:py-14">
       <Link
         href="/components"
-        className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-black/60 hover:text-black hover:underline"
+        className="inline-flex items-center gap-2 text-[14px] font-medium text-mkt-muted transition-colors hover:text-mkt-ink"
       >
         <ArrowLeft className="h-4 w-4" />
         Back to library
       </Link>
-      <ComponentDetailView component={component} categoryName={categoryName} />
+      <div className="mt-6">
+        <ComponentDetailView component={component} categoryName={categoryName} />
+      </div>
     </div>
   );
 }

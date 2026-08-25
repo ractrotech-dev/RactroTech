@@ -3,7 +3,9 @@
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
-import { ArrowLeft, Plus } from 'lucide-react';
+import { AlertCircle, ArrowLeft, ChevronDown, Moon, Save, Sun } from 'lucide-react';
+import { Reveal } from '@/components/marketing/reveal';
+import { HeroGlow } from '@/components/marketing/mockups/doodles';
 import { buildSrcDoc, getFrameWidthClass } from './build-src-doc';
 import { fetchLibraryCategories } from './fetch-library-data';
 import type { Category, PreviewDevice } from './types';
@@ -13,8 +15,35 @@ import { STARTER_SNIPPETS } from '@/lib/component-library/starter-snippets';
 import { cn } from '@/lib/utils';
 import { createClient } from '@/utils/supabase/client';
 
-const selectClass =
-  'w-full rounded-md border-2 border-black bg-white px-3 py-2 text-sm font-medium outline-none focus:ring-2 focus:ring-black';
+const DEVICES: PreviewDevice[] = ['mobile', 'tablet', 'desktop'];
+
+const fieldClass =
+  'w-full rounded-xl border border-mkt-line bg-mkt-surface px-3.5 py-2.5 text-[14px] text-mkt-ink outline-none transition-colors placeholder:text-mkt-muted hover:border-mkt-ink/25 focus-visible:ring-2 focus-visible:ring-mkt-violet focus-visible:ring-offset-2';
+
+const labelClass = 'block text-[13px] font-medium text-mkt-muted';
+
+/** Native `<select>` restyled to match `fieldClass`, with the browser arrow replaced. */
+function SelectField({
+  label,
+  className,
+  children,
+  ...props
+}: React.SelectHTMLAttributes<HTMLSelectElement> & { label: string }) {
+  return (
+    <label className={cn('block', className)}>
+      <span className={labelClass}>{label}</span>
+      <span className="relative mt-1.5 block">
+        <select {...props} className={cn(fieldClass, 'cursor-pointer appearance-none pr-9')}>
+          {children}
+        </select>
+        <ChevronDown
+          className="pointer-events-none absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-mkt-muted"
+          aria-hidden
+        />
+      </span>
+    </label>
+  );
+}
 
 export function CreateComponentEditor() {
   const router = useRouter();
@@ -122,39 +151,50 @@ export function CreateComponentEditor() {
 
   if (isLoading) {
     return (
-      <div className="px-6 py-12 text-center text-sm font-medium text-black/60">
-        Loading editor...
-      </div>
+      <div className="mkt-shell py-24 text-center text-[15px] text-mkt-muted">Loading editor…</div>
     );
   }
 
   return (
-    <div className="relative border-b-4 border-black bg-yellow-100/60">
-      <div className="border-b-4 border-black bg-yellow-400 px-6 py-8">
-        <Link
-          href="/components"
-          className="mb-4 inline-flex items-center gap-2 text-sm font-medium text-black/60 hover:text-black hover:underline"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back to library
-        </Link>
-        <h1 className="retro-heading text-3xl font-bold md:text-4xl">
-          {componentId ? 'Edit your component' : 'Make your own component'}
-        </h1>
-        <p className="mt-2 max-w-2xl text-base font-medium text-black/75">
-          Write Tailwind HTML, preview it on different devices, then save it to the public library.
-        </p>
-      </div>
+    <div className="pb-20 lg:pb-28">
+      <section className="relative overflow-hidden pb-10 pt-12 sm:pt-16">
+        <HeroGlow />
+        <Reveal className="mkt-shell relative">
+          {/* Wrapped so the inline-flex eyebrow below starts on its own line. */}
+          <div>
+            <Link
+              href="/components"
+              className="inline-flex items-center gap-2 text-[14px] font-medium text-mkt-muted transition-colors hover:text-mkt-ink"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Back to library
+            </Link>
+          </div>
 
-      <div className="mx-auto max-w-6xl space-y-6 px-6 py-8">
-        <div className="flex flex-wrap gap-2">
-          <span className="text-sm font-semibold text-black/70">Start from:</span>
+          <span className="mkt-eyebrow mt-6">
+            <span className="h-1.5 w-1.5 rounded-full bg-mkt-violet" />
+            Component builder
+          </span>
+
+          <h1 className="mkt-display mt-6 text-[32px] leading-[1.08] sm:text-[42px]">
+            {componentId ? 'Edit your component' : 'Make your own component'}
+          </h1>
+          <p className="mt-5 max-w-2xl text-[17px] leading-relaxed text-mkt-muted">
+            Write Tailwind HTML, preview it on different devices, then save it to the public
+            library.
+          </p>
+        </Reveal>
+      </section>
+
+      <div className="mkt-shell space-y-6">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-[13px] font-medium text-mkt-muted">Start from:</span>
           {STARTER_SNIPPETS.map((starter) => (
             <button
               key={starter.id}
               type="button"
               onClick={() => applyStarter(starter.id)}
-              className="rounded-md border-2 border-black bg-white px-3 py-1.5 text-xs font-semibold text-black hover:bg-yellow-200"
+              className="rounded-full border border-mkt-line bg-mkt-surface px-3.5 py-1.5 text-[13px] font-medium text-mkt-ink transition-colors hover:border-mkt-ink/25 hover:bg-mkt-lavender hover:text-mkt-violet"
             >
               {starter.label}
             </button>
@@ -162,22 +202,31 @@ export function CreateComponentEditor() {
         </div>
 
         <div className="grid gap-6 lg:grid-cols-2">
-          <div className="retro-card space-y-4 border-4 bg-white p-5">
-            <h2 className="text-sm font-bold text-black">Details</h2>
-            <input
-              className={selectClass}
-              placeholder="Component title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-            <textarea
-              className={cn(selectClass, 'min-h-[80px] resize-y')}
-              placeholder="Short description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-            <select
-              className={selectClass}
+          <div className="mkt-card space-y-4 p-6">
+            <h2 className="mkt-display text-[15px]">Details</h2>
+
+            <label className="block">
+              <span className={labelClass}>Title</span>
+              <input
+                className={cn(fieldClass, 'mt-1.5')}
+                placeholder="Component title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </label>
+
+            <label className="block">
+              <span className={labelClass}>Description</span>
+              <textarea
+                className={cn(fieldClass, 'mt-1.5 min-h-[80px] resize-y')}
+                placeholder="Short description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </label>
+
+            <SelectField
+              label="Category"
               value={selectedCategoryId ?? ''}
               onChange={(e) => setSelectedCategoryId(e.target.value || null)}
             >
@@ -187,17 +236,23 @@ export function CreateComponentEditor() {
                   {category.name}
                 </option>
               ))}
-            </select>
+            </SelectField>
+
             <div className="grid gap-3 sm:grid-cols-2">
-              <select className={selectClass} value={styleVariant} onChange={(e) => setStyleVariant(e.target.value)}>
+              <SelectField
+                label="Style"
+                value={styleVariant}
+                onChange={(e) => setStyleVariant(e.target.value)}
+              >
                 {LIBRARY_STYLES.map((style) => (
                   <option key={style} value={style}>
                     {style}
                   </option>
                 ))}
-              </select>
-              <select
-                className={selectClass}
+              </SelectField>
+
+              <SelectField
+                label="Industry"
                 value={industryVariant}
                 onChange={(e) => setIndustryVariant(e.target.value)}
               >
@@ -206,72 +261,110 @@ export function CreateComponentEditor() {
                     {industry}
                   </option>
                 ))}
-              </select>
-              <select className={selectClass} value={difficulty} onChange={(e) => setDifficulty(e.target.value)}>
+              </SelectField>
+
+              <SelectField
+                label="Difficulty"
+                value={difficulty}
+                onChange={(e) => setDifficulty(e.target.value)}
+              >
                 <option value="beginner">Beginner</option>
                 <option value="intermediate">Intermediate</option>
                 <option value="advanced">Advanced</option>
-              </select>
-              <input
-                className={selectClass}
-                placeholder="Tags (comma-separated)"
-                value={tagsInput}
-                onChange={(e) => setTagsInput(e.target.value)}
-              />
+              </SelectField>
+
+              <label className="block">
+                <span className={labelClass}>Tags</span>
+                <input
+                  className={cn(fieldClass, 'mt-1.5')}
+                  placeholder="Comma-separated"
+                  value={tagsInput}
+                  onChange={(e) => setTagsInput(e.target.value)}
+                />
+              </label>
             </div>
-            <label className="flex items-center gap-2 text-sm font-medium text-black/80">
+
+            <label className="flex items-center gap-2.5 text-[14px] text-mkt-ink">
               <input
                 type="checkbox"
                 checked={supportsDarkMode}
                 onChange={(e) => setSupportsDarkMode(e.target.checked)}
-                className="h-4 w-4 rounded border-2 border-black"
+                className="h-4 w-4 rounded border-mkt-line text-mkt-violet accent-mkt-violet focus-visible:ring-2 focus-visible:ring-mkt-violet focus-visible:ring-offset-2"
               />
               Supports dark mode preview
             </label>
-            <div>
-              <p className="mb-2 text-xs font-bold tracking-wide text-black/60">HTML + Tailwind</p>
+
+            <label className="block">
+              <span className={labelClass}>HTML + Tailwind</span>
               <textarea
-                className="h-64 w-full resize-y rounded-md border-2 border-black bg-yellow-50 p-3 font-mono text-xs outline-none focus:ring-2 focus:ring-black"
+                className={cn(
+                  fieldClass,
+                  'mt-1.5 h-64 resize-y bg-mkt-contrast p-4 font-mono text-[12.5px] leading-relaxed text-white/85 placeholder:text-white/40 hover:border-mkt-ink/25'
+                )}
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
                 spellCheck={false}
               />
-            </div>
+            </label>
           </div>
 
-          <div className="retro-card flex flex-col border-4 bg-white p-5">
-            <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-              <h2 className="text-sm font-bold text-black">Live preview</h2>
+          <div className="mkt-card flex flex-col overflow-hidden">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-mkt-line px-5 py-4">
+              <h2 className="mkt-display text-[15px]">Live preview</h2>
               <div className="flex flex-wrap items-center gap-2">
                 {supportsDarkMode && (
                   <button
                     type="button"
                     onClick={() => setDarkPreview((v) => !v)}
+                    aria-pressed={darkPreview}
                     className={cn(
-                      'rounded-md border-2 border-black px-2 py-1 text-xs font-semibold',
-                      darkPreview ? 'bg-black text-yellow-400' : 'bg-white text-black'
+                      'inline-flex h-9 items-center gap-2 rounded-full border px-3.5 text-[13px] font-medium transition-colors',
+                      darkPreview
+                        ? 'border-transparent bg-mkt-violet text-white'
+                        : 'border-mkt-line text-mkt-muted hover:border-mkt-ink/25 hover:text-mkt-ink'
                     )}
                   >
-                    {darkPreview ? 'Dark on' : 'Dark off'}
+                    {darkPreview ? (
+                      <Moon className="h-3.5 w-3.5" aria-hidden />
+                    ) : (
+                      <Sun className="h-3.5 w-3.5" aria-hidden />
+                    )}
+                    Dark
                   </button>
                 )}
-                {(['mobile', 'tablet', 'desktop'] as PreviewDevice[]).map((value) => (
-                  <button
-                    key={value}
-                    type="button"
-                    onClick={() => setDevice(value)}
-                    className={cn(
-                      'rounded-md border-2 border-black px-2 py-1 text-xs font-semibold capitalize',
-                      device === value ? 'bg-black text-yellow-400' : 'bg-white text-black'
-                    )}
-                  >
-                    {value}
-                  </button>
-                ))}
+
+                <div
+                  className="flex items-center gap-1 rounded-full border border-mkt-line p-1"
+                  role="group"
+                  aria-label="Preview width"
+                >
+                  {DEVICES.map((value) => (
+                    <button
+                      key={value}
+                      type="button"
+                      onClick={() => setDevice(value)}
+                      aria-pressed={device === value}
+                      className={cn(
+                        'rounded-full px-3 py-1.5 text-[13px] font-medium capitalize transition-colors',
+                        device === value
+                          ? 'bg-mkt-violet text-white'
+                          : 'text-mkt-muted hover:text-mkt-ink'
+                      )}
+                    >
+                      {value}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
-            <div className="flex min-h-[360px] flex-1 items-center justify-center overflow-x-auto rounded-md border-2 border-black bg-yellow-50 p-4">
-              <div className={cn('h-[320px] overflow-hidden rounded-xl border-4 border-black bg-black', frameWidthClass)}>
+
+            <div className="flex flex-1 items-center justify-center overflow-x-auto bg-mkt-surface-2 p-4 sm:p-6 text-mkt-ink">
+              <div
+                className={cn(
+                  'h-[320px] overflow-hidden rounded-2xl border border-mkt-line bg-mkt-surface shadow-[0_18px_44px_-26px_rgba(11,11,16,0.4)]',
+                  frameWidthClass
+                )}
+              >
                 <iframe
                   title="Component preview"
                   srcDoc={srcDoc}
@@ -284,23 +377,28 @@ export function CreateComponentEditor() {
         </div>
 
         {error && (
-          <p className="rounded-md border-2 border-red-600 bg-red-50 px-4 py-3 text-sm font-medium text-red-800">
+          <p
+            role="alert"
+            className="flex items-start gap-2.5 rounded-xl bg-red-50 px-4 py-3 text-[14px] font-medium text-red-700"
+          >
+            <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
             {error}
           </p>
         )}
 
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-sm text-black/60">
-            Saved components appear in the public library with a <strong>custom</strong> tag.
+          <p className="text-[14px] text-mkt-muted">
+            Saved components appear in the public library with a{' '}
+            <span className="font-medium text-mkt-ink">custom</span> tag.
           </p>
           <button
             type="button"
             onClick={handleSave}
             disabled={isSaving || !title.trim() || !description.trim() || !code.trim()}
-            className="retro-button inline-flex items-center justify-center gap-2 border-2 border-black bg-black px-5 py-2.5 text-sm font-semibold text-yellow-400 hover:bg-black/90 disabled:cursor-not-allowed disabled:opacity-50"
+            className="mkt-btn-primary disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none"
           >
-            <Plus className="h-4 w-4" />
-            {isSaving ? 'Saving...' : componentId ? 'Update component' : 'Save to library'}
+            <Save className="h-4 w-4" aria-hidden />
+            {isSaving ? 'Saving…' : componentId ? 'Update component' : 'Save to library'}
           </button>
         </div>
       </div>

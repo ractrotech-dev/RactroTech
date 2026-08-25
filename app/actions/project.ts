@@ -39,8 +39,8 @@ export async function submitProjectEnquiry(
 
   const enquiry = {
     name: sanitizePlainText(parsed.data.name, 120),
-    phone: parsed.data.phone,
-    email: parsed.data.email ?? null,
+    phone: parsed.data.phone ?? '',
+    email: parsed.data.email,
     project_type: sanitizePlainText(parsed.data.projectType, 80),
     description: sanitizePlainText(parsed.data.description, 5000),
   };

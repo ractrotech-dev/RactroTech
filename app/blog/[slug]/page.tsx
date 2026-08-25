@@ -73,9 +73,9 @@ export default async function BlogPostPage({ params }: Props) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }}
         />
-        <div className="border-b-4 border-black bg-yellow-400">
-          <div className="mx-auto max-w-3xl px-4 py-8 md:py-10">
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[10px] font-black tracking-widest text-black/55">
+        <div className="border-b border-mkt-line bg-mkt-lavender text-mkt-ink">
+          <div className="mkt-shell max-w-3xl py-12 lg:py-14">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[14px] font-medium text-mkt-muted">
               <Link href="/blog" className="hover:underline">
                 ← Journal
               </Link>
@@ -86,11 +86,11 @@ export default async function BlogPostPage({ params }: Props) {
                 Home
               </Link>
             </div>
-            <p className="mt-6 inline-block border-2 border-black bg-white px-3 py-1 text-[10px] font-black tracking-[0.25em] text-black/70 shadow-[2px_2px_0_0_rgba(0,0,0,1)]">
+            <p className="mt-6 inline-block rounded-full bg-mkt-surface px-3 py-1 text-[13px] font-medium text-mkt-violet text-mkt-ink">
               {post.category || 'Article'}
             </p>
-            <h1 className="retro-heading mt-4 text-3xl leading-[1.15] md:text-5xl md:leading-tight">{post.title}</h1>
-            <div className="mt-5 flex flex-wrap items-center gap-3 text-xs font-bold tracking-wider text-black/50">
+            <h1 className="mkt-display mt-4 text-[32px] leading-[1.12] sm:text-[42px]">{post.title}</h1>
+            <div className="mt-5 flex flex-wrap items-center gap-3 text-[14px] text-mkt-muted">
               {dateLabel && post.published_at ? (
                 <time dateTime={new Date(post.published_at).toISOString()}>{dateLabel}</time>
               ) : null}
@@ -102,7 +102,7 @@ export default async function BlogPostPage({ params }: Props) {
                 {tagList.map((tag) => (
                   <li
                     key={tag}
-                    className="border-2 border-black bg-white/80 px-2.5 py-1 text-[10px] font-black tracking-wider text-black/70"
+                    className="rounded-full bg-mkt-surface px-2.5 py-1 text-[13px] text-mkt-muted text-mkt-ink"
                   >
                     {tag}
                   </li>
@@ -112,9 +112,9 @@ export default async function BlogPostPage({ params }: Props) {
           </div>
         </div>
 
-        <div className="mx-auto max-w-3xl px-4 py-10 md:py-12">
+        <div className="mkt-shell max-w-3xl py-12 lg:py-14">
           {post.cover_image ? (
-            <div className="relative mb-10 aspect-[2/1] w-full overflow-hidden border-4 border-black shadow-[6px_6px_0_0_rgba(0,0,0,1)] md:aspect-[21/9]">
+            <div className="relative mb-10 aspect-[2/1] w-full overflow-hidden rounded-3xl border border-mkt-line md:aspect-[21/9]">
               <Image
                 src={post.cover_image}
                 alt={`Cover image for ${post.title}`}
@@ -128,29 +128,27 @@ export default async function BlogPostPage({ params }: Props) {
           ) : null}
 
           {post.excerpt ? (
-            <p className="mb-10 border-l-4 border-black bg-card/80 py-4 pl-5 pr-4 text-base font-bold leading-snug text-journal-ink shadow-[4px_4px_0_0_rgba(0,0,0,0.08)] md:text-lg">
+            <p className="mb-10 border-l-2 border-mkt-violet py-1 pl-5 text-[18px] leading-relaxed text-mkt-ink">
               {post.excerpt}
             </p>
           ) : null}
 
-          <article className="retro-card bg-card p-6 shadow-[6px_6px_0_0_rgba(0,0,0,1)] md:p-10 md:shadow-[8px_8px_0_0_rgba(0,0,0,1)]">
-            <div className="journal-prose whitespace-pre-wrap">{post.content}</div>
+          <article className="whitespace-pre-wrap text-[17px] leading-[1.75] text-mkt-ink/85">
+            {post.content}
           </article>
 
-          <footer className="mt-12 flex flex-col gap-4 border-t-4 border-black/10 pt-10 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-[10px] font-black tracking-[0.2em] text-journal-ink">
-              Thanks for reading — more on the journal.
-            </p>
+          <footer className="mt-14 flex flex-col gap-4 border-t border-mkt-line pt-10 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-[15px] text-mkt-muted">Thanks for reading — more on the journal.</p>
             <div className="flex flex-wrap gap-3">
               <Link
                 href="/blog"
-                className="inline-flex items-center justify-center border-4 border-black bg-yellow-400 px-5 py-2.5 text-[10px] font-black tracking-widest shadow-[3px_3px_0_0_rgba(0,0,0,1)] transition-transform hover:-translate-y-0.5"
+                className="mkt-btn-primary"
               >
                 All posts
               </Link>
               <Link
                 href="/"
-                className="inline-flex items-center justify-center border-4 border-black bg-card px-5 py-2.5 text-[10px] font-black tracking-widest shadow-[3px_3px_0_0_rgba(0,0,0,1)] transition-transform hover:-translate-y-0.5"
+                className="mkt-btn-ghost"
               >
                 RactroTech
               </Link>

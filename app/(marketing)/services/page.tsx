@@ -1,13 +1,13 @@
-import { MarketingPageHeader } from '@/components/marketing-page-header';
-import { RetroServices } from '@/components/retro-services';
-import { RetroCTA } from '@/components/retro-cta';
-import { constructMetadata, generateBreadcrumbSchema, siteConfig } from '@/lib/seo';
+import { PageHero } from '@/components/marketing/sections/page-hero';
+import { ServicesGrid } from '@/components/marketing/sections/services-grid';
+import { FinalCta } from '@/components/marketing/sections/final-cta';
+import { constructMetadata, generateBreadcrumbSchema, sitePath } from '@/lib/seo';
 
 export const metadata = constructMetadata({
-  title: 'Web Development Services',
+  title: 'Web, App & SaaS Development Services',
   description:
-    'Custom web development, SaaS builds, mobile apps, AI integration, e-commerce, and cloud solutions from Ractrotech.',
-  canonicalUrl: `${siteConfig.url}/services`,
+    'Websites, web apps, SaaS, e-commerce, mobile apps, UI/UX, AI integration, and consulting. Explore Ractrotech services and get a free project estimate.',
+  canonicalUrl: sitePath('/services'),
 });
 
 export default function ServicesPage() {
@@ -22,12 +22,16 @@ export default function ServicesPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <MarketingPageHeader
-        title="Our Services"
-        description="End-to-end digital solutions — from strategy and design to development, launch, and support."
+      <PageHero
+        eyebrow="Services"
+        title="What we build"
+        titleAccent="for you"
+        description="Websites, apps, SaaS, stores, design, and more — tell us your goal and we will find the right way to get you there."
+        primaryCta={{ label: 'Tell us your idea', href: '/start-project' }}
+        secondaryCta={{ label: 'See how we work', href: '/about' }}
       />
-      <RetroServices />
-      <RetroCTA />
+      <ServicesGrid />
+      <FinalCta />
     </>
   );
 }

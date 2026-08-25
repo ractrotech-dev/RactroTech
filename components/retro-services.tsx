@@ -1,65 +1,76 @@
+import Link from 'next/link';
 import { FadeInView } from '@/components/fade-in-view';
 
 const services = [
   {
     id: 1,
     name: 'Web Development',
-    description: 'Custom responsive websites built with modern technologies',
-    tags: ['React', 'Next.js', 'Responsive'],
+    description: 'A fast, professional website that builds trust and brings you customers.',
+    tags: ['Business sites', 'Landing pages', 'Portals'],
+    href: '/web-app-development',
   },
   {
     id: 2,
     name: 'SaaS Development',
-    description: 'Scalable software-as-a-service solutions for your business',
-    tags: ['Full Stack', 'Scalable', 'Secure'],
+    description: 'Subscription software your users will love — built to grow with your business.',
+    tags: ['Dashboards', 'Billing', 'Multi-tenant'],
+    href: '/saas-development',
   },
   {
     id: 3,
-    name: 'AI Integration',
-    description: 'Leverage artificial intelligence to boost productivity',
-    tags: ['Machine Learning', 'Automation', 'APIs'],
+    name: 'MVP Development',
+    description: 'Test your idea in the market without spending months or burning your budget.',
+    tags: ['Startups', 'Lean launch', 'Investor-ready'],
+    href: '/mvp-development',
   },
   {
     id: 4,
     name: 'Mobile Apps',
-    description: 'iOS and Android applications with native performance',
-    tags: ['React Native', 'Performance', 'UX'],
+    description: 'Reach users on iOS and Android with apps that feel fast and native.',
+    tags: ['iOS', 'Android', 'Cross-platform'],
+    href: '/start-project',
   },
   {
     id: 5,
-    name: 'E-Commerce',
-    description: 'Complete online store solutions with payment integration',
-    tags: ['Shopify', 'Payment', 'Analytics'],
+    name: 'UI/UX Design',
+    description: 'Interfaces people actually enjoy using — researched, designed, and dev-ready.',
+    tags: ['Wireframes', 'Prototypes', 'Design systems'],
+    href: '/ui-ux-design',
   },
   {
     id: 6,
-    name: 'API Development',
-    description: 'RESTful and GraphQL APIs for seamless data integration',
-    tags: ['Backend', 'Database', 'Security'],
+    name: 'E-Commerce',
+    description: 'Online stores with smooth checkout, inventory, and payments that just work.',
+    tags: ['Shopify', 'Custom stores', 'Payments'],
+    href: '/start-project',
   },
   {
     id: 7,
-    name: 'Cloud Solutions',
-    description: 'AWS, Google Cloud, and Azure infrastructure management',
-    tags: ['DevOps', 'Scalability', 'Monitoring'],
+    name: 'AI Integration',
+    description: 'Add smart automation, chatbots, and AI features that save your team time.',
+    tags: ['Chatbots', 'Automation', 'Analytics'],
+    href: '/start-project',
   },
   {
     id: 8,
-    name: 'UI/UX Design',
-    description: 'Beautiful and intuitive user interfaces',
-    tags: ['Design', 'User Research', 'Prototyping'],
+    name: 'Cloud & DevOps',
+    description: 'Reliable hosting, scaling, and infrastructure so your product stays online.',
+    tags: ['AWS', 'Azure', 'Monitoring'],
+    href: '/start-project',
   },
-  // {
-  //   id: 9,
-  //   name: "Staff Training",
-  //   description: "Tech education and skill development for your team",
-  //   tags: ["Education", "Mentoring", "Workshops"],
-  // },
+  {
+    id: 9,
+    name: 'Templates & UI Kits',
+    description: 'Skip months of setup — start from production-ready code and customize fast.',
+    tags: ['SaaS starters', 'Components', 'Dashboards'],
+    href: '/templates',
+  },
   {
     id: 10,
     name: 'Consulting',
-    description: 'Strategic technology consulting and architecture planning',
-    tags: ['Strategy', 'Planning', 'Architecture'],
+    description: 'Honest technical advice when you need a clear plan before you build.',
+    tags: ['Architecture', 'Scoping', 'Strategy'],
+    href: '/startup-development',
   },
 ];
 
@@ -69,17 +80,21 @@ export function RetroServices() {
       <FadeInView>
         <div className="mx-auto max-w-7xl px-4">
           <div className="mb-12 text-center">
-            <h2 className="retro-heading mb-4 text-5xl">OUR SERVICES</h2>
+            <h2 className="retro-heading mb-4 text-5xl">WHAT WE BUILD FOR YOU</h2>
             <p className="mx-auto max-w-2xl text-lg font-semibold">
-              We offer a comprehensive range of digital solutions to help your business grow and
-              succeed.
+              Whatever you need to grow online — we design it, build it, launch it, and support it.
+              Pick a service below or tell us your goal and we&apos;ll recommend the right path.
             </p>
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {services.map((service) => (
-              <div key={service.id} className="retro-card p-6">
-                <h3 className="retro-heading mb-3 text-2xl">{service.name}</h3>
+              <Link
+                key={service.id}
+                href={service.href}
+                className="retro-card group block p-6 transition-transform hover:-translate-y-1"
+              >
+                <h3 className="retro-heading mb-3 text-2xl group-hover:underline">{service.name}</h3>
                 <p className="mb-4 font-semibold">{service.description}</p>
                 <div className="flex flex-wrap gap-2">
                   {service.tags.map((tag) => (
@@ -91,8 +106,14 @@ export function RetroServices() {
                     </span>
                   ))}
                 </div>
-              </div>
+              </Link>
             ))}
+          </div>
+
+          <div className="mt-10 text-center">
+            <Link href="/services" className="retro-button inline-flex">
+              View All Services
+            </Link>
           </div>
         </div>
       </FadeInView>

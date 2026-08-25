@@ -1,0 +1,68 @@
+"use client";
+
+import { useId } from "react";
+
+import { cn } from "@/lib/utils";
+
+type DotPatternProps = React.SVGProps<SVGSVGElement> & {
+  /** Tile size of the grid, in px. */
+  width?: number;
+  height?: number;
+  /** Offset of the whole grid, in px. */
+  x?: number;
+  y?: number;
+  /** Position and radius of the dot inside each tile, in px. */
+  cx?: number;
+  cy?: number;
+  cr?: number;
+};
+
+/**
+ * Tiled dot grid, sized to whatever positioned ancestor it sits in.
+ *
+ * The default fill is driven by `--mkt-dot`, which flips in `.dark` (see
+ * app/globals.css) — so a bare `<DotPattern />` is theme-aware with no `dark:`
+ * variant at the call site. Passing `fill-*` in `className` overrides it; `cn`
+ * runs tailwind-merge, so the caller's value wins rather than stacking.
+ */
+function DotPattern({
+  width = 16,
+  height = 16,
+  x = 0,
+  y = 0,
+  cx = 1,
+  cy = 1,
+  cr = 1,
+  className,
+  ...props
+}: DotPatternProps) {
+  const id = useId();
+
+  return (
+    <svg
+      aria-hidden="true"
+      className={cn(
+        "pointer-events-none absolute inset-0 h-full w-full fill-mkt-dot/[0.15]",
+        className,
+      )}
+      {...props}
+    >
+      <defs>
+        <pattern
+          id={id}
+          width={width}
+          height={height}
+          patternUnits="userSpaceOnUse"
+          patternContentUnits="userSpaceOnUse"
+          x={x}
+          y={y}
+        >
+          <circle id="pattern-circle" cx={cx} cy={cy} r={cr} />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" strokeWidth={0} fill={`url(#${id})`} />
+    </svg>
+  );
+}
+
+export { DotPattern };

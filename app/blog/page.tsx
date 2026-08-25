@@ -9,8 +9,8 @@ import { desc, eq } from 'drizzle-orm';
 export const dynamic = 'force-dynamic';
 
 export const metadata = constructMetadata({
-  title: 'Journal',
-  description: 'Articles and updates on web development, SaaS, and shipping digital products from Ractrotech.',
+  title: 'Blog — Web Development & SaaS Insights',
+  description: 'Articles on SaaS development, MVP builds, Next.js, and shipping digital products from Ractrotech.',
   canonicalUrl: sitePath('/blog'),
 });
 
@@ -32,35 +32,40 @@ export default async function BlogIndexPage() {
 
     return (
       <main className="flex-1 pb-16">
-        <div className="border-b-4 border-black bg-yellow-400">
-          <div className="mx-auto max-w-3xl px-4 py-12">
-            <p className="text-[10px] font-black tracking-[0.35em] text-black/50">RactroTech</p>
-            <h1 className="retro-heading mt-2 text-4xl md:text-5xl">Journal</h1>
-            <p className="mt-3 text-sm font-bold text-black/60">Published posts from the team.</p>
+        <div className="border-b border-mkt-line bg-mkt-lavender text-mkt-ink">
+          <div className="mkt-shell max-w-3xl py-14 lg:py-16">
+            <span className="mkt-eyebrow">
+              <span className="h-1.5 w-1.5 rounded-full bg-mkt-violet" />
+              Journal
+            </span>
+            <h1 className="mkt-display mt-5 text-[36px] leading-[1.1] sm:text-[44px]">Blog</h1>
+            <p className="mt-4 max-w-xl text-[17px] leading-relaxed text-mkt-muted">
+              SaaS development, MVP guides, and Next.js insights from the Ractrotech team.
+            </p>
           </div>
         </div>
 
-        <div className="mx-auto max-w-3xl px-4 py-12">
+        <div className="mkt-shell max-w-3xl py-14">
           {posts.length === 0 ? (
-            <p className="retro-card border-4 border-black bg-card p-8 text-center text-sm font-bold text-journal-ink">
+            <p className="rounded-3xl border border-mkt-line bg-mkt-surface p-10 text-center text-[15px] text-mkt-muted text-mkt-ink">
               No published posts yet. Check back soon.
             </p>
           ) : (
-            <ul className="space-y-6">
+            <ul className="mkt-reveal-group space-y-4">
               {posts.map((p) => (
                 <li key={p.id}>
                   <Link
                     href={`/blog/${p.slug}`}
-                    className="group block border-4 border-black bg-card p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-y-0.5"
+                    className="group block rounded-3xl border border-mkt-line bg-mkt-surface p-6 transition-shadow duration-200 hover:shadow-[0_18px_44px_-26px_rgba(11,11,16,0.4)] sm:p-7 text-mkt-ink"
                   >
-                    <p className="text-[10px] font-black tracking-widest text-black/40">
+                    <p className="text-[13px] font-medium text-mkt-violet">
                       {p.category || 'Update'}
                     </p>
-                    <h2 className="mt-2 text-xl font-black tracking-tight group-hover:underline">{p.title}</h2>
+                    <h2 className="mkt-display mt-2 text-[21px] group-hover:underline">{p.title}</h2>
                     {p.excerpt ? (
-                      <p className="mt-2 line-clamp-2 text-sm font-semibold text-black/60">{p.excerpt}</p>
+                      <p className="mt-2.5 line-clamp-2 text-[15px] leading-relaxed text-mkt-muted">{p.excerpt}</p>
                     ) : null}
-                    <p className="mt-4 text-[10px] font-bold tracking-wider text-black/35">
+                    <p className="mt-5 text-[13px] text-mkt-muted/70">
                       {p.published_at
                         ? new Date(p.published_at).toLocaleDateString(undefined, {
                             year: 'numeric',

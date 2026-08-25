@@ -51,6 +51,61 @@
     --rt-foreground: 15 23 42;
     --rt-muted: 100 116 139;
     --rt-accent: 79 70 229;
+
+    /* Marketing design system. Space-separated RGB channels so `.dark` below can
+       re-point them and Tailwind's opacity modifiers keep working.
+       Consumed via the `mkt` scale in tailwind.config.ts. */
+
+    /* Surfaces that follow the theme. */
+    --mkt-surface: 255 255 255;
+    --mkt-surface-2: 255 255 255;
+    /* Bands that stay dark in BOTH themes (footer, CTA, testimonials). */
+    --mkt-contrast: 11 11 16;
+    --mkt-contrast-soft: 20 20 28;
+    /* Foreground + hairlines. */
+    --mkt-ink: 11 11 16;
+    --mkt-ink-soft: 20 20 28;
+    --mkt-ink-line: 35 35 46;
+    --mkt-muted: 92 92 107;
+    --mkt-line: 231 229 239;
+    /* Dot colour for the global page backdrop (components/layout/global-background.tsx).
+       Kept separate from --mkt-ink so the grid can be tuned without shifting body text,
+       and so dark mode can swap to a cool grey instead of inverting to pure white. */
+    --mkt-dot: 11 11 16;
+    /* Brand accents. `brand` is the logo blue — lightened in dark so the wordmark
+       keeps contrast against a near-black surface. */
+    --mkt-brand: 24 0 172;
+    --mkt-violet: 91 61 245;
+    --mkt-violet-soft: 124 99 247;
+    --mkt-violet-deep: 51 22 196;
+    --mkt-lavender: 242 239 252;
+    --mkt-lavender-deep: 228 222 250;
+    --mkt-cream: 248 245 239;
+    /* Pastel fills. These carry foreground text, so they invert with the theme. */
+    --mkt-mint: 207 243 223;
+    --mkt-pink: 251 220 235;
+    --mkt-butter: 251 239 184;
+    --mkt-lilac: 221 214 251;
+    --mkt-sky: 210 230 252;
+    --mkt-peach: 252 217 176;
+    /* The violet canvas the colourful card walls sit on. A medium tint on purpose: dark
+       enough that white type clears AA on it, light enough that the pastel cards still
+       read as lighter blocks floating on top rather than sinking into it. */
+    --mkt-canvas: 141 126 240;
+    /* Tone-paired ink. Each pastel fill carries a deep shade of a related hue instead
+       of the neutral --mkt-ink, which is what makes a wall of coloured cards read as one
+       editorial set rather than five random swatches. Two families only, so the mix stays
+       coherent: a plum for the cool/warm neutrals and a forest green for the greens.
+       Set as the card's `color`, so its children can lean on `currentColor`
+       (border-current/15, bg-current/10) instead of needing a token each. */
+    --mkt-on-mint: 20 88 58;
+    --mkt-on-sky: 139 39 74;
+    --mkt-on-butter: 61 80 26;
+    --mkt-on-pink: 146 34 84;
+    --mkt-on-lilac: 72 42 156;
+    --mkt-on-peach: 150 52 40;
+    /* Success accent used on the mint confirmation chips. */
+    --mkt-success: 28 122 77;
   }
 
   .dark {
@@ -78,6 +133,61 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+
+    /* Journal / blog — same paper metaphor, inked down. */
+    --journal-bg: 240 10% 7%;
+    --journal-line: 240 8% 26%;
+    --journal-surface: 240 12% 10%;
+    --journal-ink-muted: 240 8% 66%;
+
+    /* Component library tokens. */
+    --rt-surface: 22 22 31;
+    --rt-foreground: 241 241 246;
+    --rt-muted: 154 154 176;
+    --rt-accent: 124 99 247;
+
+    /* Marketing design system — dark.
+       `contrast` stays dark but lifts ABOVE the page surface so those bands still
+       read as a distinct block instead of merging into the background. The pastels
+       become deep tints of the same hue: they carry `text-mkt-ink`, which is light
+       here, so leaving them bright would put white text on a pastel fill. */
+    --mkt-surface: 13 13 18;
+    --mkt-surface-2: 22 22 31;
+    --mkt-contrast: 22 22 31;
+    --mkt-contrast-soft: 30 30 41;
+    --mkt-ink: 244 244 248;
+    --mkt-ink-soft: 28 28 38;
+    --mkt-ink-line: 42 42 56;
+    --mkt-muted: 156 156 176;
+    --mkt-line: 43 43 58;
+    /* Lifted rather than inverted: pure white dots over the near-black surface read as
+       noise, while this cool grey lands at ~rgb(36,36,45) at the backdrop's alpha. */
+    --mkt-dot: 168 168 196;
+    --mkt-brand: 141 125 255;
+    --mkt-violet: 124 99 247;
+    --mkt-violet-soft: 154 134 249;
+    --mkt-violet-deep: 91 61 245;
+    --mkt-lavender: 28 24 48;
+    --mkt-lavender-deep: 38 32 64;
+    --mkt-cream: 20 19 24;
+    --mkt-mint: 22 48 33;
+    --mkt-pink: 56 30 43;
+    --mkt-butter: 56 48 22;
+    --mkt-lilac: 41 36 61;
+    --mkt-sky: 26 41 58;
+    --mkt-peach: 58 36 26;
+    /* Same band, inked down. Still unmistakably violet rather than collapsing to the
+       neutral --mkt-contrast, so the section keeps its identity in dark mode. */
+    --mkt-canvas: 47 39 92;
+    /* Inks invert with the fills: on a deep tint the pairing has to be a LIGHT shade of
+       the same hue, or the card ends up dark-on-dark. Same two families, lifted. */
+    --mkt-on-mint: 134 227 178;
+    --mkt-on-sky: 164 204 250;
+    --mkt-on-butter: 226 219 140;
+    --mkt-on-pink: 247 178 208;
+    --mkt-on-lilac: 191 176 250;
+    --mkt-on-peach: 246 190 150;
+    --mkt-success: 110 231 183;
   }
 }
 
@@ -125,5 +235,181 @@
 
   .journal-prose {
     @apply text-[15px] font-medium leading-[1.75] text-black/90 md:text-base;
+  }
+}
+
+/* Marketing landing system (separate from .retro-* above) */
+@layer components {
+  .mkt-shell {
+    @apply mx-auto w-full max-w-[1200px] px-5 sm:px-6 lg:px-8;
+  }
+
+  /* No colour of its own — it inherits. A heading inside a card picks up that card's ink,
+     and the same class on the violet canvas picks up the shell's white. Hard-coding
+     text-mkt-ink here would have forced every canvas heading to override it. */
+  .mkt-display {
+    @apply font-display font-semibold tracking-[-0.03em];
+  }
+
+  .mkt-eyebrow {
+    @apply inline-flex items-center gap-2 rounded-full border border-mkt-line bg-mkt-surface px-3.5 py-1.5 text-[13px] font-medium text-mkt-muted;
+  }
+
+  /* Self-contained: carries its own ink so it stays legible whatever the page behind it
+     is set to. The violet canvas sets a white default at the shell root, and a surface
+     that relied on inheriting from there would render white-on-white. */
+  .mkt-card {
+    @apply rounded-3xl border border-mkt-line bg-mkt-surface text-mkt-ink;
+  }
+
+  /* Faint square grid for the violet band — the ruled backdrop the reference uses behind
+     its card walls. Drawn with two 1px gradients rather than an SVG so it tiles at any
+     size and costs no request. White at low alpha, so it works over any canvas tint. */
+  /* Faint square grid for the violet canvas. Two 1px gradients rather than an SVG so it
+     tiles at any size and costs no request. White at low alpha, so it works over any tint.
+     The backdrop that carries this is viewport-fixed, so the ruling is continuous down the
+     whole page and needs no per-section seam handling; the vignette comes from pairing it
+     with .mkt-dot-mask at the call site. */
+  .mkt-grid {
+    /* Wide cells on purpose. At 64px the ruling read as a texture and needed a vignette to
+       stop it buzzing; at this size it reads as architecture — a few calm lines crossing
+       the viewport — which is what lets it run border to border with no mask at all.
+       Exposed as a custom property so a section can tighten the ruling locally without
+       redefining the gradients. */
+    --mkt-grid-size: 132px;
+    background-image:
+      linear-gradient(to right, rgb(255 255 255 / 0.085) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(255 255 255 / 0.085) 1px, transparent 1px);
+    background-size: var(--mkt-grid-size) var(--mkt-grid-size);
+  }
+
+  /* Eyebrow pill for dark or violet bands, where .mkt-eyebrow's white fill would punch a
+     hole in the band. Was hand-rolled identically in three sections before this. */
+  .mkt-eyebrow-onDark {
+    @apply inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3.5 py-1.5 text-[13px] font-medium text-white/75;
+  }
+
+  .mkt-btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full text-[15px] font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mkt-violet focus-visible:ring-offset-2;
+  }
+
+  .mkt-btn-primary {
+    @apply mkt-btn bg-mkt-violet px-6 py-3 text-white shadow-[0_8px_20px_-8px_rgba(91,61,245,0.7)] hover:bg-mkt-violet-soft hover:shadow-[0_10px_26px_-8px_rgba(91,61,245,0.8)];
+  }
+
+  .mkt-btn-ghost {
+    @apply mkt-btn border border-mkt-line bg-mkt-surface px-6 py-3 text-mkt-ink hover:border-mkt-ink/25 hover:bg-mkt-lavender;
+  }
+
+  .mkt-btn-onDark {
+    @apply mkt-btn border border-white/20 bg-white/5 px-6 py-3 text-white hover:border-white/40 hover:bg-white/10;
+  }
+
+  /* Fades the global dot grid out toward the viewport edges so the pattern reads as
+     texture behind the content rather than a border-to-border tile.
+     Written longhand with the -webkit- pair on purpose: there is no autoprefixer in
+     postcss.config.mjs, so a Tailwind `[mask-image:…]` arbitrary value would ship
+     unprefixed and drop the mask in Safari — same reason as .mkt-marquee-mask below. */
+  .mkt-dot-mask {
+    -webkit-mask-image: radial-gradient(
+      ellipse 75% 60% at 50% 35%,
+      #000 0%,
+      rgba(0, 0, 0, 0.6) 55%,
+      transparent 100%
+    );
+    mask-image: radial-gradient(
+      ellipse 75% 60% at 50% 35%,
+      #000 0%,
+      rgba(0, 0, 0, 0.6) 55%,
+      transparent 100%
+    );
+  }
+
+  /* Fades the marquee out at both edges without painting over the parent background. */
+  .mkt-marquee-mask {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 8%,
+      #000 92%,
+      transparent
+    );
+    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  }
+
+  .mkt-marquee-track {
+    animation: mkt-marquee var(--mkt-marquee-duration, 42s) linear infinite;
+    /* Promote to its own layer so the loop stays smooth on long tracks. */
+    will-change: transform;
+  }
+
+  .mkt-marquee-mask:hover .mkt-marquee-track {
+    animation-play-state: paused;
+  }
+
+  /* Counter-scrolling second row. Runs the same keyframe backwards rather than needing a
+     mirrored one — the track renders its children twice, so it loops seamlessly either way. */
+  .mkt-marquee-track-reverse {
+    animation-direction: reverse;
+  }
+}
+
+/* Section entrance animation. Pure CSS on purpose — see components/marketing/reveal.tsx
+   for why this must never depend on JS to become visible. */
+@keyframes mkt-fade-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.mkt-reveal,
+.mkt-reveal-group > * {
+  animation: mkt-fade-up 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Stagger the first several children of a group; anything beyond shares the last delay. */
+.mkt-reveal-group > *:nth-child(2) {
+  animation-delay: 0.06s;
+}
+.mkt-reveal-group > *:nth-child(3) {
+  animation-delay: 0.12s;
+}
+.mkt-reveal-group > *:nth-child(4) {
+  animation-delay: 0.18s;
+}
+.mkt-reveal-group > *:nth-child(5) {
+  animation-delay: 0.24s;
+}
+.mkt-reveal-group > *:nth-child(6) {
+  animation-delay: 0.3s;
+}
+.mkt-reveal-group > *:nth-child(n + 7) {
+  animation-delay: 0.36s;
+}
+
+/* Defined here rather than in tailwind.config.ts: Tailwind only emits a @keyframes
+   block for keyframes referenced by an `animation` utility, so a config-only entry
+   consumed by hand-written CSS silently produces no animation at all. */
+@keyframes mkt-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    /* The track renders its children twice, so -50% is exactly one seamless loop. */
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mkt-marquee-track,
+  .mkt-reveal,
+  .mkt-reveal-group > * {
+    animation: none !important;
+    transform: none !important;
   }
 }

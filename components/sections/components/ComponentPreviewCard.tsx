@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useMemo } from 'react';
+import { ArrowUpRight } from 'lucide-react';
 import { buildSrcDoc } from './build-src-doc';
 import { useLazyIframe } from './use-lazy-iframe';
 
@@ -32,11 +33,11 @@ export function ComponentPreviewCard({
   return (
     <Link
       href={`/components/${id}`}
-      className="group retro-card flex flex-col overflow-hidden border-4 bg-white transition-transform hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
+      className="group flex flex-col overflow-hidden rounded-3xl border border-mkt-line bg-mkt-surface transition-shadow duration-200 hover:shadow-[0_18px_44px_-26px_rgba(11,11,16,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mkt-violet focus-visible:ring-offset-2 text-mkt-ink"
     >
       <div
         ref={ref}
-        className="relative h-48 overflow-hidden border-b-4 border-black bg-yellow-50"
+        className="relative h-48 overflow-hidden border-b border-mkt-line bg-mkt-surface-2 text-mkt-ink"
       >
         {isVisible && srcDoc ? (
           <iframe
@@ -48,34 +49,45 @@ export function ComponentPreviewCard({
             tabIndex={-1}
           />
         ) : (
-          <div className="flex h-full items-center justify-center text-sm text-black/40">
-            Loading preview...
+          <div className="flex h-full items-center justify-center text-[13px] text-mkt-muted">
+            Loading preview…
           </div>
         )}
       </div>
 
-      <div className="flex flex-1 flex-col gap-2 p-4">
+      <div className="flex flex-1 flex-col p-5">
         <div className="flex flex-wrap gap-1.5">
           {categoryName && (
-            <span className="inline-flex border-2 border-black bg-yellow-400 px-2 py-0.5 text-xs font-semibold text-black">
+            <span className="rounded-full bg-mkt-lavender px-2.5 py-1 text-[12px] font-medium text-mkt-violet text-mkt-ink">
               {categoryName}
             </span>
           )}
           {styleVariant && (
-            <span className="inline-flex border border-black/20 bg-black/5 px-2 py-0.5 text-xs font-medium text-black/70">
+            <span className="rounded-full border border-mkt-line px-2.5 py-1 text-[12px] font-medium capitalize text-mkt-muted">
               {styleVariant}
             </span>
           )}
           {industryVariant && (
-            <span className="inline-flex border border-black/20 bg-black/5 px-2 py-0.5 text-xs font-medium text-black/70">
+            <span className="rounded-full border border-mkt-line px-2.5 py-1 text-[12px] font-medium capitalize text-mkt-muted">
               {industryVariant}
             </span>
           )}
         </div>
-        <h3 className="text-base font-bold text-black group-hover:underline">{title}</h3>
-        <p className="line-clamp-2 text-sm text-black/65">{description}</p>
+
+        <div className="mt-4 flex items-start justify-between gap-3">
+          <h3 className="mkt-display text-[17px] leading-snug">{title}</h3>
+          <ArrowUpRight
+            className="mt-0.5 h-5 w-5 shrink-0 text-mkt-muted transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+            aria-hidden
+          />
+        </div>
+
+        <p className="mt-2 line-clamp-2 flex-1 text-[15px] leading-relaxed text-mkt-muted">
+          {description}
+        </p>
+
         {difficulty && (
-          <p className="text-xs text-black/45 capitalize">Difficulty: {difficulty}</p>
+          <p className="mt-4 text-[12px] capitalize text-mkt-muted">Difficulty: {difficulty}</p>
         )}
       </div>
     </Link>

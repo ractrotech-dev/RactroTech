@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { LogOut, Settings, User } from 'lucide-react'
 
 import { logout } from '@/app/auth/actions'
+import { UserAvatar } from '@/components/auth/UserAvatar'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -13,20 +14,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { cn } from '@/lib/utils'
-
-function initialsFromDisplay(displayName: string, email: string): string {
-  const name = displayName.trim()
-  if (name) {
-    const parts = name.split(/\s+/).filter(Boolean)
-    if (parts.length >= 2) {
-      return `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase()
-    }
-    if (parts[0].length >= 2) return parts[0].slice(0, 2).toUpperCase()
-    return parts[0].slice(0, 1).toUpperCase()
-  }
-  const local = email.split('@')[0] ?? '?'
-  return local.slice(0, 2).toUpperCase()
-}
 
 type DashboardHeaderProfileMenuProps = {
   avatarUrl: string | null
@@ -41,9 +28,6 @@ export function DashboardHeaderProfileMenu({
   email,
   className,
 }: DashboardHeaderProfileMenuProps) {
-  const initials = initialsFromDisplay(displayName, email)
-  const showImage = Boolean(avatarUrl?.trim())
-
   return (
     <div className={cn('flex items-center gap-1', className)}>
       <DropdownMenu>
@@ -54,24 +38,12 @@ export function DashboardHeaderProfileMenu({
             className="relative h-9 w-9 shrink-0 rounded-full p-0 ring-offset-background focus-visible:ring-2 focus-visible:ring-ring"
             aria-label="Open account menu"
           >
-            {showImage ? (
-              // eslint-disable-next-line @next/next/no-img-element -- user OAuth URLs vary; avoid remotePatterns maintenance
-              <img
-                src={avatarUrl!}
-                alt=""
-                width={36}
-                height={36}
-                className="h-9 w-9 rounded-full object-cover"
-                referrerPolicy="no-referrer"
-              />
-            ) : (
-              <span
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground"
-                aria-hidden
-              >
-                {initials}
-              </span>
-            )}
+            <UserAvatar
+              displayName={displayName}
+              email={email}
+              avatarUrlOverride={avatarUrl}
+              size="md"
+            />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-48">

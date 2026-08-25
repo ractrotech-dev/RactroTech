@@ -69,7 +69,7 @@ export function RetroContact() {
                 Connect with us
               </p>
               <p className="mt-2 font-semibold text-gray-400">
-                Follow RactroTech for product updates, launches, and behind-the-scenes builds.
+                Follow Ractrotech for product updates, launches, and behind-the-scenes builds.
               </p>
             </div>
             <div className="flex gap-3">

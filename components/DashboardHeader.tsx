@@ -1,6 +1,5 @@
 import { Bell, Menu, Search } from 'lucide-react'
 import Link from 'next/link'
-import Image from 'next/image'
 import { Suspense } from 'react'
 
 import { Button } from '@/components/ui/button'
@@ -9,6 +8,7 @@ import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { createClient } from '@/utils/supabase/server'
 import { getStripePlan } from '@/utils/stripe/api'
+import { BrandLogo } from '@/components/marketing/brand-logo'
 import { DashboardHeaderGreeting } from '@/components/DashboardHeaderGreeting'
 import { DashboardHeaderProfileMenu } from '@/components/DashboardHeaderProfileMenu'
 import type { User } from '@supabase/supabase-js'
@@ -59,7 +59,7 @@ export default async function DashboardHeader() {
         <div className="flex min-w-0 flex-1 items-center gap-2 md:mr-4 md:flex-none lg:flex-1">
           <div className="mr-2 hidden shrink-0 items-center space-x-2 md:flex">
             <Link className="flex items-center space-x-2" href="/dashboard">
-              <Image src="/logo.png" alt="RactroTech" width={25} height={25} />
+              <BrandLogo className="h-[22px] text-mkt-brand" />
             </Link>
             <Suspense
               fallback={

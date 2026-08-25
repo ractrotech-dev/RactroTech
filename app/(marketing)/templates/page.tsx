@@ -1,6 +1,6 @@
-import { MarketingPageHeader } from '@/components/marketing-page-header';
-import { RetroTemplates } from '@/components/retro-templates';
-import { RetroCTA } from '@/components/retro-cta';
+import { PageHero } from '@/components/marketing/sections/page-hero';
+import { TemplatesGrid } from '@/components/marketing/sections/templates-grid';
+import { FinalCta } from '@/components/marketing/sections/final-cta';
 import { constructMetadata, generateBreadcrumbSchema, siteConfig } from '@/lib/seo';
 
 export const metadata = constructMetadata({
@@ -22,12 +22,16 @@ export default function TemplatesPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <MarketingPageHeader
-        title="Templates"
-        description="Production-ready starters and UI kits to launch faster without sacrificing quality."
+      <PageHero
+        eyebrow="Templates"
+        title="Launch faster with"
+        titleAccent="ready-made starters"
+        description="Production-ready templates and UI kits that save you months of setup without sacrificing quality."
+        primaryCta={{ label: 'Browse components', href: '/components' }}
+        secondaryCta={{ label: 'Request a custom build', href: '/start-project' }}
       />
-      <RetroTemplates />
-      <RetroCTA />
+      <TemplatesGrid />
+      <FinalCta />
     </>
   );
 }

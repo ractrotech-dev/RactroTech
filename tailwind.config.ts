@@ -20,14 +20,6 @@ const config = {
       },
     },
     extend: {
-      fontFamily: {
-        sans: [
-          "var(--font-inter)",
-          "ui-sans-serif",
-          "system-ui",
-          "sans-serif",
-        ],
-      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -82,6 +74,55 @@ const config = {
           muted: "rgb(var(--rt-muted) / <alpha-value>)",
           accent: "rgb(var(--rt-accent) / <alpha-value>)",
         },
+        /* Marketing landing palette. Defined as space-separated RGB channels in
+           globals.css so `.dark` can re-point them, and consumed through rgb() here
+           so opacity modifiers like `bg-mkt-ink/10` still resolve correctly.
+
+           Roles matter when picking one of these:
+             surface / surface-2  page and raised-card backgrounds — flip with the theme
+             contrast / -soft     bands that are dark in BOTH themes (footer, CTA)
+             ink / muted / line   foreground and hairlines — flip with the theme
+             pastels              fills that carry foreground text — flip with it too
+             violet / brand       brand accents — same hue, lifted in dark */
+        mkt: {
+          surface: "rgb(var(--mkt-surface) / <alpha-value>)",
+          "surface-2": "rgb(var(--mkt-surface-2) / <alpha-value>)",
+          contrast: "rgb(var(--mkt-contrast) / <alpha-value>)",
+          "contrast-soft": "rgb(var(--mkt-contrast-soft) / <alpha-value>)",
+          ink: "rgb(var(--mkt-ink) / <alpha-value>)",
+          "ink-soft": "rgb(var(--mkt-ink-soft) / <alpha-value>)",
+          "ink-line": "rgb(var(--mkt-ink-line) / <alpha-value>)",
+          muted: "rgb(var(--mkt-muted) / <alpha-value>)",
+          brand: "rgb(var(--mkt-brand) / <alpha-value>)",
+          violet: "rgb(var(--mkt-violet) / <alpha-value>)",
+          "violet-soft": "rgb(var(--mkt-violet-soft) / <alpha-value>)",
+          "violet-deep": "rgb(var(--mkt-violet-deep) / <alpha-value>)",
+          lavender: "rgb(var(--mkt-lavender) / <alpha-value>)",
+          "lavender-deep": "rgb(var(--mkt-lavender-deep) / <alpha-value>)",
+          cream: "rgb(var(--mkt-cream) / <alpha-value>)",
+          line: "rgb(var(--mkt-line) / <alpha-value>)",
+          dot: "rgb(var(--mkt-dot) / <alpha-value>)",
+          mint: "rgb(var(--mkt-mint) / <alpha-value>)",
+          pink: "rgb(var(--mkt-pink) / <alpha-value>)",
+          butter: "rgb(var(--mkt-butter) / <alpha-value>)",
+          lilac: "rgb(var(--mkt-lilac) / <alpha-value>)",
+          sky: "rgb(var(--mkt-sky) / <alpha-value>)",
+          peach: "rgb(var(--mkt-peach) / <alpha-value>)",
+          canvas: "rgb(var(--mkt-canvas) / <alpha-value>)",
+          /* Tone-paired ink — `text-mkt-on-mint` on a `bg-mkt-mint` card, and so on.
+             Applying it as the card's colour lets everything inside it use currentColor
+             (border-current/15, text-current/70) and stay in tone automatically. */
+          "on-mint": "rgb(var(--mkt-on-mint) / <alpha-value>)",
+          "on-sky": "rgb(var(--mkt-on-sky) / <alpha-value>)",
+          "on-butter": "rgb(var(--mkt-on-butter) / <alpha-value>)",
+          "on-pink": "rgb(var(--mkt-on-pink) / <alpha-value>)",
+          "on-lilac": "rgb(var(--mkt-on-lilac) / <alpha-value>)",
+          "on-peach": "rgb(var(--mkt-on-peach) / <alpha-value>)",
+          success: "rgb(var(--mkt-success) / <alpha-value>)",
+        },
+      },
+      fontFamily: {
+        display: ["var(--font-display)", "var(--font-inter)", "system-ui", "sans-serif"],
       },
       borderRadius: {
         lg: "var(--radius-lg)",

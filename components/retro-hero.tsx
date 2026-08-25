@@ -11,14 +11,8 @@ import {
   SiStripe,
 } from 'react-icons/si';
 
-// const stats = [
-//   { value: "50+", label: "Projects" },
-//   { value: "30+", label: "Clients" },
-//   { value: "15+", label: "Years" },
-// ];
-
 const container = {
-  hidden: { opacity: 0 },
+  hidden: { opacity: 1 },
   show: {
     opacity: 1,
     transition: { staggerChildren: 0.1, delayChildren: 0.15 },
@@ -26,12 +20,12 @@ const container = {
 };
 
 const item = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 1, y: 0 },
   show: { opacity: 1, y: 0 },
 };
 
 const badge = {
-  hidden: { opacity: 0, scale: 0.9 },
+  hidden: { opacity: 1, scale: 1 },
   show: {
     opacity: 1,
     scale: 1,
@@ -40,6 +34,9 @@ const badge = {
 };
 
 export function RetroHero() {
+  const itemVariant = item;
+  const badgeVariant = badge;
+
   return (
     <section id="home" className="relative overflow-hidden border-b-4 border-black bg-yellow-400">
       <div
@@ -50,52 +47,60 @@ export function RetroHero() {
       />
 
       <div className="relative mx-auto max-w-7xl px-4 py-20 md:py-28 lg:py-36">
-        <motion.div className="max-w-3xl" variants={container} initial="hidden" animate="show">
+        <motion.div
+          className="max-w-3xl"
+          variants={container}
+          initial="show"
+          animate="show"
+        >
           <motion.p
             className="mb-4 text-sm font-black tracking-[0.3em] text-black/70"
-            variants={item}
+            variants={itemVariant}
           >
-            DIGITAL AGENCY
+            WEBSITES · APPS · SAAS · DESIGN & MORE
           </motion.p>
           <motion.h1
             className="mb-4 text-3xl font-black leading-[1.05] tracking-tight text-black sm:text-4xl md:text-5xl lg:text-6xl"
-            variants={item}
+            variants={itemVariant}
           >
-            WE BUILD{' '}
+            WEB & APP{' '}
             <motion.span
               className="inline-block border-4 border-black bg-black px-3 py-1 text-yellow-400 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)]"
-              variants={badge}
+              variants={badgeVariant}
             >
-              AMAZING
-            </motion.span>{' '}
-            DIGITAL PRODUCTS
+              DEVELOPMENT
+            </motion.span>
+            , BUILT FOR THE REAL WORLD.
           </motion.h1>
           <motion.p
-            className="mb-10 max-w-xl text-lg font-semibold leading-relaxed text-black/90 md:text-xl"
-            variants={item}
+            className="mb-8 max-w-xl text-lg font-semibold leading-relaxed text-black/90 md:text-xl"
+            variants={itemVariant}
           >
-            Websites, apps, and SaaS built by experienced professionals who actually ship.
+            Ractrotech takes your idea from concept to launch — design, development, and a product
+            that actually ships. One team, clear communication, no guesswork.
           </motion.p>
 
-          <motion.div className="mb-14 flex flex-wrap gap-4" variants={item}>
+          <motion.div className="mb-14 flex flex-wrap gap-4" variants={itemVariant}>
             <Link
               href="/start-project"
               className="retro-button border-black bg-black text-yellow-400 hover:bg-black/90"
             >
-              Start a project
+              Tell Us Your Idea
+            </Link>
+            <Link href="/services" className="retro-button">
+              See Our Work
             </Link>
           </motion.div>
 
           <motion.div
             className="mt-12 flex flex-col gap-10 border-t-4 border-black pt-12"
-            variants={item}
+            variants={itemVariant}
           >
             <p className="text-center text-xs font-black tracking-[0.3em] text-black/40">
-              TRUSTED BY MODERN TEAMS WORLDWIDE
+              MODERN TECH · RELIABLE DELIVERY · NO AGENCY FLUFF
             </p>
 
             <div className="relative w-full overflow-hidden whitespace-nowrap">
-              {/* Fade masks for smooth edges */}
               <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-yellow-400 to-transparent" />
               <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-yellow-400 to-transparent" />
 
@@ -146,9 +151,8 @@ export function RetroHero() {
 
       <motion.div
         className="absolute right-0 top-1/2 hidden h-[70%] max-h-[360px] w-[35vw] max-w-md -translate-y-1/2 border-l-4 border-black bg-white shadow-[-6px_0_0_0_rgba(0,0,0,1)] lg:block"
-        initial={{ opacity: 0, x: 40 }}
+        initial={{ opacity: 1, x: 0 }}
         animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.6, delay: 0.5 }}
       />
     </section>
   );
