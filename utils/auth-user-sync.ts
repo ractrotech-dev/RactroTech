@@ -2,6 +2,18 @@
  * Keeps `users_table` and `profiles` in sync with Supabase Auth.
  * OAuth flows hit `/auth/callback`; password login syncs in loginUser action.
  * SERVER ONLY.
+ *
+ * Resolved from two divergent rewrites when the CRM branch met the marketing branch.
+ * The Drizzle path below won because it is a strict superset: it keeps the
+ * ADMIN_BOOTSTRAP_EMAILS promotion and the insert-time role the Supabase-client version
+ * had, and adds the `profiles` mirror, OAuth avatars and `withDbRetry` on top.
+ *
+ * The version this replaced took an optional `SupabaseClient` so it could run without
+ * DATABASE_URL. That constraint does not survive the merge, and the knowledge is worth
+ * keeping: this module now needs DATABASE_URL at request time. It is safe at build time —
+ * utils/db/db.ts deliberately falls back to a dummy URL so `next build` can import this
+ * module — but an unset DATABASE_URL in a deployment turns every login into a failed
+ * sync, not a silent no-op. Same requirement as the rest of the Drizzle server code.
  */
 import type { User } from '@supabase/supabase-js';
 import { eq } from 'drizzle-orm';
