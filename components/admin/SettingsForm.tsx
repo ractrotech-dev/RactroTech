@@ -1,9 +1,11 @@
 'use client';
 
 import { useState, useTransition } from 'react';
+import { Info, Save } from 'lucide-react';
+
 import { updateSiteSettings } from '@/app/admin/actions';
-import { Save, Globe, Shield, Mail, Share2, Info } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { AdminCard, Badge, CardBody, CardHeader, buttonClass, field } from '@/components/admin/ui';
+import { cn } from '@/lib/utils';
 
 interface SettingsFormProps {
   settings: {
@@ -27,138 +29,131 @@ export default function SettingsForm({ settings }: SettingsFormProps) {
     });
   };
 
+  const maintenance = formData.maintenance_mode;
+
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="grid gap-6 lg:grid-cols-2">
-        {/* General Settings */}
         <div className="space-y-6">
-          <div className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <div className="mb-6 flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center border-2 border-black bg-blue-400">
-                <Globe size={20} />
-              </div>
+          <AdminCard>
+            <CardHeader title="General" description="The site’s name and how it describes itself." />
+            <CardBody className="space-y-4">
               <div>
-                <h3 className="text-xs font-black tracking-[0.2em]">General Configuration</h3>
-                <p className="text-[10px] font-bold text-black/40">Core identity of the platform</p>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <div>
-                <label className="mb-1.5 block text-[9px] font-black tracking-[0.2em] text-black/50">Site Name</label>
+                <label htmlFor="site_name" className={field.label}>
+                  Site name
+                </label>
                 <input
+                  id="site_name"
                   type="text"
                   value={formData.site_name}
                   onChange={(e) => setFormData({ ...formData, site_name: e.target.value })}
-                  className="w-full border-2 border-black px-4 py-2.5 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                  className={field.input}
                 />
               </div>
               <div>
-                <label className="mb-1.5 block text-[9px] font-black tracking-[0.2em] text-black/50">Site Description</label>
+                <label htmlFor="site_description" className={field.label}>
+                  Site description
+                </label>
                 <textarea
+                  id="site_description"
                   value={formData.site_description || ''}
                   onChange={(e) => setFormData({ ...formData, site_description: e.target.value })}
                   rows={3}
-                  className="w-full border-2 border-black px-4 py-2.5 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-yellow-400 resize-none"
+                  className={cn(field.textarea, 'resize-none')}
                 />
               </div>
-            </div>
-          </div>
+            </CardBody>
+          </AdminCard>
 
-          <div className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <div className="mb-6 flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center border-2 border-black bg-red-400">
-                <Shield size={20} />
+          <AdminCard>
+            <CardHeader
+              title="Maintenance"
+              description="Take the public site offline while you work."
+              action={<Badge tone={maintenance ? 'amber' : 'neutral'}>{maintenance ? 'On' : 'Off'}</Badge>}
+            />
+            <CardBody>
+              <div className="flex items-center justify-between gap-4">
+                <div className="min-w-0">
+                  <p id="maintenance-label" className="text-[14px] font-medium text-mkt-ink">
+                    Maintenance mode
+                  </p>
+                  <p className="mt-0.5 text-[13px] leading-5 text-mkt-muted">
+                    When on, the public site shows a “Coming soon” page.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={maintenance}
+                  aria-labelledby="maintenance-label"
+                  onClick={() => setFormData({ ...formData, maintenance_mode: !formData.maintenance_mode })}
+                  className={cn(
+                    'relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mkt-violet focus-visible:ring-offset-2 focus-visible:ring-offset-mkt-surface',
+                    maintenance ? 'bg-mkt-violet' : 'bg-mkt-ink/15'
+                  )}
+                >
+                  <span
+                    className={cn(
+                      'inline-block h-5 w-5 rounded-full bg-mkt-surface shadow-sm transition-transform duration-150',
+                      maintenance ? 'translate-x-[22px]' : 'translate-x-0.5'
+                    )}
+                  />
+                </button>
               </div>
-              <div>
-                <h3 className="text-xs font-black tracking-[0.2em]">System Status</h3>
-                <p className="text-[10px] font-bold text-black/40">Maintenance and availability</p>
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between border-2 border-black p-4 bg-gray-50">
-              <div>
-                <p className="text-[10px] font-black tracking-wider">Maintenance Mode</p>
-                <p className="text-[9px] font-bold text-black/40">If enabled, the public site will show a &quot;Coming Soon&quot; page.</p>
-              </div>
-              <button
-                type="button"
-                onClick={() => setFormData({ ...formData, maintenance_mode: !formData.maintenance_mode })}
-                className={`h-6 w-12 border-2 border-black p-0.5 transition-colors ${formData.maintenance_mode ? 'bg-yellow-400' : 'bg-gray-200'}`}
-              >
-                <div className={`h-4 w-4 border-2 border-black bg-white transition-transform ${formData.maintenance_mode ? 'translate-x-6' : 'translate-x-0'}`} />
-              </button>
-            </div>
-          </div>
+            </CardBody>
+          </AdminCard>
         </div>
 
-        {/* Contact & Social */}
         <div className="space-y-6">
-          <div className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <div className="mb-6 flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center border-2 border-black bg-emerald-400">
-                <Mail size={20} />
-              </div>
+          <AdminCard>
+            <CardHeader title="Contact" description="Shown publicly on the site." />
+            <CardBody className="space-y-4">
               <div>
-                <h3 className="text-xs font-black tracking-[0.2em]">Contact & Support</h3>
-                <p className="text-[10px] font-bold text-black/40">Public facing contact info</p>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <div>
-                <label className="mb-1.5 block text-[9px] font-black tracking-[0.2em] text-black/50">Support Email</label>
+                <label htmlFor="contact_email" className={field.label}>
+                  Support email
+                </label>
                 <input
+                  id="contact_email"
                   type="email"
                   value={formData.contact_email || ''}
                   onChange={(e) => setFormData({ ...formData, contact_email: e.target.value })}
-                  className="w-full border-2 border-black px-4 py-2.5 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                  className={field.input}
                 />
               </div>
               <div>
-                <label className="mb-1.5 block text-[9px] font-black tracking-[0.2em] text-black/50">Footer Text</label>
+                <label htmlFor="footer_text" className={field.label}>
+                  Footer text
+                </label>
                 <input
+                  id="footer_text"
                   type="text"
                   value={formData.footer_text || ''}
                   onChange={(e) => setFormData({ ...formData, footer_text: e.target.value })}
-                  className="w-full border-2 border-black px-4 py-2.5 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                  className={field.input}
                 />
               </div>
-            </div>
-          </div>
+            </CardBody>
+          </AdminCard>
 
-          <div className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <div className="mb-6 flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center border-2 border-black bg-purple-400">
-                <Share2 size={20} />
-              </div>
-              <div>
-                <h3 className="text-xs font-black tracking-[0.2em]">Social Connectivity</h3>
-                <p className="text-[10px] font-bold text-black/40">Manage your online presence</p>
-              </div>
-            </div>
-
-            <div className="space-y-3">
-               <div className="flex items-center border-2 border-black bg-gray-50 p-3 text-[10px] font-bold text-black/40 italic">
-                 <Info size={14} className="mr-2" />
-                 Social link mapping is currently managed via global constants.
-               </div>
-               <button type="button" className="w-full border-2 border-black py-2 text-[9px] font-black tracking-widest hover:bg-black hover:text-white transition-all">
-                 Configure Integrations
-               </button>
-            </div>
-          </div>
+          <AdminCard>
+            <CardHeader title="Social links" description="Where the site links out to." />
+            <CardBody className="space-y-3">
+              <p className="flex items-start gap-2 text-[13px] leading-5 text-mkt-muted">
+                <Info className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
+                Social links are currently managed in the site’s global constants, not here.
+              </p>
+              <button type="button" className={buttonClass('secondary', 'md', 'w-full')}>
+                Configure integrations
+              </button>
+            </CardBody>
+          </AdminCard>
         </div>
       </div>
 
-      <div className="flex justify-end pt-4">
-        <button
-          type="submit"
-          disabled={isPending}
-          className="flex items-center gap-2 border-4 border-black bg-yellow-400 px-8 py-3 text-xs font-black tracking-widest transition-all hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] disabled:opacity-50"
-        >
-          <Save size={16} />
-          {isPending ? 'Updating Settings...' : 'Save All Changes'}
+      <div className="flex justify-end border-t border-mkt-line pt-5">
+        <button type="submit" disabled={isPending} className={buttonClass('primary')}>
+          <Save aria-hidden />
+          {isPending ? 'Saving…' : 'Save changes'}
         </button>
       </div>
     </form>

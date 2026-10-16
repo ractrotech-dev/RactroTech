@@ -1,57 +1,95 @@
-import { db } from "@/utils/db/db";
-import { notificationsTable } from "@/utils/db/schema";
-import { desc } from "drizzle-orm";
-import { Bell, Inbox, FolderKanban, Users, AlertCircle, Settings } from "lucide-react";
-import PageHeader from "@/components/admin/PageHeader";
-import EmptyState from "@/components/admin/EmptyState";
-import NotificationItem from "@/components/admin/NotificationItem";
-import MarkAllReadButton from "@/components/admin/MarkAllReadButton";
+import { count, desc, eq } from 'drizzle-orm';
+import { Bell } from 'lucide-react';
 
-export const dynamic = "force-dynamic";
-export const metadata = { title: "Notifications | Admin | RactroTech", description: "View notifications" };
+import EmptyState from '@/components/admin/EmptyState';
+import MarkAllReadButton from '@/components/admin/MarkAllReadButton';
+import NotificationItem from '@/components/admin/NotificationItem';
+import PageHeader from '@/components/admin/PageHeader';
+import { AdminCard, CardHeader, Notice } from '@/components/admin/ui';
+import { formatCount } from '@/lib/admin/format';
+import { db } from '@/utils/db/db';
+import { notificationsTable, type SelectNotification } from '@/utils/db/schema';
 
-const iconMap: Record<string, any> = {
-  inquiry: Inbox, project: FolderKanban, client: Users,
-  team: Users, system: Settings, alert: AlertCircle,
-};
-const colorMap: Record<string, string> = {
-  inquiry: 'bg-blue-400', project: 'bg-yellow-400', client: 'bg-emerald-400',
-  team: 'bg-purple-400', system: 'bg-gray-400', alert: 'bg-red-400',
-};
+export const dynamic = 'force-dynamic';
+export const metadata = { title: 'Notifications | Admin | RactroTech', description: 'View notifications' };
+
+const PAGE_SIZE = 50;
+
+async function loadLatest(): Promise<SelectNotification[] | null> {
+  try {
+    return await db.select().from(notificationsTable).orderBy(desc(notificationsTable.created_at)).limit(PAGE_SIZE);
+  } catch {
+    return null;
+  }
+}
+
+/** Counted over the whole table, not the page of 50. `null` when the query fails. */
+async function countNotifications(unreadOnly: boolean): Promise<number | null> {
+  try {
+    const [row] = await db
+      .select({ value: count() })
+      .from(notificationsTable)
+      .where(unreadOnly ? eq(notificationsTable.read, false) : undefined);
+    return Number(row?.value ?? 0);
+  } catch {
+    return null;
+  }
+}
 
 export default async function AdminNotificationsPage() {
-  let notifications: any[] = [];
-  try {
-    notifications = await db.select().from(notificationsTable).orderBy(desc(notificationsTable.created_at)).limit(50);
-  } catch { /* table may not exist */ }
+  const [notifications, unreadCount, totalCount] = await Promise.all([
+    loadLatest(),
+    countNotifications(true),
+    countNotifications(false),
+  ]);
 
-  const unreadCount = notifications.filter((n) => !n.read).length;
+  const shown = notifications?.length ?? 0;
+  const showMarkAll = unreadCount !== null ? unreadCount > 0 : (notifications ?? []).some((n) => !n.read);
+
+  let listDescription = 'Newest first';
+  if (notifications !== null) {
+    if (totalCount === null) listDescription = `Latest ${formatCount(shown)}, newest first`;
+    else if (totalCount > shown) listDescription = `Latest ${formatCount(shown)} of ${formatCount(totalCount)}, newest first`;
+    else listDescription = `${formatCount(totalCount)} in total, newest first`;
+  }
 
   return (
     <div className="space-y-6">
-      <PageHeader title="Notifications" subtitle={`${unreadCount} unread notifications`} backHref="/admin" />
+      <PageHeader title="Notifications" subtitle={`${formatCount(unreadCount)} unread`} backHref="/admin" />
 
-      <div className="border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-        <div className="flex items-center justify-between border-b-4 border-black px-5 py-4">
-          <h2 className="text-xs font-black tracking-[0.2em]">Notification Center</h2>
-          {unreadCount > 0 && <MarkAllReadButton />}
-        </div>
+      {notifications === null ? (
+        <Notice tone="amber" title="Notifications couldn’t be loaded">
+          The database didn’t respond. Reload the page to try again.
+        </Notice>
+      ) : null}
 
-        {notifications.length === 0 ? (
-          <EmptyState icon={Bell} title="No notifications" description="You're all caught up! Notifications will appear here when something happens." />
+      <AdminCard>
+        <CardHeader title="Inbox" description={listDescription} action={showMarkAll ? <MarkAllReadButton /> : null} />
+
+        {notifications === null ? (
+          <EmptyState icon={<Bell />} title="Nothing to show" description="Notifications appear here once they can be loaded." />
+        ) : notifications.length === 0 ? (
+          <EmptyState icon={<Bell />} title="You’re all caught up" description="Notifications appear here when something happens." />
         ) : (
-          <div className="divide-y-2 divide-black/5">
+          <ul className="divide-y divide-mkt-line">
             {notifications.map((n) => (
-              <NotificationItem
-                key={n.id}
-                notification={n}
-                iconMap={iconMap}
-                colorMap={colorMap}
-              />
+              <li key={n.id}>
+                <NotificationItem
+                  notification={{
+                    id: n.id,
+                    type: n.type,
+                    title: n.title,
+                    message: n.message,
+                    read: n.read,
+                    created_at: n.created_at ? new Date(n.created_at).toISOString() : null,
+                    action_url: n.action_url,
+                  }}
+                />
+              </li>
             ))}
-          </div>
+          </ul>
         )}
-      </div>
+      </AdminCard>
     </div>
   );
 }

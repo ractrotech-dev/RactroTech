@@ -1,19 +1,16 @@
 import { db } from "@/utils/db/db";
-import { projectsTable, clientsTable, projectTasksTable } from "@/utils/db/schema";
-import { sql, desc, eq } from "drizzle-orm";
-import {
-  FolderKanban,
-  Clock,
-  CheckCircle,
-  Rocket,
-} from "lucide-react";
+import { projectsTable, type SelectProject } from "@/utils/db/schema";
+import { desc } from "drizzle-orm";
+import { CheckCircle, Clock, FolderKanban, Rocket } from "lucide-react";
 import Link from "next/link";
 import PageHeader from "@/components/admin/PageHeader";
-import MiniStat from "@/components/admin/MiniStat";
 import StatusBadge from "@/components/admin/StatusBadge";
 import ProgressBar from "@/components/admin/ProgressBar";
 import EmptyState from "@/components/admin/EmptyState";
 import NewProjectButton from "@/components/admin/NewProjectButton";
+import { AdminCard, CardHeader, DataTable, KpiCard, Notice, TextLink, table } from "@/components/admin/ui";
+import { formatCount, formatCurrency, formatDate } from "@/lib/admin/format";
+import { cn } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -22,158 +19,184 @@ export const metadata = {
   description: "Manage projects and track progress",
 };
 
-export default async function AdminProjectsPage() {
-  let projects: any[] = [];
-  let totalCount = 0;
-  let activeCount = 0;
-  let completedCount = 0;
-  let planningCount = 0;
+type ProjectStatus = SelectProject["status"];
+
+/**
+ * The views the tiles and the filter share, so a tile's number is exactly the row count of
+ * its filter. Together with on hold / cancelled they cover every project status.
+ */
+const FILTERS: { key: string; label: string; statuses: ProjectStatus[] | null }[] = [
+  { key: "all", label: "All", statuses: null },
+  { key: "planning", label: "Planning", statuses: ["planning"] },
+  { key: "in_progress", label: "In progress", statuses: ["in_progress", "review"] },
+  { key: "completed", label: "Completed", statuses: ["completed", "deployed"] },
+];
+
+function rowsWhere(projects: SelectProject[], statuses: ProjectStatus[]) {
+  return projects.filter((p) => statuses.includes(p.status));
+}
+
+export default async function AdminProjectsPage({
+  searchParams,
+}: {
+  searchParams?: { status?: string | string[] };
+}) {
+  let projects: SelectProject[] = [];
+  let loadError: string | null = null;
 
   try {
-    projects = await db
-      .select()
-      .from(projectsTable)
-      .orderBy(desc(projectsTable.created_at));
-
-    totalCount = projects.length;
-    activeCount = projects.filter((p) => p.status === 'in_progress').length;
-    completedCount = projects.filter((p) => p.status === 'completed' || p.status === 'deployed').length;
-    planningCount = projects.filter((p) => p.status === 'planning').length;
-  } catch {
-    // Table doesn't exist yet — will show empty state
+    projects = await db.select().from(projectsTable).orderBy(desc(projectsTable.created_at));
+  } catch (err) {
+    loadError = err instanceof Error ? err.message : "Unknown error";
   }
+
+  // Counts come from the full, unlimited result. `null` (shown as "—") when the query failed.
+  const known = loadError === null;
+  const count = (statuses: ProjectStatus[]) => (known ? rowsWhere(projects, statuses).length : null);
+  const totalCount = known ? projects.length : null;
+  const planningCount = count(["planning"]);
+  const inProgressCount = count(["in_progress", "review"]);
+  const reviewCount = count(["review"]);
+  const completedCount = count(["completed", "deployed"]);
+  const deployedCount = count(["deployed"]);
+  const otherCount = count(["on_hold", "cancelled"]);
+
+  const requested = Array.isArray(searchParams?.status) ? searchParams?.status[0] : searchParams?.status;
+  const activeFilter = FILTERS.find((f) => f.key === requested) ?? FILTERS[0];
+  const visible = activeFilter.statuses ? rowsWhere(projects, activeFilter.statuses) : projects;
 
   return (
     <div className="space-y-6">
       <PageHeader
         title="Projects"
-        subtitle={`${totalCount} total projects`}
+        subtitle="Client work with its progress, due date and budget."
         backHref="/admin"
         actions={<NewProjectButton />}
       />
 
-      {/* Stats row */}
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <MiniStat
-          icon={<FolderKanban size={16} className="text-black" />}
-          value={totalCount}
-          label="Total"
-          color="bg-blue-400"
-        />
-        <MiniStat
-          icon={<Rocket size={16} className="text-black" />}
-          value={activeCount}
-          label="In Progress"
-          color="bg-yellow-400"
-        />
-        <MiniStat
-          icon={<CheckCircle size={16} className="text-black" />}
-          value={completedCount}
-          label="Completed"
-          color="bg-emerald-400"
-        />
-        <MiniStat
-          icon={<Clock size={16} className="text-black" />}
-          value={planningCount}
-          label="Planning"
-          color="bg-purple-400"
-        />
-      </div>
+      {loadError ? (
+        <Notice tone="red" title="Projects couldn’t be loaded">
+          Counts show as “—” until the query succeeds. {loadError}
+        </Notice>
+      ) : null}
 
-      {/* Projects table */}
-      <div className="border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-        <div className="flex items-center justify-between border-b-4 border-black px-5 py-3">
-          <h2 className="text-xs font-black tracking-[0.2em]">All Projects</h2>
-          <div className="flex gap-2">
-            {['all', 'planning', 'in_progress', 'completed'].map((filter) => (
-              <button
-                key={filter}
-                className="border border-black/20 px-2 py-0.5 text-[8px] font-black tracking-wider text-black/40 transition-colors hover:border-black hover:bg-black hover:text-white"
-              >
-                {filter.replace('_', ' ')}
-              </button>
-            ))}
-          </div>
-        </div>
-        <div className="overflow-x-auto">
-          {projects.length === 0 ? (
-            <EmptyState
-              icon={FolderKanban}
-              title="No projects yet"
-              description="Create your first project to start tracking progress and managing client work."
-            />
-          ) : (
-            <table className="w-full text-left text-sm">
-              <thead>
-                <tr className="border-b-2 border-black/10 bg-gray-50">
-                  <th className="px-4 py-3 text-[10px] font-black tracking-wider text-black/50">
-                    Project
-                  </th>
-                  <th className="px-4 py-3 text-[10px] font-black tracking-wider text-black/50">
-                    Status
-                  </th>
-                  <th className="px-4 py-3 text-[10px] font-black tracking-wider text-black/50">
-                    Progress
-                  </th>
-                  <th className="px-4 py-3 text-[10px] font-black tracking-wider text-black/50">
-                    Due Date
-                  </th>
-                  <th className="px-4 py-3 text-[10px] font-black tracking-wider text-black/50">
-                    Budget
-                  </th>
-                  <th className="px-4 py-3 text-[10px] font-black tracking-wider text-black/50">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {projects.map((project) => (
-                  <tr
-                    key={project.id}
-                    className="border-b border-black/5 transition-colors hover:bg-yellow-50"
+      <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4" aria-label="Project counts">
+        <KpiCard
+          label="Total"
+          value={formatCount(totalCount)}
+          hint={otherCount === null ? undefined : `${formatCount(otherCount)} on hold or cancelled`}
+          icon={<FolderKanban />}
+        />
+        <KpiCard label="Planning" value={formatCount(planningCount)} hint={known ? "Not started" : undefined} icon={<Clock />} />
+        <KpiCard
+          label="In progress"
+          value={formatCount(inProgressCount)}
+          hint={reviewCount === null ? undefined : `Includes ${formatCount(reviewCount)} in review`}
+          icon={<Rocket />}
+        />
+        <KpiCard
+          label="Completed"
+          value={formatCount(completedCount)}
+          hint={deployedCount === null ? undefined : `Includes ${formatCount(deployedCount)} deployed`}
+          icon={<CheckCircle />}
+        />
+      </section>
+
+      <AdminCard>
+        <CardHeader
+          title={activeFilter.statuses ? `${activeFilter.label} projects` : "All projects"}
+          description={
+            !known
+              ? "Unavailable"
+              : activeFilter.statuses
+                ? `${formatCount(visible.length)} of ${formatCount(totalCount)}`
+                : `${formatCount(totalCount)} ${totalCount === 1 ? "project" : "projects"}`
+          }
+          action={
+            <nav aria-label="Filter projects" className="inline-flex rounded-lg border border-mkt-line p-0.5">
+              {FILTERS.map((filter) => {
+                const isActive = filter.key === activeFilter.key;
+                return (
+                  <Link
+                    key={filter.key}
+                    href={filter.statuses ? `/admin/projects?status=${filter.key}` : "/admin/projects"}
+                    scroll={false}
+                    aria-current={isActive ? "page" : undefined}
+                    className={cn(
+                      "rounded-md px-2.5 py-1 text-[13px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mkt-violet",
+                      isActive ? "bg-mkt-ink/[0.06] text-mkt-ink" : "text-mkt-muted hover:text-mkt-ink"
+                    )}
                   >
-                    <td className="px-4 py-3">
-                      <div>
-                        <p className="text-xs font-bold">{project.name}</p>
-                        {project.description && (
-                          <p className="mt-0.5 max-w-[250px] truncate text-[10px] font-semibold text-black/40">
-                            {project.description}
-                          </p>
-                        )}
-                      </div>
-                    </td>
-                    <td className="px-4 py-3">
-                      <StatusBadge status={project.status} />
-                    </td>
-                    <td className="px-4 py-3">
-                      <div className="w-24">
-                        <ProgressBar value={project.progress} showPercentage />
-                      </div>
-                    </td>
-                    <td className="whitespace-nowrap px-4 py-3 text-[10px] font-bold text-black/40">
-                      {project.due_date
-                        ? new Date(project.due_date).toLocaleDateString('en-US', {
-                            month: 'short',
-                            day: 'numeric',
-                            year: 'numeric',
-                          })
-                        : '—'}
-                    </td>
-                    <td className="px-4 py-3 text-xs font-bold text-black/60">
-                      {project.budget ? `$${Number(project.budget).toLocaleString()}` : '—'}
-                    </td>
-                    <td className="px-4 py-3">
-                      <Link href={`/admin/projects/${project.id}`} className="border border-black/20 px-2 py-0.5 text-[9px] font-black tracking-wider text-black/40 transition-colors hover:border-black hover:bg-black hover:text-white">
-                        View
-                      </Link>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-        </div>
-      </div>
+                    {filter.label}
+                  </Link>
+                );
+              })}
+            </nav>
+          }
+        />
+
+        {!known ? (
+          <p className="px-5 py-10 text-center text-[14px] text-mkt-muted">Projects couldn’t be loaded. Refresh to try again.</p>
+        ) : projects.length === 0 ? (
+          <EmptyState
+            icon={<FolderKanban />}
+            title="No projects yet"
+            description="Create your first project to start tracking progress and managing client work."
+          />
+        ) : visible.length === 0 ? (
+          <EmptyState
+            title={`No ${activeFilter.label.toLowerCase()} projects`}
+            description="Nothing matches this view right now."
+            action={<TextLink href="/admin/projects">Show all projects</TextLink>}
+          />
+        ) : (
+          <DataTable>
+            <thead>
+              <tr className={table.headRow}>
+                <th className={table.th}>Project</th>
+                <th className={table.th}>Status</th>
+                <th className={table.th}>Progress</th>
+                <th className={table.th}>Due date</th>
+                <th className={table.thNum}>Budget</th>
+                <th className={table.th}>
+                  <span className="sr-only">Actions</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {visible.map((project) => (
+                <tr key={project.id} className={table.row}>
+                  <td className={table.td}>
+                    <Link href={`/admin/projects/${project.id}`} className="font-medium text-mkt-ink hover:text-mkt-violet">
+                      {project.name}
+                    </Link>
+                    {project.description ? (
+                      <p className="mt-0.5 max-w-[280px] truncate text-[13px] text-mkt-muted">{project.description}</p>
+                    ) : null}
+                  </td>
+                  <td className={table.td}>
+                    <StatusBadge status={project.status} />
+                  </td>
+                  <td className={table.td}>
+                    <div className="w-32">
+                      <ProgressBar value={project.progress} showPercentage />
+                    </div>
+                  </td>
+                  <td className={cn(table.td, "whitespace-nowrap tabular-nums", !project.due_date && table.muted)}>
+                    {project.due_date ? formatDate(project.due_date) : "Not set"}
+                  </td>
+                  <td className={cn(table.tdNum, "whitespace-nowrap", project.budget === null && table.muted)}>
+                    {formatCurrency(project.budget)}
+                  </td>
+                  <td className={cn(table.td, "text-right")}>
+                    <TextLink href={`/admin/projects/${project.id}`}>View</TextLink>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </DataTable>
+        )}
+      </AdminCard>
     </div>
   );
 }

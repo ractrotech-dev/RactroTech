@@ -33,16 +33,24 @@ export function getRoleLabel(role: AdminRole): string {
 }
 
 /**
- * Get role badge color classes for the retro theme.
+ * Colour classes for a role pill: the same soft tones as `Badge` in components/admin/ui.tsx
+ * (violet = admin access, blue = internal staff, neutral = everyone else). Colour only; the
+ * caller supplies the pill shape.
+ *
+ * Keep these strings identical to the Badge tones: Tailwind does not scan utils/, so a class
+ * only exists here because ui.tsx already uses it.
  */
 export function getRoleBadgeClasses(role: AdminRole): string {
+  const violet = 'bg-mkt-violet/10 text-mkt-violet';
+  const blue = 'bg-sky-500/10 text-sky-700 dark:text-sky-300';
+  const neutral = 'bg-mkt-ink/[0.06] text-mkt-ink/70';
   const colors: Record<AdminRole, string> = {
-    super_admin: 'border-purple-500 bg-purple-500 text-white',
-    admin: 'border-black bg-black text-white',
-    manager: 'border-blue-500 bg-blue-500 text-white',
-    developer: 'border-emerald-500 bg-emerald-500 text-white',
-    client: 'border-yellow-400 bg-yellow-400 text-black',
-    user: 'border-black/30 bg-gray-100 text-black/60',
+    super_admin: violet,
+    admin: violet,
+    manager: blue,
+    developer: blue,
+    client: neutral,
+    user: neutral,
   };
   return colors[role] || colors.user;
 }

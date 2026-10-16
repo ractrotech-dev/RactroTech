@@ -1,10 +1,12 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useEffect, useState, useTransition } from 'react';
+import { ChevronDown } from 'lucide-react';
+
 import { updateUserRole } from '@/app/admin/actions';
-import { Shield, ChevronDown } from 'lucide-react';
 import type { AdminRole } from '@/utils/admin-roles';
-import { getRoleLabel } from '@/utils/admin-roles';
+import { getRoleBadgeClasses, getRoleLabel } from '@/utils/admin-roles';
+import { cn } from '@/lib/utils';
 
 interface UserRoleSelectorProps {
   userId: string;
@@ -14,63 +16,62 @@ interface UserRoleSelectorProps {
 
 const roles: AdminRole[] = ['super_admin', 'admin', 'manager', 'developer', 'client', 'user'];
 
+/** Same shape as `Badge` in ui.tsx; the tone comes from getRoleBadgeClasses. */
+const PILL = 'inline-flex items-center whitespace-nowrap rounded-full text-[12px] font-medium leading-5';
+
+/**
+ * A user's role as a pill. Super admins get a native select inside the pill (it is not clipped
+ * by a table's scroll container the way a custom popover is); everyone else sees the label.
+ */
 export default function UserRoleSelector({ userId, currentRole, isSuperAdmin }: UserRoleSelectorProps) {
   const [isPending, startTransition] = useTransition();
-  const [isOpen, setIsOpen] = useState(false);
+  const [selected, setSelected] = useState<AdminRole>(currentRole);
+
+  // Follow the server's value once the page re-renders after a change.
+  useEffect(() => {
+    setSelected(currentRole);
+  }, [currentRole]);
 
   const handleRoleChange = (role: AdminRole) => {
-    if (!isSuperAdmin) return;
+    if (!isSuperAdmin || role === currentRole) return;
+    setSelected(role);
     startTransition(async () => {
       try {
         await updateUserRole(userId, role);
-        setIsOpen(false);
       } catch (error) {
+        setSelected(currentRole);
         alert(error instanceof Error ? error.message : 'Failed to update role');
       }
     });
   };
 
   if (!isSuperAdmin) {
-    return (
-      <span className="border-2 border-black/30 bg-gray-100 px-2 py-0.5 text-[9px] font-black text-black/60">
-        {getRoleLabel(currentRole)}
-      </span>
-    );
+    return <span className={cn(PILL, 'px-2.5 py-0.5', getRoleBadgeClasses(currentRole))}>{getRoleLabel(currentRole)}</span>;
   }
 
   return (
-    <div className="relative">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        disabled={isPending}
-        className={`flex items-center gap-1.5 border-2 border-black px-2 py-0.5 text-[9px] font-black transition-all hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none ${
-          currentRole === 'super_admin' || currentRole === 'admin' ? 'bg-black text-white' : 'bg-white text-black'
-        }`}
-      >
-        {(currentRole === 'super_admin' || currentRole === 'admin') && <Shield size={10} />}
-        {getRoleLabel(currentRole)}
-        <ChevronDown size={10} className={`transition-transform ${isOpen ? 'rotate-180' : ''}`} />
-      </button>
-
-      {isOpen && (
-        <>
-          <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
-          <div className="absolute left-0 top-full z-50 mt-1 min-w-[120px] border-4 border-black bg-white p-1 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            {roles.map((role) => (
-              <button
-                key={role}
-                onClick={() => handleRoleChange(role)}
-                disabled={role === currentRole || isPending}
-                className={`flex w-full items-center px-2 py-1.5 text-[9px] font-black tracking-wider transition-colors hover:bg-yellow-400 disabled:opacity-50 ${
-                  role === currentRole ? 'bg-gray-100 text-black/40' : 'text-black'
-                }`}
-              >
-                {getRoleLabel(role)}
-              </button>
-            ))}
-          </div>
-        </>
+    <span
+      className={cn(
+        PILL,
+        'relative ring-1 ring-inset ring-transparent transition-shadow hover:ring-mkt-line focus-within:ring-2 focus-within:ring-mkt-violet',
+        isPending && 'opacity-60',
+        getRoleBadgeClasses(selected)
       )}
-    </div>
+    >
+      <select
+        value={selected}
+        onChange={(e) => handleRoleChange(e.target.value as AdminRole)}
+        disabled={isPending}
+        aria-label="Change role"
+        className="cursor-pointer appearance-none rounded-full bg-transparent py-0.5 pl-2.5 pr-7 text-inherit focus:outline-none disabled:cursor-wait [&_option]:bg-mkt-surface [&_option]:text-mkt-ink"
+      >
+        {roles.map((role) => (
+          <option key={role} value={role}>
+            {getRoleLabel(role)}
+          </option>
+        ))}
+      </select>
+      <ChevronDown aria-hidden className="pointer-events-none absolute right-2 top-1/2 h-3.5 w-3.5 -translate-y-1/2 opacity-70" />
+    </span>
   );
 }

@@ -1,65 +1,69 @@
 'use client'
 
 import { useState } from 'react'
-import { motion } from 'framer-motion'
 import type { AdminRole } from '@/utils/admin-roles'
 import AdminSidebar from '@/components/admin/AdminSidebar'
 import AdminHeader from '@/components/admin/AdminHeader'
 import { Sheet, SheetContent } from '@/components/ui/sheet'
-import { useIsMdUp } from '@/hooks/use-media-query'
+import { cn } from '@/lib/utils'
 
 interface AdminShellProps {
   children: React.ReactNode
   adminEmail: string
   adminRole?: AdminRole
+  /** Real count from the notifications table; null when it could not be read. */
+  unreadCount?: number | null
 }
 
-export default function AdminShell({
-  children,
-  adminEmail,
-  adminRole = 'admin',
-}: AdminShellProps) {
+/**
+ * Sidebar, header, and a centred content column on a faintly tinted page, so white cards
+ * read as surfaces without needing shadows. Built on the marketing tokens, so it follows
+ * the site's light and dark themes.
+ */
+export default function AdminShell({ children, adminEmail, adminRole = 'admin', unreadCount = null }: AdminShellProps) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const isMdUp = useIsMdUp()
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-neutral-100 via-white to-amber-50/40 dark:from-neutral-950 dark:via-neutral-900 dark:to-neutral-950">
+    <div className="min-h-screen bg-mkt-surface text-mkt-ink">
       <div className="hidden md:block">
         <AdminSidebar
           collapsed={sidebarCollapsed}
           onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
           adminEmail={adminEmail}
           adminRole={adminRole}
+          unreadCount={unreadCount}
         />
       </div>
 
       <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-        <SheetContent side="left" className="w-[280px] p-0 md:hidden">
+        <SheetContent side="left" className="w-[272px] border-mkt-line bg-mkt-surface p-0 md:hidden">
           <AdminSidebar
             collapsed={false}
             onToggle={() => setMobileMenuOpen(false)}
+            onNavigate={() => setMobileMenuOpen(false)}
             adminEmail={adminEmail}
             adminRole={adminRole}
+            unreadCount={unreadCount}
+            embedded
           />
         </SheetContent>
       </Sheet>
 
-      <motion.div
-        initial={false}
-        animate={{
-          marginLeft: isMdUp ? (sidebarCollapsed ? 72 : 260) : 0,
-        }}
-        transition={{ duration: 0.2, ease: 'easeInOut' }}
-        className="flex min-h-screen flex-col"
+      <div
+        className={cn(
+          'flex min-h-screen flex-col bg-mkt-ink/[0.02] transition-[margin] duration-200 ease-out',
+          sidebarCollapsed ? 'md:ml-[72px]' : 'md:ml-[248px]'
+        )}
       >
         <AdminHeader
           onMobileMenuToggle={() => setMobileMenuOpen(!mobileMenuOpen)}
           adminEmail={adminEmail}
           adminRole={adminRole}
+          unreadCount={unreadCount}
         />
-        <main className="flex-1 p-4 md:p-6 lg:p-8">{children}</main>
-      </motion.div>
+        <main className="mx-auto w-full max-w-[1280px] flex-1 px-4 py-6 md:px-8 md:py-8">{children}</main>
+      </div>
     </div>
   )
 }

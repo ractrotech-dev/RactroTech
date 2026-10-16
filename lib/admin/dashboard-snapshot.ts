@@ -14,6 +14,7 @@ export type DashboardActivityItem = {
   type: 'inquiry' | 'user' | 'project' | 'alert' | 'system';
   title: string;
   description: string;
+  /** ISO timestamp (or 'Recent' when the row has none); the list formats it. */
   time: string;
 };
 
@@ -23,14 +24,15 @@ export type AdminDashboardSnapshot = {
   dbReachable: boolean;
   dbErrorMessage: string | null;
   partialErrors: string[];
+  /** `null` = that query failed. The page shows "—", never a substitute number. */
   counts: {
-    users: number;
-    inquiries: number;
-    newInquiries: number;
-    clients: number;
-    projects: number;
-    unreadNotifications: number;
-    activeProjects: number;
+    users: number | null;
+    inquiries: number | null;
+    newInquiries: number | null;
+    clients: number | null;
+    projects: number | null;
+    unreadNotifications: number | null;
+    activeProjects: number | null;
   };
   recentInquiries: {
     id: string;
@@ -48,10 +50,11 @@ export type AdminDashboardSnapshot = {
     role: string;
   }[];
   activityItems: DashboardActivityItem[];
-  inquirySeries: ChartPoint[];
+  /** Last 7 UTC days; null when the query failed (a row of zeros would read as "no inquiries"). */
+  inquirySeries: ChartPoint[] | null;
 };
 
-async function safe<T>(label: string, fn: () => Promise<T>, fallback: T, errors: string[]): Promise<T> {
+async function safe<T, F = T>(label: string, fn: () => Promise<T>, fallback: F, errors: string[]): Promise<T | F> {
   try {
     return await fn();
   } catch (e) {
@@ -94,24 +97,23 @@ export async function getAdminDashboardSnapshot(): Promise<AdminDashboardSnapsho
   if (!probe) {
     dbReachable = false;
     dbErrorMessage = partialErrors[0] ?? 'Database unreachable';
-    const emptyDays = last7DayLabels().map((d) => ({ name: formatDayLabel(d), value: 0 }));
     return {
       dbReachable,
       dbErrorMessage,
       partialErrors,
       counts: {
-        users: 0,
-        inquiries: 0,
-        newInquiries: 0,
-        clients: 0,
-        projects: 0,
-        unreadNotifications: 0,
-        activeProjects: 0,
+        users: null,
+        inquiries: null,
+        newInquiries: null,
+        clients: null,
+        projects: null,
+        unreadNotifications: null,
+        activeProjects: null,
       },
       recentInquiries: [],
       recentUsers: [],
       activityItems: [],
-      inquirySeries: emptyDays,
+      inquirySeries: null,
     };
   }
 
@@ -121,7 +123,7 @@ export async function getAdminDashboardSnapshot(): Promise<AdminDashboardSnapsho
       const [row] = await db.select({ count: sql<number>`count(*)::int` }).from(usersTable);
       return Number(row?.count ?? 0);
     },
-    0,
+    null,
     partialErrors,
   );
 
@@ -131,7 +133,7 @@ export async function getAdminDashboardSnapshot(): Promise<AdminDashboardSnapsho
       const [row] = await db.select({ count: sql<number>`count(*)::int` }).from(projectEnquiriesTable);
       return Number(row?.count ?? 0);
     },
-    0,
+    null,
     partialErrors,
   );
 
@@ -144,7 +146,7 @@ export async function getAdminDashboardSnapshot(): Promise<AdminDashboardSnapsho
         .where(eq(projectEnquiriesTable.status, 'new'));
       return Number(row?.count ?? 0);
     },
-    inquiryCount,
+    null,
     partialErrors,
   );
 
@@ -154,7 +156,7 @@ export async function getAdminDashboardSnapshot(): Promise<AdminDashboardSnapsho
       const [row] = await db.select({ count: sql<number>`count(*)::int` }).from(clientsTable);
       return Number(row?.count ?? 0);
     },
-    0,
+    null,
     partialErrors,
   );
 
@@ -164,7 +166,7 @@ export async function getAdminDashboardSnapshot(): Promise<AdminDashboardSnapsho
       const [row] = await db.select({ count: sql<number>`count(*)::int` }).from(projectsTable);
       return Number(row?.count ?? 0);
     },
-    0,
+    null,
     partialErrors,
   );
 
@@ -179,7 +181,7 @@ export async function getAdminDashboardSnapshot(): Promise<AdminDashboardSnapsho
         );
       return Number(row?.count ?? 0);
     },
-    0,
+    null,
     partialErrors,
   );
 
@@ -192,7 +194,7 @@ export async function getAdminDashboardSnapshot(): Promise<AdminDashboardSnapsho
         .where(eq(notificationsTable.read, false));
       return Number(row?.count ?? 0);
     },
-    0,
+    null,
     partialErrors,
   );
 
@@ -259,40 +261,43 @@ export async function getAdminDashboardSnapshot(): Promise<AdminDashboardSnapsho
       }
       return map;
     },
-    new Map<string, number>(),
+    null,
     partialErrors,
   );
 
   const days = last7DayLabels();
-  const inquirySeries: ChartPoint[] = days.map((d) => {
-    const key = d.toISOString().slice(0, 10);
-    return { name: formatDayLabel(d), value: inquiryByDay.get(key) ?? 0 };
-  });
+  const inquirySeries: ChartPoint[] | null = inquiryByDay
+    ? days.map((d) => {
+        const key = d.toISOString().slice(0, 10);
+        return { name: formatDayLabel(d), value: inquiryByDay.get(key) ?? 0 };
+      })
+    : null;
 
+  const stamp = (d: Date | null | undefined) => (d ? new Date(d).getTime() : 0);
   const activityItems: DashboardActivityItem[] = [
     ...activityLogs.map((log) => ({
+      at: stamp(log.created_at),
       id: log.id,
       type: 'system' as const,
       title: log.action,
       description: log.entity_type ? `Entity: ${log.entity_type}` : 'Audit event',
-      time: log.created_at
-        ? new Date(log.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-        : 'Recent',
+      time: log.created_at ? new Date(log.created_at).toISOString() : 'Recent',
     })),
     ...recentInquiries
       .filter((inq) => !activityLogs.some((log) => log.entity_id === inq.id))
       .map((inq) => ({
+        at: stamp(inq.created_at),
         id: inq.id,
         type: 'inquiry' as const,
         title: `Inquiry from ${inq.name}`,
         description: inq.project_type,
-        time: inq.created_at
-          ? new Date(inq.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-          : 'Recent',
+        time: inq.created_at ? new Date(inq.created_at).toISOString() : 'Recent',
       })),
   ]
-    .sort((a, b) => b.id.localeCompare(a.id))
-    .slice(0, 10);
+    // Newest first. (This used to sort by UUID string, which is effectively random.)
+    .sort((a, b) => b.at - a.at)
+    .slice(0, 10)
+    .map(({ at: _at, ...item }) => item);
 
   return {
     dbReachable,

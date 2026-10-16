@@ -1,46 +1,34 @@
-'use client';
+import { BarChart3 } from 'lucide-react';
 
 import MiniChart from '@/components/admin/MiniChart';
+import { EmptyState } from '@/components/admin/EmptyState';
 import type { ChartPoint } from '@/lib/admin/dashboard-snapshot';
 
-const fallbackInquiryWeek: ChartPoint[] = [
-  { name: 'Mon', value: 0 },
-  { name: 'Tue', value: 0 },
-  { name: 'Wed', value: 0 },
-  { name: 'Thu', value: 0 },
-  { name: 'Fri', value: 0 },
-  { name: 'Sat', value: 0 },
-  { name: 'Sun', value: 0 },
-];
-
-function placeholderVisitors(labels: ChartPoint[]): ChartPoint[] {
-  return labels.map((d) => ({ name: d.name, value: 0 }));
-}
-
 interface DashboardChartsProps {
-  /** When omitted (e.g. analytics placeholder page), a neutral 7‑day scaffold is used. */
   inquirySeries?: ChartPoint[];
 }
 
+/**
+ * Inquiries per day, plus an honest note where site traffic would go. There used to be a
+ * traffic chart here drawn from hard-coded zeros, which read as "nobody visits the site".
+ */
 export default function DashboardCharts({ inquirySeries }: DashboardChartsProps) {
-  const safeSeries =
-    inquirySeries && inquirySeries.length > 0 ? inquirySeries : fallbackInquiryWeek;
-  const visitors = placeholderVisitors(safeSeries);
-
   return (
     <div className="grid gap-4 lg:grid-cols-2">
-      <MiniChart
-        data={safeSeries}
-        title="Inquiries (last 7 days)"
-        subtitle="Live from your Postgres / Supabase database"
-        color="#facc15"
-      />
-      <MiniChart
-        data={visitors}
-        title="Site traffic"
-        subtitle="Ready for Plausible, GA4, or Vercel Analytics — connect in Settings"
-        color="#60a5fa"
-      />
+      {inquirySeries && inquirySeries.length > 0 ? (
+        <MiniChart data={inquirySeries} title="Inquiries" subtitle="New inquiries per day, last 7 days (UTC)" totalLabel="This week" />
+      ) : (
+        <section className="rounded-2xl border border-mkt-line bg-mkt-surface">
+          <EmptyState icon={BarChart3} title="No inquiry data" description="Inquiry counts appear here once the inquiries table has rows." />
+        </section>
+      )}
+      <section className="rounded-2xl border border-dashed border-mkt-line bg-mkt-surface">
+        <EmptyState
+          icon={BarChart3}
+          title="Site traffic isn’t connected"
+          description="Connect Plausible, GA4 or Vercel Analytics to see visitors here. Until then there is nothing to show."
+        />
+      </section>
     </div>
   );
 }

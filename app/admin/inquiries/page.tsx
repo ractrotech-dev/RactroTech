@@ -8,81 +8,104 @@ import MiniStat from "@/components/admin/MiniStat";
 import StatusBadge from "@/components/admin/StatusBadge";
 import EmptyState from "@/components/admin/EmptyState";
 import DatabaseError from "@/components/admin/DatabaseError";
+import { AdminCard, Badge, CardHeader, DataTable, table } from "@/components/admin/ui";
+import { formatDate } from "@/lib/admin/format";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Inquiries | Admin | RactroTech", description: "Manage project inquiries" };
 
+/** The start-project form stores a slug; show the name the visitor picked. Anything else shows as entered. */
+const PROJECT_TYPE_LABEL: Record<string, string> = {
+  fullstack: "Full stack project",
+  chatbot: "AI & chatbot",
+  cloud: "Cloud services (AWS/Azure)",
+  saas: "SaaS platform",
+  mobile: "Mobile development",
+  ecommerce: "E-commerce store",
+  automation: "Internal automation",
+};
+
+const RESOLVED = new Set(["responded", "converted", "closed"]);
+const HIGH_PRIORITY = new Set(["high", "urgent"]);
+
 export default async function AdminInquiriesPage() {
   try {
+    // Unpaginated on purpose: the counts below are taken from this list, so they cover every inquiry.
     const inquiries = await db.select().from(projectEnquiriesTable).orderBy(desc(projectEnquiriesTable.created_at));
-    const totalCount = inquiries.length;
 
-    // Count by status (graceful fallback if status column doesn't exist)
-    let newCount = totalCount, inProgressCount = 0, respondedCount = 0, urgentCount = 0;
-    try {
-      newCount = inquiries.filter((i: any) => i.status === 'new').length;
-      inProgressCount = inquiries.filter((i: any) => i.status === 'in_progress').length;
-      respondedCount = inquiries.filter((i: any) => i.status === 'responded' || i.status === 'converted' || i.status === 'closed').length;
-      urgentCount = inquiries.filter((i: any) => i.priority === 'urgent' || i.priority === 'high').length;
-    } catch { /* columns may not exist */ }
+    const totalCount = inquiries.length;
+    const newCount = inquiries.filter((i) => i.status === "new").length;
+    const resolvedCount = inquiries.filter((i) => RESOLVED.has(i.status)).length;
+    const highPriorityCount = inquiries.filter((i) => HIGH_PRIORITY.has(i.priority)).length;
 
     return (
       <div className="space-y-6">
-        <PageHeader title="Inquiries" subtitle={`${totalCount} total inquiries`} backHref="/admin" />
+        <PageHeader
+          title="Inquiries"
+          subtitle="Project requests from the website, newest first."
+          backHref="/admin"
+        />
 
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          <MiniStat icon={<Inbox size={16} className="text-black" />} value={totalCount} label="Total" color="bg-blue-400" />
-          <MiniStat icon={<Clock size={16} className="text-black" />} value={newCount} label="New" color="bg-yellow-400" />
-          <MiniStat icon={<CheckCircle size={16} className="text-black" />} value={respondedCount} label="Resolved" color="bg-emerald-400" />
-          <MiniStat icon={<AlertTriangle size={16} className="text-black" />} value={urgentCount} label="Urgent" color="bg-red-400" />
-        </div>
+        <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4" aria-label="Inquiry counts">
+          <MiniStat icon={<Inbox />} value={totalCount} label="Total" />
+          <MiniStat icon={<Clock />} value={newCount} label="New" />
+          <MiniStat icon={<CheckCircle />} value={resolvedCount} label="Resolved" />
+          <MiniStat icon={<AlertTriangle />} value={highPriorityCount} label="High or urgent" />
+        </section>
 
-        <div className="border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-          <div className="border-b-4 border-black px-5 py-3">
-            <h2 className="text-xs font-black tracking-[0.2em]">All Inquiries</h2>
-          </div>
-          <div className="overflow-x-auto">
-            {inquiries.length === 0 ? (
-              <EmptyState icon={Inbox} title="No inquiries yet" description="Inquiries from your website forms will appear here." />
-            ) : (
-              <table className="w-full text-left text-sm">
-                <thead>
-                  <tr className="border-b-2 border-black/10 bg-gray-50">
-                    {['Name', 'Phone', 'Email', 'Type', 'Priority', 'Status', 'Date'].map((h) => (
-                      <th key={h} className="px-4 py-3 text-[10px] font-black tracking-wider text-black/50">{h}</th>
-                    ))}
+        <AdminCard>
+          <CardHeader title="All inquiries" description="Open one to reply, change its status or add a note." />
+          {inquiries.length === 0 ? (
+            <EmptyState icon={<Inbox />} title="No inquiries yet" description="Inquiries from your website forms will appear here." />
+          ) : (
+            <DataTable>
+              <thead>
+                <tr className={table.headRow}>
+                  <th className={table.th}>Name</th>
+                  <th className={table.th}>Phone</th>
+                  <th className={table.th}>Email</th>
+                  <th className={table.th}>Type</th>
+                  <th className={table.th}>Priority</th>
+                  <th className={table.th}>Status</th>
+                  <th className={table.th}>Received</th>
+                </tr>
+              </thead>
+              <tbody>
+                {inquiries.map((inq) => (
+                  <tr key={inq.id} className={table.row}>
+                    <td className={table.td}>
+                      <Link
+                        href={`/admin/inquiries/${inq.id}`}
+                        className="group block max-w-[260px] rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mkt-violet"
+                      >
+                        <span className="block truncate font-medium text-mkt-ink transition-colors group-hover:text-mkt-violet">{inq.name}</span>
+                        <span className="mt-0.5 block truncate text-[13px] text-mkt-muted">{inq.description}</span>
+                      </Link>
+                    </td>
+                    <td className={`${table.td} whitespace-nowrap ${table.muted}`}>{inq.phone}</td>
+                    <td className={`${table.td} ${table.muted}`}>{inq.email || "—"}</td>
+                    <td className={table.td}>
+                      <Badge>{PROJECT_TYPE_LABEL[inq.project_type] ?? inq.project_type}</Badge>
+                    </td>
+                    <td className={table.td}>
+                      <StatusBadge status={inq.priority} />
+                    </td>
+                    <td className={table.td}>
+                      <StatusBadge status={inq.status} />
+                    </td>
+                    <td className={`${table.td} whitespace-nowrap tabular-nums ${table.muted}`}>
+                      <time dateTime={inq.created_at.toISOString()}>{formatDate(inq.created_at)}</time>
+                    </td>
                   </tr>
-                </thead>
-                <tbody>
-                  {inquiries.map((inq: any) => (
-                    <tr key={inq.id} className="border-b border-black/5 transition-colors hover:bg-yellow-50">
-                      <td className="px-4 py-3">
-                        <Link href={`/admin/inquiries/${inq.id}`} className="group">
-                          <p className="text-xs font-bold group-hover:text-yellow-600 transition-colors">{inq.name}</p>
-                          <p className="mt-0.5 max-w-[180px] truncate text-[10px] text-black/40">{inq.description}</p>
-                        </Link>
-                      </td>
-                      <td className="px-4 py-3 text-xs font-semibold text-black/60">{inq.phone}</td>
-                      <td className="px-4 py-3 text-xs font-semibold text-black/60">{inq.email || '—'}</td>
-                      <td className="px-4 py-3">
-                        <span className="border-2 border-black bg-yellow-400 px-2 py-0.5 text-[9px] font-black">{inq.project_type}</span>
-                      </td>
-                      <td className="px-4 py-3"><StatusBadge status={inq.priority || 'medium'} /></td>
-                      <td className="px-4 py-3"><StatusBadge status={inq.status || 'new'} /></td>
-                      <td className="whitespace-nowrap px-4 py-3 text-[10px] font-bold text-black/40">
-                        {inq.created_at ? new Date(inq.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—'}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
-          </div>
-        </div>
+                ))}
+              </tbody>
+            </DataTable>
+          )}
+        </AdminCard>
       </div>
     );
-  } catch (error: any) {
+  } catch (error) {
     console.error("Inquiries Page DB Error:", error);
-    return <DatabaseError message={error.message} />;
+    return <DatabaseError message={error instanceof Error ? error.message : String(error)} />;
   }
 }

@@ -1,88 +1,109 @@
 import { db } from "@/utils/db/db";
 import { usersTable } from "@/utils/db/schema";
 import { notInArray, desc } from "drizzle-orm";
-import { UsersRound, UserPlus, Shield, Mail, Phone, Calendar } from "lucide-react";
+import { Code2, Crown, Mail, UserPlus, UsersRound, Wrench } from "lucide-react";
 import PageHeader from "@/components/admin/PageHeader";
 import MiniStat from "@/components/admin/MiniStat";
-import { getRoleBadgeClasses, getRoleLabel, type AdminRole } from "@/utils/admin-roles";
+import EmptyState from "@/components/admin/EmptyState";
+import { type AdminRole } from "@/utils/admin-roles";
 import UserRoleSelector from "@/components/admin/UserRoleSelector";
 import { getAdminUser } from "@/utils/admin";
+import { AdminCard, Notice, buttonClass } from "@/components/admin/ui";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Team | Admin | RactroTech", description: "Manage team members" };
 
+type TeamMember = { id: string; name: string; email: string; role: AdminRole; plan: string };
+
 export default async function AdminTeamPage() {
   const admin = await getAdminUser();
-  const isSuperAdmin = admin?.role === 'super_admin';
+  // The DB role lives on `dbRole`; `role` on the auth user is Supabase's ("authenticated").
+  const isSuperAdmin = admin?.dbRole === "super_admin";
 
-  const team = await db
-    .select({
-      id: usersTable.id,
-      name: usersTable.name,
-      email: usersTable.email,
-      role: usersTable.role,
-      plan: usersTable.plan,
-    })
-    .from(usersTable)
-    .where(notInArray(usersTable.role, ['client', 'user']))
-    .orderBy(desc(usersTable.role));
+  let team: TeamMember[] | null = null;
+  let loadError: string | null = null;
+  try {
+    team = await db
+      .select({
+        id: usersTable.id,
+        name: usersTable.name,
+        email: usersTable.email,
+        role: usersTable.role,
+        plan: usersTable.plan,
+      })
+      .from(usersTable)
+      .where(notInArray(usersTable.role, ["client", "user"]))
+      .orderBy(desc(usersTable.role));
+  } catch (err) {
+    loadError = err instanceof Error ? err.message : "Unknown error";
+  }
+
+  // The team is every non-client role, so these three groups add up to the total.
+  const countRoles = (roles: AdminRole[]) => (team ? team.filter((t) => roles.includes(t.role)).length : null);
 
   return (
     <div className="space-y-6">
-      <PageHeader 
-        title="Team Management" 
-        subtitle="Manage roles and access for your internal team" 
+      <PageHeader
+        title="Team"
+        subtitle="Roles and access for your internal team."
         backHref="/admin"
         actions={
-          <button className="flex items-center gap-2 border-2 border-black bg-yellow-400 px-4 py-2 text-[10px] font-black tracking-widest transition-all hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <UserPlus size={14} /> Invite Member
-          </button>
+          // Placeholder: there is no invite flow yet. The wrapper carries the tooltip because a
+          // disabled button receives no pointer events.
+          <span title="Invites aren’t available yet">
+            <button type="button" disabled className={buttonClass("secondary")}>
+              <UserPlus aria-hidden /> Invite member
+            </button>
+          </span>
         }
       />
 
-      <div className="grid gap-3 sm:grid-cols-3">
-        <MiniStat icon={<Shield size={16} />} value={team.length} label="Team Members" color="bg-blue-400" />
-        <MiniStat icon={<Shield size={16} />} value={team.filter(t => t.role === 'admin' || t.role === 'super_admin').length} label="Admins" color="bg-yellow-400" />
-        <MiniStat icon={<Shield size={16} />} value={team.filter(t => t.role === 'developer').length} label="Developers" color="bg-emerald-400" />
-      </div>
+      {loadError ? (
+        <Notice tone="red" title="Team couldn’t be loaded">
+          Counts show as “—” until the query succeeds. {loadError}
+        </Notice>
+      ) : null}
 
-      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-        {team.map((member) => (
-          <div key={member.id} className="group border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-            <div className="flex items-start justify-between">
-              <div className="flex h-12 w-12 items-center justify-center border-4 border-black bg-gray-100 text-lg font-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] group-hover:bg-yellow-400 transition-colors">
-                {member.name?.charAt(0) || <Shield size={20} />}
-              </div>
-              <UserRoleSelector
-                userId={member.id}
-                currentRole={member.role as AdminRole}
-                isSuperAdmin={isSuperAdmin}
-              />
-            </div>
-            
-            <div className="mt-4">
-              <h3 className="text-sm font-black tracking-wider">{member.name}</h3>
-              <div className="mt-2 space-y-1">
-                <div className="flex items-center gap-2 text-[10px] font-bold text-black/40">
-                  <Mail size={12} /> {member.email}
-                </div>
-                <div className="flex items-center gap-2 text-[10px] font-bold text-black/40">
-                  <Shield size={12} /> {getRoleLabel(member.role as AdminRole)}
-                </div>
-              </div>
-            </div>
+      <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4" aria-label="Team counts">
+        <MiniStat icon={<UsersRound />} value={team ? team.length : null} label="Team members" />
+        <MiniStat icon={<Crown />} value={countRoles(["super_admin", "admin"])} label="Admins" />
+        <MiniStat icon={<Wrench />} value={countRoles(["manager"])} label="Managers" />
+        <MiniStat icon={<Code2 />} value={countRoles(["developer"])} label="Developers" />
+      </section>
 
-            <div className="mt-6 flex gap-2">
-              <button className="flex-1 border-2 border-black py-1.5 text-[9px] font-black tracking-widest hover:bg-black hover:text-white transition-all">
-                Edit Profile
-              </button>
-              <button className="border-2 border-black p-1.5 hover:bg-red-500 hover:text-white transition-all">
-                <Shield size={12} />
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
+      {team === null ? (
+        <AdminCard>
+          <p className="px-5 py-10 text-center text-[14px] text-mkt-muted">Team couldn’t be loaded. Refresh to try again.</p>
+        </AdminCard>
+      ) : team.length === 0 ? (
+        <AdminCard>
+          <EmptyState icon={<UsersRound />} title="No team members yet" description="Give a user a team role from the Users page." />
+        </AdminCard>
+      ) : (
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {team.map((member) => (
+            <AdminCard key={member.id} as="article" className="p-5">
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex min-w-0 items-center gap-3">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-mkt-lavender text-[15px] font-semibold text-mkt-violet">
+                    {member.name?.charAt(0).toUpperCase() || "?"}
+                  </span>
+                  <div className="min-w-0">
+                    <h3 className="truncate text-[15px] font-semibold leading-6 text-mkt-ink">{member.name}</h3>
+                    <p className="flex min-w-0 items-center gap-1.5 text-[13px] text-mkt-muted">
+                      <Mail className="h-3.5 w-3.5 shrink-0" aria-hidden />
+                      <span className="truncate">{member.email}</span>
+                    </p>
+                  </div>
+                </div>
+                <div className="shrink-0">
+                  <UserRoleSelector userId={member.id} currentRole={member.role} isSuperAdmin={isSuperAdmin} />
+                </div>
+              </div>
+            </AdminCard>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

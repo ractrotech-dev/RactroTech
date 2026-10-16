@@ -1,20 +1,14 @@
-import { db } from '@/utils/db/db';
-import { mediaAssetsTable } from '@/utils/db/schema';
 import { desc } from 'drizzle-orm';
-import {
-  FolderOpen,
-  Upload,
-  Trash2,
-  File,
-  Image as ImageIcon,
-  Music,
-  Video,
-  Search,
-  Filter,
-} from 'lucide-react';
-import NextImage from 'next/image';
-import PageHeader from '@/components/admin/PageHeader';
+import { File, Filter, FolderOpen, Image as ImageIcon, Music, Search, Trash2, Upload, Video } from 'lucide-react';
+
 import EmptyState from '@/components/admin/EmptyState';
+import MiniStat from '@/components/admin/MiniStat';
+import PageHeader from '@/components/admin/PageHeader';
+import { AdminCard, Notice, buttonClass, field } from '@/components/admin/ui';
+import { formatCount, formatDate, formatFileSize } from '@/lib/admin/format';
+import { cn } from '@/lib/utils';
+import { db } from '@/utils/db/db';
+import { mediaAssetsTable, type SelectMediaAsset } from '@/utils/db/schema';
 
 export const dynamic = 'force-dynamic';
 export const metadata = {
@@ -30,96 +24,128 @@ const getIconForType = (type: string | null) => {
   return File;
 };
 
+
+/** Bytes → "512 B", "50.0 KB", "1.2 MB". Unknown size → "—", never "0.0 KB". */
+
+/** "PNG", "PDF"… from the file name's extension, else the MIME subtype. */
+function fileKind(name: string, type: string | null): string {
+  const ext = name.includes('.') ? name.split('.').pop() : '';
+  if (ext && ext.length <= 5) return ext.toUpperCase();
+  const subtype = type?.split('/')[1];
+  return subtype ? subtype.split(/[+.;]/)[0].toUpperCase() : 'File';
+}
+
 export default async function AdminMediaPage() {
-  let assets: any[] = [];
+  let assets: SelectMediaAsset[] | null = null;
   try {
     assets = await db.select().from(mediaAssetsTable).orderBy(desc(mediaAssetsTable.created_at));
   } catch {
-    /* table may not exist */
+    /* table may not exist — shown as "couldn't load", not as an empty library */
   }
+
+  // The query has no limit, so these cover the whole library.
+  const imageCount = assets ? assets.filter((a) => a.type?.startsWith('image/')).length : null;
+  const sized = assets ? assets.filter((a) => typeof a.size === 'number') : [];
+  const totalBytes = assets && sized.length > 0 ? sized.reduce((sum, a) => sum + (a.size ?? 0), 0) : null;
+  const someUnsized = assets !== null && sized.length < assets.length && sized.length > 0;
 
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Media Library"
-        subtitle={`${assets.length} assets uploaded`}
+        title="Media library"
+        subtitle={
+          assets === null
+            ? 'Files couldn’t be loaded.'
+            : `${formatCount(assets.length)} ${assets.length === 1 ? 'file' : 'files'} uploaded.`
+        }
         backHref="/admin"
         actions={
-          <button className="flex items-center gap-2 border-2 border-black bg-yellow-400 px-4 py-2 text-[10px] font-black tracking-widest transition-all hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <Upload size={14} /> Upload File
+          <button type="button" className={buttonClass('primary')}>
+            <Upload aria-hidden /> Upload file
           </button>
         }
       />
 
-      {/* Toolbar */}
-      <div className="flex flex-col justify-between gap-4 border-4 border-black bg-white p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:flex-row sm:items-center">
-        <div className="relative max-w-md flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-black/30" size={16} />
-          <input
-            type="text"
-            placeholder="Search assets..."
-            className="w-full border-2 border-black bg-gray-50 py-2 pl-10 pr-4 text-[11px] font-bold focus:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
-          />
+      {assets === null ? (
+        <Notice tone="amber" title="The media library couldn’t be loaded">
+          The database didn’t respond, so counts show as “—”. Reload the page to try again.
+        </Notice>
+      ) : null}
+
+      <section className="grid gap-3 sm:grid-cols-3" aria-label="Library totals">
+        <MiniStat icon={<FolderOpen />} value={assets ? assets.length : null} label="Files" />
+        <MiniStat icon={<ImageIcon />} value={imageCount} label="Images" />
+        <MiniStat
+          icon={<File />}
+          value={formatFileSize(totalBytes)}
+          label={someUnsized ? 'Total size (files with a known size)' : 'Total size'}
+        />
+      </section>
+
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="relative w-full max-w-md">
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-mkt-muted" aria-hidden />
+          <input type="text" placeholder="Search files…" aria-label="Search files" className={cn(field.input, 'pl-9')} />
         </div>
-        <div className="flex gap-2">
-          <button className="flex items-center gap-2 border-2 border-black bg-white px-3 py-2 text-[10px] font-black tracking-widest transition-all hover:bg-gray-50">
-            <Filter size={14} /> Filter
-          </button>
-        </div>
+        <button type="button" className={buttonClass('secondary')}>
+          <Filter aria-hidden /> Filter
+        </button>
       </div>
 
-      {assets.length === 0 ? (
-        <div className="border-4 border-black bg-white p-20 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+      {assets === null || assets.length === 0 ? (
+        <AdminCard>
           <EmptyState
-            icon={FolderOpen}
-            title="Your library is empty"
-            description="Upload images, documents, and videos to use across your site."
+            icon={<FolderOpen />}
+            title={assets === null ? 'Nothing to show' : 'Your library is empty'}
+            description={
+              assets === null
+                ? 'Files appear here once the library can be loaded.'
+                : 'Upload images, documents, and videos to use across your site.'
+            }
           />
-        </div>
+        </AdminCard>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+        <ul className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {assets.map((asset) => {
             const Icon = getIconForType(asset.type);
+            const isImage = asset.type?.startsWith('image/') ?? false;
             return (
-              <div
-                key={asset.id}
-                className="group relative border-4 border-black bg-white p-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
-              >
-                <div className="flex aspect-square flex-col items-center justify-center overflow-hidden border-2 border-black bg-gray-50">
-                  {asset.type?.startsWith('image/') ? (
-                    <NextImage
-                      src={asset.url}
-                      alt={asset.name}
-                      width={200}
-                      height={200}
-                      className="h-full w-full object-cover"
-                    />
+              <li key={asset.id} className="group overflow-hidden rounded-2xl border border-mkt-line bg-mkt-surface text-mkt-ink">
+                <div className="relative flex aspect-square items-center justify-center overflow-hidden bg-mkt-ink/[0.03]">
+                  {isImage ? (
+                    // Asset URLs can be on any host; next/image would reject hosts missing from next.config.
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={asset.url} alt={asset.name} loading="lazy" className="h-full w-full object-cover" />
                   ) : (
-                    <Icon size={32} className="text-black/20" />
+                    <Icon className="h-8 w-8 text-mkt-muted" strokeWidth={1.5} aria-hidden />
                   )}
-                </div>
-                <div className="mt-2 min-w-0">
-                  <p className="truncate text-[10px] font-black tracking-wider">
-                    {asset.name}
-                  </p>
-                  <p className="text-[9px] font-bold text-black/40">
-                    {(asset.size / 1024).toFixed(1)} KB • {asset.type?.split('/')[1].toUpperCase()}
-                  </p>
+
+                  <div className="absolute inset-x-0 bottom-0 flex gap-2 bg-mkt-surface/90 p-2 opacity-0 backdrop-blur-sm transition-opacity group-focus-within:opacity-100 group-hover:opacity-100">
+                    <button type="button" className={buttonClass('secondary', 'sm', 'flex-1')}>
+                      View
+                    </button>
+                    <button type="button" className={buttonClass('danger', 'sm', 'w-8 px-0')} aria-label={`Delete ${asset.name}`}>
+                      <Trash2 aria-hidden />
+                    </button>
+                  </div>
                 </div>
 
-                {/* Overlay actions */}
-                <div className="absolute inset-0 flex items-center justify-center gap-2 bg-black/60 p-4 opacity-0 transition-opacity group-hover:opacity-100">
-                  <button className="flex-1 border-2 border-white bg-white py-1.5 text-[8px] font-black tracking-widest text-black transition-all hover:border-black hover:bg-yellow-400">
-                    View
-                  </button>
-                  <button className="border-2 border-red-500 bg-red-500 p-1.5 text-white transition-all hover:bg-white hover:text-red-500">
-                    <Trash2 size={12} />
-                  </button>
+                <div className="border-t border-mkt-line px-3 py-2.5">
+                  <p className="truncate text-[14px] font-medium" title={asset.name}>
+                    {asset.name}
+                  </p>
+                  <p className="mt-0.5 flex items-center gap-1.5 text-[12px] tabular-nums text-mkt-muted">
+                    <span>{formatFileSize(asset.size)}</span>
+                    <span aria-hidden>·</span>
+                    <span>{fileKind(asset.name, asset.type)}</span>
+                    <span aria-hidden>·</span>
+                    <time dateTime={new Date(asset.created_at).toISOString()}>{formatDate(asset.created_at)}</time>
+                  </p>
                 </div>
-              </div>
+              </li>
             );
           })}
-        </div>
+        </ul>
       )}
     </div>
   );

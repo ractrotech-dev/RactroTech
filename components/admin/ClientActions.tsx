@@ -1,7 +1,12 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useTransition } from 'react';
+import { Loader2 } from 'lucide-react';
+
 import { updateClientStatus } from '@/app/admin/actions';
+import { buttonClass, field } from '@/components/admin/ui';
+import { formatLabel } from '@/lib/admin/format';
+import { cn } from '@/lib/utils';
 
 interface ClientActionsProps {
   clientId: string;
@@ -10,13 +15,8 @@ interface ClientActionsProps {
 
 const statuses = ['lead', 'onboarding', 'active', 'inactive', 'churned'] as const;
 
-const statusColors: Record<string, string> = {
-  lead: 'border-blue-300 bg-blue-50 text-blue-700',
-  onboarding: 'border-yellow-400 bg-yellow-50 text-yellow-700',
-  active: 'border-emerald-300 bg-emerald-50 text-emerald-700',
-  inactive: 'border-black/20 bg-gray-100 text-black/40',
-  churned: 'border-red-300 bg-red-50 text-red-700',
-};
+/** The current status reads as selected (accent), the others as plain secondary buttons. */
+const SELECTED = 'border-mkt-violet/40 bg-mkt-lavender text-mkt-violet disabled:opacity-100';
 
 export default function ClientActions({ clientId, currentStatus }: ClientActionsProps) {
   const [isPending, startTransition] = useTransition();
@@ -29,30 +29,35 @@ export default function ClientActions({ clientId, currentStatus }: ClientActions
 
   return (
     <div className="space-y-4">
-      <div>
-        <p className="mb-2 text-[9px] font-black tracking-[0.2em] text-black/40">Manage Status</p>
+      <fieldset className="min-w-0">
+        <legend className={field.label}>Change status</legend>
         <div className="flex flex-wrap gap-1.5">
-          {statuses.map((s) => (
-            <button
-              key={s}
-              onClick={() => handleStatusChange(s)}
-              disabled={isPending || s === currentStatus}
-              className={`border-2 px-2.5 py-1 text-[9px] font-black tracking-wider transition-all ${
-                s === currentStatus
-                  ? statusColors[s]
-                  : 'border-black/10 bg-white text-black/30 hover:border-black hover:bg-black hover:text-white'
-              } disabled:opacity-50`}
-            >
-              {s.replace('_', ' ')}
-            </button>
-          ))}
+          {statuses.map((s) => {
+            const selected = s === currentStatus;
+            return (
+              <button
+                key={s}
+                type="button"
+                onClick={() => handleStatusChange(s)}
+                disabled={isPending || selected}
+                aria-pressed={selected}
+                className={cn(buttonClass('secondary', 'sm'), selected && SELECTED)}
+              >
+                {formatLabel(s)}
+              </button>
+            );
+          })}
         </div>
-      </div>
-      {isPending && (
-        <p className="text-[9px] font-bold tracking-wider text-yellow-600 animate-pulse">
-          Updating...
-        </p>
-      )}
+      </fieldset>
+
+      <p role="status" aria-live="polite" className="flex min-h-5 items-center gap-1.5 text-[13px] text-mkt-muted">
+        {isPending ? (
+          <>
+            <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+            Saving…
+          </>
+        ) : null}
+      </p>
     </div>
   );
 }

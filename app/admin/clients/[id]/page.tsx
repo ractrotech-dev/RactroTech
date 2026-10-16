@@ -1,142 +1,169 @@
 import { db } from "@/utils/db/db";
-import { clientsTable, projectsTable, projectEnquiriesTable } from "@/utils/db/schema";
+import {
+  clientsTable,
+  projectsTable,
+  projectEnquiriesTable,
+  type SelectClient,
+  type SelectProject,
+  type SelectProjectEnquiry,
+} from "@/utils/db/schema";
 import { eq, desc } from "drizzle-orm";
 import { notFound } from "next/navigation";
-import { Mail, Phone, Building2, Calendar, FolderKanban, MessageSquare, ExternalLink } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import PageHeader from "@/components/admin/PageHeader";
 import StatusBadge from "@/components/admin/StatusBadge";
 import ClientActions from "@/components/admin/ClientActions";
+import DatabaseError from "@/components/admin/DatabaseError";
+import { AdminCard, ButtonLink, CardBody, CardHeader, MetaItem, Notice, TextLink, buttonClass } from "@/components/admin/ui";
+import { formatCount, formatDate } from "@/lib/admin/format";
 import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
 export default async function ClientDetailPage({ params }: { params: { id: string } }) {
-  const [client] = await db.select().from(clientsTable).where(eq(clientsTable.id, params.id));
+  let client: SelectClient | undefined;
+  try {
+    [client] = await db.select().from(clientsTable).where(eq(clientsTable.id, params.id));
+  } catch (error) {
+    console.error("Client Detail DB Error:", error);
+    return <DatabaseError message={error instanceof Error ? error.message : String(error)} />;
+  }
   if (!client) notFound();
 
-  // Fetch linked projects
-  let projects: any[] = [];
+  // Linked projects. `null` means the query failed: the count shows "—", not a made-up 0.
+  let projects: SelectProject[] | null = null;
   try {
     projects = await db.select().from(projectsTable).where(eq(projectsTable.client_id, params.id)).orderBy(desc(projectsTable.created_at));
-  } catch {}
+  } catch (error) {
+    console.error("Client projects query failed:", error);
+  }
 
-  // Fetch original inquiry
-  let inquiry: any = null;
+  // The inquiry this client came from, if any. A failed lookup still links to it by id.
+  let inquiry: SelectProjectEnquiry | null = null;
+  let inquiryFailed = false;
   if (client.inquiry_id) {
     try {
-      const [i] = await db.select().from(projectEnquiriesTable).where(eq(projectEnquiriesTable.id, client.inquiry_id));
-      inquiry = i;
-    } catch {}
+      const [row] = await db.select().from(projectEnquiriesTable).where(eq(projectEnquiriesTable.id, client.inquiry_id));
+      inquiry = row ?? null;
+    } catch (error) {
+      console.error("Client inquiry query failed:", error);
+      inquiryFailed = true;
+    }
   }
+  const inquiryId = inquiry?.id ?? (inquiryFailed ? client.inquiry_id : null);
+
+  const projectsCount =
+    projects === null ? "—" : `${formatCount(projects.length)} ${projects.length === 1 ? "project" : "projects"}`;
 
   return (
     <div className="space-y-6">
       <PageHeader
         title={client.name}
-        subtitle={client.company || 'Private Client'}
+        subtitle={client.company || "Private client"}
         backHref="/admin/clients"
-        backLabel="← Clients"
+        backLabel="Clients"
       />
 
-      <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
-        <div className="space-y-6">
-          {/* Client Profile Card */}
-          <div className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <h2 className="mb-4 text-xs font-black tracking-[0.2em]">Contact Details</h2>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="flex items-center gap-3">
-                <div className="flex h-9 w-9 items-center justify-center border-2 border-black bg-blue-400"><Mail size={14} /></div>
-                <div>
-                  <p className="text-[9px] font-black tracking-wider text-black/40">Email</p>
-                  <p className="text-sm font-bold">{client.email}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="flex h-9 w-9 items-center justify-center border-2 border-black bg-emerald-400"><Phone size={14} /></div>
-                <div>
-                  <p className="text-[9px] font-black tracking-wider text-black/40">Phone</p>
-                  <p className="text-sm font-bold">{client.phone || '—'}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="flex h-9 w-9 items-center justify-center border-2 border-black bg-yellow-400"><Building2 size={14} /></div>
-                <div>
-                  <p className="text-[9px] font-black tracking-wider text-black/40">Company</p>
-                  <p className="text-sm font-bold">{client.company || '—'}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="flex h-9 w-9 items-center justify-center border-2 border-black bg-purple-400"><Calendar size={14} /></div>
-                <div>
-                  <p className="text-[9px] font-black tracking-wider text-black/40">Client Since</p>
-                  <p className="text-sm font-bold">{new Date(client.created_at).toLocaleDateString()}</p>
-                </div>
-              </div>
-            </div>
-          </div>
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
+        <div className="min-w-0 space-y-6">
+          <AdminCard>
+            <CardHeader title="Contact details" />
+            <CardBody className="grid gap-5 sm:grid-cols-2">
+              <MetaItem label="Email">
+                <span className="break-all">{client.email}</span>
+              </MetaItem>
+              <MetaItem label="Phone">
+                <span className="break-all">{client.phone || "—"}</span>
+              </MetaItem>
+              <MetaItem label="Company">{client.company || "—"}</MetaItem>
+              <MetaItem label="Client since">
+                <time className="tabular-nums" dateTime={client.created_at.toISOString()}>
+                  {formatDate(client.created_at)}
+                </time>
+              </MetaItem>
+            </CardBody>
+          </AdminCard>
 
-          {/* Projects Section */}
-          <div className="border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <div className="flex items-center justify-between border-b-4 border-black px-5 py-3">
-              <div className="flex items-center gap-2">
-                <FolderKanban size={14} />
-                <h2 className="text-xs font-black tracking-[0.2em]">Projects ({projects.length})</h2>
-              </div>
-              <Link href="/admin/projects" className="text-[10px] font-black underline decoration-2 underline-offset-2">Manage All</Link>
-            </div>
-            <div className="p-0">
-              {projects.length === 0 ? (
-                <div className="p-8 text-center text-xs font-bold text-black/25">No projects started yet.</div>
-              ) : (
-                <div className="divide-y-2 divide-black/5">
-                  {projects.map((project) => (
-                    <div key={project.id} className="flex items-center justify-between p-4 hover:bg-yellow-50 transition-colors">
-                      <div className="min-w-0 flex-1">
-                        <Link href={`/admin/projects/${project.id}`} className="text-sm font-bold hover:text-yellow-600 transition-colors">{project.name}</Link>
-                        <p className="mt-0.5 text-[10px] font-semibold text-black/40 truncate">{project.description}</p>
-                      </div>
-                      <div className="flex items-center gap-4 ml-4">
-                        <StatusBadge status={project.status} />
-                        <Link href={`/admin/projects/${project.id}`} className="border-2 border-black p-1 hover:bg-black hover:text-white transition-colors">
-                          <ExternalLink size={12} />
-                        </Link>
-                      </div>
+          <AdminCard>
+            <CardHeader
+              title="Projects"
+              description={<span className="tabular-nums">{projectsCount}</span>}
+              action={<TextLink href="/admin/projects">Manage all</TextLink>}
+            />
+            {projects === null ? (
+              <CardBody>
+                <Notice tone="amber" title="Projects couldn’t be loaded">
+                  This client’s projects will show here once the query succeeds.
+                </Notice>
+              </CardBody>
+            ) : projects.length === 0 ? (
+              <p className="px-5 py-10 text-center text-[14px] text-mkt-muted">No projects started yet.</p>
+            ) : (
+              <ul className="divide-y divide-mkt-line">
+                {projects.map((project) => (
+                  <li key={project.id} className="flex items-center gap-4 px-5 py-3.5">
+                    <div className="min-w-0 flex-1">
+                      <Link
+                        href={`/admin/projects/${project.id}`}
+                        className="text-[14px] font-medium text-mkt-ink transition-colors hover:text-mkt-violet"
+                      >
+                        {project.name}
+                      </Link>
+                      {project.description ? (
+                        <p className="mt-0.5 truncate text-[13px] text-mkt-muted">{project.description}</p>
+                      ) : null}
                     </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
+                    <StatusBadge status={project.status} />
+                    <Link
+                      href={`/admin/projects/${project.id}`}
+                      aria-label={`Open ${project.name}`}
+                      className={buttonClass("ghost", "sm", "w-8 shrink-0 px-0")}
+                    >
+                      <ChevronRight aria-hidden />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </AdminCard>
 
-          {/* Notes Section */}
-          {client.notes && (
-            <div className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-              <h2 className="mb-3 text-xs font-black tracking-[0.2em]">Client Notes</h2>
-              <p className="text-sm font-semibold leading-relaxed text-black/70 italic">&quot;{client.notes}&quot;</p>
-            </div>
-          )}
+          {client.notes ? (
+            <AdminCard>
+              <CardHeader title="Client notes" />
+              <CardBody>
+                <p className="whitespace-pre-line break-words text-[14px] leading-6 text-mkt-ink">{client.notes}</p>
+              </CardBody>
+            </AdminCard>
+          ) : null}
         </div>
 
-        {/* Sidebar */}
-        <div className="space-y-4">
-          <div className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <h3 className="mb-4 text-xs font-black tracking-[0.2em]">Status Management</h3>
-            <ClientActions clientId={client.id} currentStatus={client.status} />
-          </div>
+        <aside className="space-y-6">
+          <AdminCard>
+            <CardHeader title="Status" action={<StatusBadge status={client.status} />} />
+            <CardBody>
+              <ClientActions clientId={client.id} currentStatus={client.status} />
+            </CardBody>
+          </AdminCard>
 
-          {inquiry && (
-            <div className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-              <div className="flex items-center gap-2 mb-3">
-                <MessageSquare size={14} />
-                <h3 className="text-xs font-black tracking-[0.2em]">Original Inquiry</h3>
-              </div>
-              <p className="text-[10px] font-bold text-black/40 mb-3 line-clamp-3">&quot;{inquiry.description}&quot;</p>
-              <Link href={`/admin/inquiries/${inquiry.id}`} className="flex items-center justify-center w-full border-2 border-black py-2 text-[9px] font-black tracking-widest hover:bg-black hover:text-white transition-all">
-                View Original
-              </Link>
-            </div>
-          )}
-        </div>
+          {inquiryId ? (
+            <AdminCard>
+              <CardHeader
+                title="Original inquiry"
+                description={inquiry ? `Received ${formatDate(inquiry.created_at)}` : undefined}
+              />
+              <CardBody className="space-y-4">
+                {inquiry ? (
+                  <p className="line-clamp-3 break-words text-[14px] leading-6 text-mkt-muted">{inquiry.description}</p>
+                ) : (
+                  <p className="text-[13px] text-mkt-muted">The inquiry couldn’t be loaded, but you can still open it.</p>
+                )}
+                <ButtonLink href={`/admin/inquiries/${inquiryId}`} variant="secondary" className="w-full">
+                  View original
+                </ButtonLink>
+              </CardBody>
+            </AdminCard>
+          ) : null}
+        </aside>
       </div>
     </div>
   );

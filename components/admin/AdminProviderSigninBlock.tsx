@@ -1,11 +1,12 @@
+import Image from 'next/image'
+
 import {
   signInWithFacebookAdmin,
   signInWithGithubAdmin,
   signInWithGoogleAdmin,
 } from '@/app/admin/login/actions'
-import { Button } from '@/components/ui/button'
+import { buttonClass } from '@/components/admin/ui'
 import type { OAuthProviders } from '@/lib/oauth/enabled-providers'
-import Image from 'next/image'
 
 const providerIcons = {
   google: 'https://img.icons8.com/color/48/google-logo.png',
@@ -17,6 +18,8 @@ type AdminProviderSigninBlockProps = {
   providers: OAuthProviders
 }
 
+const providerButton = buttonClass('secondary', 'md', 'h-10 w-full')
+
 export default function AdminProviderSigninBlock({ providers }: AdminProviderSigninBlockProps) {
   const { google: isGoogleEnabled, github: isGithubEnabled, facebook: isFacebookEnabled } =
     providers
@@ -25,41 +28,27 @@ export default function AdminProviderSigninBlock({ providers }: AdminProviderSig
     <div className="grid gap-2">
       {isGoogleEnabled && (
         <form action={signInWithGoogleAdmin} className="w-full">
-          <Button
-            variant="outline"
-            aria-label="Continue with Google"
-            type="submit"
-            className="h-9 w-full justify-start gap-2 border-2 border-black bg-white px-3 text-[10px] font-black text-mkt-contrast tracking-wide transition-all duration-200 hover:-translate-y-0.5 hover:bg-yellow-50"
-          >
-            <Image src={providerIcons.google} alt="Google" width={16} height={16} className="h-4 w-4" />
+          <button aria-label="Continue with Google" type="submit" className={providerButton}>
+            <Image src={providerIcons.google} alt="" width={16} height={16} className="h-4 w-4" />
             Continue with Google
-          </Button>
+          </button>
         </form>
       )}
       {isFacebookEnabled && (
         <form action={signInWithFacebookAdmin} className="w-full">
-          <Button
-            variant="outline"
-            aria-label="Continue with Facebook"
-            type="submit"
-            className="h-9 w-full justify-start gap-2 border-2 border-black bg-white px-3 text-[10px] font-black text-mkt-contrast tracking-wide transition-all duration-200 hover:-translate-y-0.5 hover:bg-yellow-50"
-          >
-            <Image src={providerIcons.facebook} alt="Facebook" width={16} height={16} className="h-4 w-4" />
+          <button aria-label="Continue with Facebook" type="submit" className={providerButton}>
+            <Image src={providerIcons.facebook} alt="" width={16} height={16} className="h-4 w-4" />
             Continue with Facebook
-          </Button>
+          </button>
         </form>
       )}
       {isGithubEnabled && (
         <form action={signInWithGithubAdmin} className="w-full">
-          <Button
-            variant="outline"
-            aria-label="Continue with Github"
-            type="submit"
-            className="h-9 w-full justify-start gap-2 border-2 border-black bg-white px-3 text-[10px] font-black text-mkt-contrast tracking-wide transition-all duration-200 hover:-translate-y-0.5 hover:bg-yellow-50"
-          >
-            <Image src={providerIcons.github} alt="Github" width={16} height={16} className="h-4 w-4" />
-            Continue with Github
-          </Button>
+          <button aria-label="Continue with GitHub" type="submit" className={providerButton}>
+            {/* The GitHub mark is a black PNG; invert it so it stays visible in dark mode. */}
+            <Image src={providerIcons.github} alt="" width={16} height={16} className="h-4 w-4 dark:invert" />
+            Continue with GitHub
+          </button>
         </form>
       )}
     </div>

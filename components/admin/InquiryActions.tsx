@@ -1,7 +1,12 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useTransition } from 'react';
+import { Loader2 } from 'lucide-react';
+
 import { updateInquiryStatus, updateInquiryPriority } from '@/app/admin/actions';
+import { buttonClass, field } from '@/components/admin/ui';
+import { formatLabel } from '@/lib/admin/format';
+import { cn } from '@/lib/utils';
 
 interface InquiryActionsProps {
   inquiryId: string;
@@ -12,20 +17,45 @@ interface InquiryActionsProps {
 const statuses = ['new', 'in_progress', 'responded', 'converted', 'closed'] as const;
 const priorities = ['low', 'medium', 'high', 'urgent'] as const;
 
-const statusColors: Record<string, string> = {
-  new: 'border-blue-300 bg-blue-50 text-blue-700',
-  in_progress: 'border-yellow-400 bg-yellow-50 text-yellow-700',
-  responded: 'border-emerald-300 bg-emerald-50 text-emerald-700',
-  converted: 'border-purple-300 bg-purple-50 text-purple-700',
-  closed: 'border-black/20 bg-gray-100 text-black/40',
-};
+/** The current choice reads as selected (accent), the others as plain secondary buttons. */
+const SELECTED = 'border-mkt-violet/40 bg-mkt-lavender text-mkt-violet disabled:opacity-100';
 
-const priorityColors: Record<string, string> = {
-  low: 'border-gray-300 bg-gray-50 text-gray-600',
-  medium: 'border-yellow-400 bg-yellow-50 text-yellow-700',
-  high: 'border-orange-400 bg-orange-50 text-orange-700',
-  urgent: 'border-red-500 bg-red-100 text-red-700',
-};
+function OptionGroup<T extends string>({
+  legend,
+  options,
+  current,
+  disabled,
+  onSelect,
+}: {
+  legend: string;
+  options: readonly T[];
+  current: string;
+  disabled: boolean;
+  onSelect: (value: T) => void;
+}) {
+  return (
+    <fieldset className="min-w-0">
+      <legend className={field.label}>{legend}</legend>
+      <div className="flex flex-wrap gap-1.5">
+        {options.map((option) => {
+          const selected = option === current;
+          return (
+            <button
+              key={option}
+              type="button"
+              onClick={() => onSelect(option)}
+              disabled={disabled || selected}
+              aria-pressed={selected}
+              className={cn(buttonClass('secondary', 'sm'), selected && SELECTED)}
+            >
+              {formatLabel(option)}
+            </button>
+          );
+        })}
+      </div>
+    </fieldset>
+  );
+}
 
 export default function InquiryActions({ inquiryId, currentStatus, currentPriority }: InquiryActionsProps) {
   const [isPending, startTransition] = useTransition();
@@ -43,54 +73,18 @@ export default function InquiryActions({ inquiryId, currentStatus, currentPriori
   };
 
   return (
-    <div className="space-y-4">
-      {/* Status control */}
-      <div>
-        <p className="mb-2 text-[9px] font-black tracking-[0.2em] text-black/40">Status</p>
-        <div className="flex flex-wrap gap-1.5">
-          {statuses.map((s) => (
-            <button
-              key={s}
-              onClick={() => handleStatusChange(s)}
-              disabled={isPending || s === currentStatus}
-              className={`border-2 px-2.5 py-1 text-[9px] font-black tracking-wider transition-all ${
-                s === currentStatus
-                  ? statusColors[s]
-                  : 'border-black/10 bg-white text-black/30 hover:border-black hover:bg-black hover:text-white'
-              } disabled:opacity-50`}
-            >
-              {s.replace('_', ' ')}
-            </button>
-          ))}
-        </div>
-      </div>
+    <div className="space-y-5">
+      <OptionGroup legend="Status" options={statuses} current={currentStatus} disabled={isPending} onSelect={handleStatusChange} />
+      <OptionGroup legend="Priority" options={priorities} current={currentPriority} disabled={isPending} onSelect={handlePriorityChange} />
 
-      {/* Priority control */}
-      <div>
-        <p className="mb-2 text-[9px] font-black tracking-[0.2em] text-black/40">Priority</p>
-        <div className="flex flex-wrap gap-1.5">
-          {priorities.map((p) => (
-            <button
-              key={p}
-              onClick={() => handlePriorityChange(p)}
-              disabled={isPending || p === currentPriority}
-              className={`border-2 px-2.5 py-1 text-[9px] font-black tracking-wider transition-all ${
-                p === currentPriority
-                  ? priorityColors[p]
-                  : 'border-black/10 bg-white text-black/30 hover:border-black hover:bg-black hover:text-white'
-              } disabled:opacity-50`}
-            >
-              {p}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {isPending && (
-        <p className="text-[9px] font-bold tracking-wider text-yellow-600 animate-pulse">
-          Updating...
-        </p>
-      )}
+      <p role="status" aria-live="polite" className="flex min-h-5 items-center gap-1.5 text-[13px] text-mkt-muted">
+        {isPending ? (
+          <>
+            <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+            Saving…
+          </>
+        ) : null}
+      </p>
     </div>
   );
 }

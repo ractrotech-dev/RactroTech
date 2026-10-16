@@ -1,8 +1,11 @@
 'use client';
 
-import { useState, useTransition } from 'react';
-import { addInquiryNote } from '@/app/admin/actions';
+import { useId, useState, useTransition } from 'react';
 import { Send } from 'lucide-react';
+
+import { addInquiryNote } from '@/app/admin/actions';
+import { buttonClass, field } from '@/components/admin/ui';
+import { cn } from '@/lib/utils';
 
 interface NoteFormProps {
   inquiryId: string;
@@ -11,6 +14,7 @@ interface NoteFormProps {
 export default function InquiryNoteForm({ inquiryId }: NoteFormProps) {
   const [content, setContent] = useState('');
   const [isPending, startTransition] = useTransition();
+  const inputId = useId();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,22 +27,22 @@ export default function InquiryNoteForm({ inquiryId }: NoteFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-2">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-2 sm:flex-row">
+      <label htmlFor={inputId} className="sr-only">
+        Add a note
+      </label>
       <input
+        id={inputId}
         type="text"
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        placeholder="Add a note..."
+        placeholder="Add a note…"
         disabled={isPending}
-        className="flex-1 border-2 border-black/20 bg-white px-3 py-2 text-xs font-bold placeholder:text-black/30 focus:border-black focus:outline-none disabled:opacity-50"
+        className={cn(field.input, 'min-w-0 flex-1')}
       />
-      <button
-        type="submit"
-        disabled={isPending || !content.trim()}
-        className="flex items-center gap-1.5 border-2 border-black bg-yellow-400 px-4 py-2 text-[10px] font-black tracking-widest transition-all hover:-translate-y-0.5 disabled:opacity-50"
-      >
-        <Send size={12} />
-        Send
+      <button type="submit" disabled={isPending || !content.trim()} className={buttonClass('primary', 'md', 'h-10 shrink-0')}>
+        <Send aria-hidden />
+        {isPending ? 'Adding…' : 'Add note'}
       </button>
     </form>
   );

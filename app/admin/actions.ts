@@ -234,19 +234,23 @@ export async function updateTaskStatus(id: string, status: 'todo' | 'in_progress
 
 // ─── Notification Actions ──────────────────────────────────────────────────────
 
+/*
+ * Admin notifications are one shared team inbox: the notifications page, the dashboard and
+ * the header bell all list and count every row. Marking read therefore applies to that same
+ * set. It used to be limited to rows the current admin had created, so another admin's
+ * notification could not be cleared and "Mark all as read" left the unread count above zero.
+ * `layout` revalidation is what refreshes the bell in the header.
+ */
 export async function markNotificationRead(id: string) {
-  const admin = await requireAdmin();
-  await db
-    .update(notificationsTable)
-    .set({ read: true })
-    .where(and(eq(notificationsTable.id, id), eq(notificationsTable.user_id, admin.id)));
-  revalidatePath('/admin/notifications');
+  await requireAdmin();
+  await db.update(notificationsTable).set({ read: true }).where(eq(notificationsTable.id, id));
+  revalidatePath('/admin', 'layout');
 }
 
 export async function markAllNotificationsRead() {
-  const admin = await requireAdmin();
-  await db.update(notificationsTable).set({ read: true }).where(eq(notificationsTable.user_id, admin.id));
-  revalidatePath('/admin/notifications');
+  await requireAdmin();
+  await db.update(notificationsTable).set({ read: true }).where(eq(notificationsTable.read, false));
+  revalidatePath('/admin', 'layout');
 }
 
 // ─── User Actions ──────────────────────────────────────────────────────────────

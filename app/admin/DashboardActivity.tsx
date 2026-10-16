@@ -1,15 +1,7 @@
-'use client';
-
 import RecentActivity from '@/components/admin/RecentActivity';
+import type { DashboardActivityItem } from '@/lib/admin/dashboard-snapshot';
 
-interface ActivityItem {
-  id: string;
-  type: 'inquiry' | 'user' | 'project' | 'alert' | 'system';
-  title: string;
-  description: string;
-  time: string;
-}
-
-export default function DashboardActivity({ items }: { items: ActivityItem[] }) {
+/** Kept for older imports; the dashboard renders RecentActivity directly. */
+export default function DashboardActivity({ items }: { items: DashboardActivityItem[] }) {
   return <RecentActivity items={items} />;
 }

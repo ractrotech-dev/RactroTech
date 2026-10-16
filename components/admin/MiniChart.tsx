@@ -1,79 +1,93 @@
 'use client';
 
-import {
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from 'recharts';
+import { useEffect, useState } from 'react';
+import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+
+import { formatCount } from '@/lib/admin/format';
 
 interface MiniChartProps {
   data: { name: string; value: number }[];
   title: string;
   subtitle?: string;
+  /** Line colour. Defaults to the admin accent. */
   color?: string;
+  /** Shown big above the chart, e.g. the period total. Defaults to the sum of `data`. */
+  total?: number | null;
+  totalLabel?: string;
 }
 
-const slug = (s: string) =>
-  s.replace(/[^a-zA-Z0-9]+/g, '-').replace(/^-|-$/g, '') || 'chart';
+const slug = (s: string) => s.replace(/[^a-zA-Z0-9]+/g, '-').replace(/^-|-$/g, '') || 'chart';
 
-export default function MiniChart({ data, title, subtitle, color = '#facc15' }: MiniChartProps) {
-  const gid = slug(title);
+/**
+ * A small area chart with its headline number. Counts are whole numbers, so the axis never
+ * shows fractions, and the chart only measures itself after mount — ResponsiveContainer has
+ * no size during server rendering, which is what produced the width(-1) warnings.
+ */
+export default function MiniChart({ data, title, subtitle, color = 'rgb(var(--mkt-violet))', total, totalLabel = 'Total' }: MiniChartProps) {
+  const [ready, setReady] = useState(false);
+  useEffect(() => setReady(true), []);
+
+  const gid = `chart-${slug(title)}`;
+  const sum = total === undefined ? data.reduce((acc, d) => acc + (Number(d.value) || 0), 0) : total;
+
   return (
-    <div className="relative overflow-hidden border-4 border-black bg-white/90 p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] backdrop-blur-sm">
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white via-yellow-50/20 to-transparent" />
-      <div className="relative mb-4">
-        <h3 className="text-[10px] font-black tracking-[0.2em] text-black/50">{title}</h3>
-        {subtitle ? (
-          <p className="mt-1 text-[9px] font-semibold leading-snug tracking-wider text-black/35">
-            {subtitle}
-          </p>
-        ) : null}
+    <section className="rounded-2xl border border-mkt-line bg-mkt-surface p-5 text-mkt-ink">
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div className="min-w-0">
+          <h2 className="text-[15px] font-semibold leading-6">{title}</h2>
+          {subtitle ? <p className="mt-0.5 text-[13px] leading-5 text-mkt-muted">{subtitle}</p> : null}
+        </div>
+        <div className="text-right">
+          <p className="font-display text-[26px] font-semibold leading-none tracking-[-0.02em] tabular-nums">{formatCount(sum)}</p>
+          <p className="mt-1 text-[12px] text-mkt-muted">{totalLabel}</p>
+        </div>
       </div>
-      <div className="relative z-10 h-48">
-        <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={data}>
-            <defs>
-              <linearGradient id={`gradient-${gid}`} x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor={color} stopOpacity={0.3} />
-                <stop offset="95%" stopColor={color} stopOpacity={0} />
-              </linearGradient>
-            </defs>
-            <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-            <XAxis
-              dataKey="name"
-              tick={{ fontSize: 10, fontWeight: 700, fill: '#9ca3af' }}
-              axisLine={{ stroke: '#000', strokeWidth: 2 }}
-              tickLine={false}
-            />
-            <YAxis
-              tick={{ fontSize: 10, fontWeight: 700, fill: '#9ca3af' }}
-              axisLine={{ stroke: '#000', strokeWidth: 2 }}
-              tickLine={false}
-            />
-            <Tooltip
-              contentStyle={{
-                border: '3px solid #000',
-                borderRadius: 0,
-                fontSize: 11,
-                fontWeight: 700,
-                textTransform: 'uppercase',
-                letterSpacing: '0.05em',
-              }}
-            />
-            <Area
-              type="monotone"
-              dataKey="value"
-              stroke={color}
-              strokeWidth={3}
-              fill={`url(#gradient-${gid})`}
-            />
-          </AreaChart>
-        </ResponsiveContainer>
+
+      <div className="mt-5 h-44 min-w-0">
+        {ready ? (
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={data} margin={{ top: 6, right: 6, bottom: 0, left: -18 }}>
+              <defs>
+                <linearGradient id={gid} x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor={color} stopOpacity={0.22} />
+                  <stop offset="100%" stopColor={color} stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid vertical={false} stroke="rgb(var(--mkt-line))" />
+              <XAxis
+                dataKey="name"
+                tick={{ fontSize: 12, fill: 'rgb(var(--mkt-muted))' }}
+                axisLine={false}
+                tickLine={false}
+                dy={6}
+              />
+              <YAxis
+                allowDecimals={false}
+                tick={{ fontSize: 12, fill: 'rgb(var(--mkt-muted))' }}
+                axisLine={false}
+                tickLine={false}
+                width={44}
+              />
+              <Tooltip
+                cursor={{ stroke: 'rgb(var(--mkt-line))' }}
+                formatter={(v) => [formatCount(Number(v)), totalLabel === 'Total' ? 'Count' : totalLabel]}
+                contentStyle={{
+                  background: 'rgb(var(--mkt-surface))',
+                  border: '1px solid rgb(var(--mkt-line))',
+                  borderRadius: 10,
+                  fontSize: 13,
+                  color: 'rgb(var(--mkt-ink))',
+                  boxShadow: '0 8px 24px -12px rgb(11 11 16 / 0.25)',
+                }}
+                labelStyle={{ color: 'rgb(var(--mkt-muted))', marginBottom: 2 }}
+              />
+              <Area type="monotone" dataKey="value" stroke={color} strokeWidth={2} fill={`url(#${gid})`} dot={false} activeDot={{ r: 4 }} />
+            </AreaChart>
+          </ResponsiveContainer>
+        ) : (
+          <div className="h-full w-full rounded-lg bg-mkt-ink/[0.03]" aria-hidden />
+        )}
       </div>
-    </div>
+    </section>
   );
 }

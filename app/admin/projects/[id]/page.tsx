@@ -1,202 +1,282 @@
 import { db } from "@/utils/db/db";
-import { projectsTable, projectTasksTable, projectMilestonesTable, clientsTable, mediaAssetsTable } from "@/utils/db/schema";
+import {
+  projectsTable,
+  projectTasksTable,
+  projectMilestonesTable,
+  clientsTable,
+  mediaAssetsTable,
+  type SelectClient,
+  type SelectProject,
+  type SelectProjectTask,
+} from "@/utils/db/schema";
 import { eq, desc } from "drizzle-orm";
 import { notFound } from "next/navigation";
-import { Calendar, DollarSign, Globe, GitBranch, Code2 } from "lucide-react";
+import { CheckCircle2, Circle, GitBranch, Globe } from "lucide-react";
 import PageHeader from "@/components/admin/PageHeader";
 import StatusBadge from "@/components/admin/StatusBadge";
 import ProgressBar from "@/components/admin/ProgressBar";
-import EmptyState from "@/components/admin/EmptyState";
 import ProjectMedia from "@/components/admin/ProjectMedia";
+import DatabaseError from "@/components/admin/DatabaseError";
+import { AdminCard, Badge, CardBody, CardHeader, MetaItem, Notice, TextLink } from "@/components/admin/ui";
+import { formatCount, formatCurrency, formatDate } from "@/lib/admin/format";
+import { cn } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
+function errorMessage(err: unknown) {
+  return err instanceof Error ? err.message : "Unknown error";
+}
+
 export default async function ProjectDetailPage({ params }: { params: { id: string } }) {
-  let project: any = null;
+  let project: SelectProject | undefined;
   try {
-    const [p] = await db.select().from(projectsTable).where(eq(projectsTable.id, params.id));
-    project = p;
-  } catch { /* table may not exist */ }
+    [project] = await db.select().from(projectsTable).where(eq(projectsTable.id, params.id));
+  } catch (err) {
+    // A failed query is not a missing project: say the database is the problem, not a 404.
+    return (
+      <div className="space-y-6">
+        <PageHeader title="Project" backHref="/admin/projects" backLabel="Projects" />
+        <DatabaseError message={errorMessage(err)} />
+      </div>
+    );
+  }
   if (!project) notFound();
 
-  // Fetch tasks
-  let tasks: any[] = [];
-  try { tasks = await db.select().from(projectTasksTable).where(eq(projectTasksTable.project_id, params.id)).orderBy(desc(projectTasksTable.created_at)); } catch {}
-
-  // Fetch milestones
-  let milestones: any[] = [];
-  try { milestones = await db.select().from(projectMilestonesTable).where(eq(projectMilestonesTable.project_id, params.id)); } catch {}
-
-  // Fetch client
-  let client: any = null;
-  if (project.client_id) {
-    try { const [c] = await db.select().from(clientsTable).where(eq(clientsTable.id, project.client_id)); client = c; } catch {}
+  // Each section loads on its own; a failure becomes `null` (shown as "—" / "couldn't load"),
+  // never an empty list that reads as "nothing here".
+  const errors: string[] = [];
+  async function attempt<T>(label: string, run: () => Promise<T>): Promise<T | null> {
+    try {
+      return await run();
+    } catch (err) {
+      errors.push(`${label}: ${errorMessage(err)}`);
+      return null;
+    }
   }
 
-  // Fetch media assets
-  let assets: any[] = [];
-  try {
-    assets = await db
-      .select()
-      .from(mediaAssetsTable)
-      .where(eq(mediaAssetsTable.project_id, params.id))
-      .orderBy(desc(mediaAssetsTable.created_at));
-  } catch {}
+  const clientId = project.client_id;
+  const [tasks, milestones, clientRows, assets] = await Promise.all([
+    attempt("Tasks", () =>
+      db.select().from(projectTasksTable).where(eq(projectTasksTable.project_id, params.id)).orderBy(desc(projectTasksTable.created_at))
+    ),
+    attempt("Milestones", () => db.select().from(projectMilestonesTable).where(eq(projectMilestonesTable.project_id, params.id))),
+    clientId
+      ? attempt("Client", () => db.select().from(clientsTable).where(eq(clientsTable.id, clientId)))
+      : Promise.resolve([] as SelectClient[]),
+    attempt("Files", () =>
+      db.select().from(mediaAssetsTable).where(eq(mediaAssetsTable.project_id, params.id)).orderBy(desc(mediaAssetsTable.created_at))
+    ),
+  ]);
 
-  const todoTasks = tasks.filter(t => t.status === 'todo');
-  const inProgressTasks = tasks.filter(t => t.status === 'in_progress');
-  const doneTasks = tasks.filter(t => t.status === 'done');
+  const client = clientRows?.[0] ?? null;
+
+  // Every task lands in exactly one column, so the column counts always add up to the total.
+  // "Review" is still being worked on, so it sits with In progress (and says so on the card).
+  const taskList = tasks ?? [];
+  const columns: { key: string; title: string; tasks: SelectProjectTask[] }[] = [
+    { key: "todo", title: "To do", tasks: taskList.filter((t) => t.status === "todo") },
+    { key: "in_progress", title: "In progress", tasks: taskList.filter((t) => t.status !== "todo" && t.status !== "done") },
+    { key: "done", title: "Done", tasks: taskList.filter((t) => t.status === "done") },
+  ];
+  const doneTaskCount = columns[2].tasks.length;
+
+  const techStack = (project.tech_stack ?? "")
+    .split(",")
+    .map((t) => t.trim())
+    .filter(Boolean);
+
+  const milestonesDone = milestones?.filter((m) => m.completed).length ?? null;
 
   return (
     <div className="space-y-6">
-      <PageHeader title={project.name} subtitle={project.description || 'No description'} backHref="/admin/projects" backLabel="← Projects" />
+      <PageHeader
+        title={project.name}
+        subtitle={project.description || "No description"}
+        backHref="/admin/projects"
+        backLabel="Projects"
+      />
 
-      {/* Project meta grid */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-          <p className="text-[9px] font-black tracking-[0.2em] text-black/40">Status</p>
-          <div className="mt-2"><StatusBadge status={project.status} /></div>
-        </div>
-        <div className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-          <p className="text-[9px] font-black tracking-[0.2em] text-black/40">Progress</p>
-          <div className="mt-2"><ProgressBar value={project.progress} showPercentage /></div>
-        </div>
-        <div className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-          <div className="flex items-center gap-2">
-            <DollarSign size={14} className="text-black/40" />
-            <p className="text-[9px] font-black tracking-[0.2em] text-black/40">Budget</p>
-          </div>
-          <p className="mt-1 text-2xl font-black">{project.budget ? `$${Number(project.budget).toLocaleString()}` : '—'}</p>
-        </div>
-        <div className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-          <div className="flex items-center gap-2">
-            <Calendar size={14} className="text-black/40" />
-            <p className="text-[9px] font-black tracking-[0.2em] text-black/40">Due Date</p>
-          </div>
-          <p className="mt-1 text-sm font-bold">{project.due_date ? new Date(project.due_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : 'Not set'}</p>
-        </div>
-      </div>
+      {errors.length > 0 ? (
+        <Notice tone="amber" title="Some project details couldn’t be loaded">
+          Those sections show “—” until the query succeeds. First error: {errors[0]}
+        </Notice>
+      ) : null}
 
-      {/* Details + Links */}
-      <div className="grid gap-6 lg:grid-cols-[1fr_300px]">
-        <div className="space-y-6">
-          {/* Tech Stack */}
-          {project.tech_stack && (
-            <div className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-              <div className="flex items-center gap-2 mb-3">
-                <Code2 size={14} />
-                <h3 className="text-xs font-black tracking-[0.2em]">Tech Stack</h3>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {project.tech_stack.split(',').map((tech: string) => (
-                  <span key={tech} className="border-2 border-black bg-yellow-400 px-2.5 py-1 text-[9px] font-black">{tech.trim()}</span>
+      <AdminCard>
+        <CardBody className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <MetaItem label="Status">
+            <StatusBadge status={project.status} />
+          </MetaItem>
+          <MetaItem label="Progress">
+            <ProgressBar value={project.progress} showPercentage />
+          </MetaItem>
+          <MetaItem label="Budget">
+            <span className={cn("tabular-nums", project.budget === null && "text-mkt-muted")}>{formatCurrency(project.budget)}</span>
+          </MetaItem>
+          <MetaItem label="Due date">
+            <span className={cn("tabular-nums", !project.due_date && "text-mkt-muted")}>
+              {project.due_date ? formatDate(project.due_date) : "Not set"}
+            </span>
+          </MetaItem>
+        </CardBody>
+      </AdminCard>
+
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
+        <div className="min-w-0 space-y-6">
+          {techStack.length > 0 ? (
+            <AdminCard>
+              <CardHeader title="Tech stack" />
+              <CardBody className="flex flex-wrap gap-2">
+                {techStack.map((tech, i) => (
+                  <Badge key={`${tech}-${i}`}>{tech}</Badge>
                 ))}
-              </div>
-            </div>
-          )}
+              </CardBody>
+            </AdminCard>
+          ) : null}
 
-          {/* Task Board */}
-          <div className="border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <div className="border-b-4 border-black px-5 py-3">
-              <h3 className="text-xs font-black tracking-[0.2em]">Tasks ({tasks.length})</h3>
-            </div>
-            {tasks.length === 0 ? (
-              <div className="p-8 text-center text-xs font-bold text-black/25">No tasks yet</div>
+          <AdminCard>
+            <CardHeader
+              title="Tasks"
+              description={
+                tasks === null
+                  ? "—"
+                  : `${formatCount(taskList.length)} ${taskList.length === 1 ? "task" : "tasks"} · ${formatCount(doneTaskCount)} done`
+              }
+            />
+            {tasks === null ? (
+              <p className="px-5 py-10 text-center text-[14px] text-mkt-muted">Tasks couldn’t be loaded. Refresh to try again.</p>
+            ) : taskList.length === 0 ? (
+              <p className="px-5 py-10 text-center text-[14px] text-mkt-muted">No tasks yet.</p>
             ) : (
-              <div className="grid gap-0 sm:grid-cols-3">
-                {/* To Do */}
-                <div className="border-r border-black/10 p-4">
-                  <p className="mb-3 text-[9px] font-black tracking-wider text-black/30">To Do ({todoTasks.length})</p>
-                  <div className="space-y-2">
-                    {todoTasks.map(t => (
-                      <div key={t.id} className="border-2 border-black/20 bg-gray-50 p-3">
-                        <p className="text-[11px] font-bold">{t.title}</p>
-                        <StatusBadge status={t.priority} />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                {/* In Progress */}
-                <div className="border-r border-black/10 p-4">
-                  <p className="mb-3 text-[9px] font-black tracking-wider text-yellow-600">In Progress ({inProgressTasks.length})</p>
-                  <div className="space-y-2">
-                    {inProgressTasks.map(t => (
-                      <div key={t.id} className="border-2 border-yellow-400 bg-yellow-50 p-3">
-                        <p className="text-[11px] font-bold">{t.title}</p>
-                        <StatusBadge status={t.priority} />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                {/* Done */}
-                <div className="p-4">
-                  <p className="mb-3 text-[9px] font-black tracking-wider text-emerald-600">Done ({doneTasks.length})</p>
-                  <div className="space-y-2">
-                    {doneTasks.map(t => (
-                      <div key={t.id} className="border-2 border-emerald-300 bg-emerald-50 p-3">
-                        <p className="text-[11px] font-bold line-through text-black/50">{t.title}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Sidebar */}
-        <div className="space-y-4">
-          {/* Links */}
-          <div className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <h3 className="mb-3 text-xs font-black tracking-[0.2em]">Links</h3>
-            <div className="space-y-2">
-              {project.live_url ? (
-                <a href={project.live_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs font-bold text-blue-600 hover:underline">
-                  <Globe size={12} /> Live Site
-                </a>
-              ) : <p className="text-[10px] font-semibold text-black/25">No live URL</p>}
-              {project.repo_url ? (
-                <a href={project.repo_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs font-bold text-blue-600 hover:underline">
-                  <GitBranch size={12} /> Repository
-                </a>
-              ) : <p className="text-[10px] font-semibold text-black/25">No repo URL</p>}
-            </div>
-          </div>
-
-          {/* Client */}
-          <div className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <h3 className="mb-3 text-xs font-black tracking-[0.2em]">Client</h3>
-            {client ? (
-              <div className="flex items-center gap-3">
-                <div className="flex h-8 w-8 items-center justify-center border-2 border-black bg-yellow-400 text-[10px] font-black">{client.name.charAt(0)}</div>
-                <div>
-                  <p className="text-xs font-bold">{client.name}</p>
-                  <p className="text-[10px] text-black/40">{client.email}</p>
-                </div>
-              </div>
-            ) : <p className="text-[10px] font-semibold text-black/25">No client assigned</p>}
-          </div>
-
-          {/* Assets */}
-          <ProjectMedia projectId={project.id} assets={assets} />
-
-          {/* Milestones */}
-          <div className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <h3 className="mb-3 text-xs font-black tracking-[0.2em]">Milestones</h3>
-            {milestones.length === 0 ? (
-              <p className="text-[10px] font-semibold text-black/25">No milestones</p>
-            ) : (
-              <div className="space-y-2">
-                {milestones.map(m => (
-                  <div key={m.id} className="flex items-center gap-2">
-                    <div className={`h-3 w-3 border-2 border-black ${m.completed ? 'bg-emerald-400' : 'bg-white'}`} />
-                    <span className={`text-[11px] font-bold ${m.completed ? 'line-through text-black/40' : ''}`}>{m.title}</span>
-                  </div>
+              <div className="grid gap-3 p-4 md:grid-cols-3">
+                {columns.map((column) => (
+                  <section key={column.key} aria-label={column.title} className="min-w-0 rounded-xl bg-mkt-ink/[0.03] p-3">
+                    <div className="mb-3 flex items-center justify-between gap-2 px-1">
+                      <h3 className="text-[13px] font-medium text-mkt-ink">{column.title}</h3>
+                      <span className="text-[13px] tabular-nums text-mkt-muted">{formatCount(column.tasks.length)}</span>
+                    </div>
+                    {column.tasks.length === 0 ? (
+                      <p className="px-1 py-4 text-center text-[13px] text-mkt-muted">No tasks</p>
+                    ) : (
+                      <ul className="space-y-2">
+                        {column.tasks.map((t) => {
+                          const isDone = t.status === "done";
+                          return (
+                            <li key={t.id} className="rounded-lg border border-mkt-line bg-mkt-surface p-3">
+                              <p className={cn("text-[14px] font-medium leading-5", isDone ? "text-mkt-muted" : "text-mkt-ink")}>{t.title}</p>
+                              {!isDone ? (
+                                <div className="mt-2 flex flex-wrap gap-1.5">
+                                  {t.status === "review" ? <StatusBadge status="review" /> : null}
+                                  <StatusBadge status={t.priority} />
+                                </div>
+                              ) : null}
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    )}
+                  </section>
                 ))}
               </div>
             )}
-          </div>
+          </AdminCard>
         </div>
+
+        <aside className="min-w-0 space-y-6">
+          <AdminCard>
+            <CardHeader title="Links" />
+            <CardBody>
+              <ul className="space-y-3 text-[14px]">
+                <li className="flex items-center gap-2.5">
+                  <Globe className="h-4 w-4 shrink-0 text-mkt-muted" aria-hidden />
+                  {project.live_url ? (
+                    <a
+                      href={project.live_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-medium text-mkt-violet underline-offset-4 hover:underline"
+                    >
+                      Live site
+                    </a>
+                  ) : (
+                    <span className="text-mkt-muted">No live URL</span>
+                  )}
+                </li>
+                <li className="flex items-center gap-2.5">
+                  <GitBranch className="h-4 w-4 shrink-0 text-mkt-muted" aria-hidden />
+                  {project.repo_url ? (
+                    <a
+                      href={project.repo_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-medium text-mkt-violet underline-offset-4 hover:underline"
+                    >
+                      Repository
+                    </a>
+                  ) : (
+                    <span className="text-mkt-muted">No repo URL</span>
+                  )}
+                </li>
+              </ul>
+            </CardBody>
+          </AdminCard>
+
+          <AdminCard>
+            <CardHeader title="Client" action={client ? <TextLink href={`/admin/clients/${client.id}`}>View</TextLink> : null} />
+            <CardBody>
+              {client ? (
+                <div className="flex items-center gap-3">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-mkt-lavender text-[14px] font-semibold text-mkt-violet">
+                    {client.name.charAt(0).toUpperCase() || "?"}
+                  </span>
+                  <div className="min-w-0">
+                    <p className="truncate text-[14px] font-medium text-mkt-ink">{client.name}</p>
+                    <p className="truncate text-[13px] text-mkt-muted">{client.email}</p>
+                  </div>
+                </div>
+              ) : (
+                <p className="text-[14px] text-mkt-muted">
+                  {clientRows === null ? "Client couldn’t be loaded." : clientId ? "Client record not found." : "No client assigned."}
+                </p>
+              )}
+            </CardBody>
+          </AdminCard>
+
+          <ProjectMedia projectId={project.id} assets={assets ?? []} error={assets === null ? "Files couldn’t be loaded" : null} />
+
+          <AdminCard>
+            <CardHeader
+              title="Milestones"
+              description={
+                milestones === null
+                  ? "—"
+                  : milestones.length === 0
+                    ? undefined
+                    : `${formatCount(milestonesDone)} of ${formatCount(milestones.length)} done`
+              }
+            />
+            <CardBody>
+              {milestones === null ? (
+                <p className="text-[14px] text-mkt-muted">Milestones couldn’t be loaded.</p>
+              ) : milestones.length === 0 ? (
+                <p className="text-[14px] text-mkt-muted">No milestones.</p>
+              ) : (
+                <ul className="space-y-2.5">
+                  {milestones.map((m) => (
+                    <li key={m.id} className="flex items-start gap-2.5 text-[14px]">
+                      {m.completed ? (
+                        <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-mkt-violet" aria-label="Completed" />
+                      ) : (
+                        <Circle className="mt-0.5 h-4 w-4 shrink-0 text-mkt-muted" aria-label="Not completed" />
+                      )}
+                      <span className={m.completed ? "text-mkt-muted" : "text-mkt-ink"}>{m.title}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </CardBody>
+          </AdminCard>
+        </aside>
       </div>
     </div>
   );

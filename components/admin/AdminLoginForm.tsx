@@ -1,7 +1,6 @@
 import { loginAdminUser } from '@/app/admin/login/actions'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { AdminLoginSubmitButton } from '@/components/admin/AdminLoginSubmitButton'
+import { Notice, field } from '@/components/admin/ui'
 
 type AdminLoginFormProps = {
   errorMessage?: string
@@ -9,21 +8,38 @@ type AdminLoginFormProps = {
 
 export default function AdminLoginForm({ errorMessage }: AdminLoginFormProps) {
   return (
-    <form action={loginAdminUser} className="space-y-2">
-      <div className="grid gap-2">
-        <Label htmlFor="email">Email</Label>
-        <Input id="email" type="email" placeholder="admin@example.com" name="email" required />
+    <form action={loginAdminUser} className="space-y-4">
+      {errorMessage ? <Notice tone="red">{errorMessage}</Notice> : null}
+
+      <div>
+        <label htmlFor="email" className={field.label}>
+          Email
+        </label>
+        <input
+          id="email"
+          type="email"
+          name="email"
+          placeholder="admin@example.com"
+          required
+          autoComplete="email"
+          className={field.input}
+        />
       </div>
-      <div className="mt-2 grid gap-2">
-        <Label htmlFor="password">Password</Label>
-        <Input id="password" type="password" name="password" required autoComplete="current-password" />
+      <div>
+        <label htmlFor="password" className={field.label}>
+          Password
+        </label>
+        <input
+          id="password"
+          type="password"
+          name="password"
+          required
+          autoComplete="current-password"
+          className={field.input}
+        />
       </div>
 
       <AdminLoginSubmitButton />
-
-      {errorMessage ? (
-        <p className="py-2 text-center text-sm font-bold text-red-600">{errorMessage}</p>
-      ) : null}
     </form>
   )
 }

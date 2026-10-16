@@ -1,29 +1,36 @@
-import { getSiteSettings } from "@/app/admin/actions";
-import PageHeader from "@/components/admin/PageHeader";
-import SettingsForm from "@/components/admin/SettingsForm";
+import { AlertCircle } from 'lucide-react';
 
-export const dynamic = "force-dynamic";
-export const metadata = { title: "Settings | Admin | RactroTech", description: "Admin settings" };
+import { getSiteSettings } from '@/app/admin/actions';
+import EmptyState from '@/components/admin/EmptyState';
+import PageHeader from '@/components/admin/PageHeader';
+import SettingsForm from '@/components/admin/SettingsForm';
+import { AdminCard } from '@/components/admin/ui';
+import { formatDateTime } from '@/lib/admin/format';
+
+export const dynamic = 'force-dynamic';
+export const metadata = { title: 'Settings | Admin | RactroTech', description: 'Admin settings' };
 
 export default async function AdminSettingsPage() {
   const settings = await getSiteSettings();
 
+  const subtitle = settings?.updated_at
+    ? `Site identity, contact details and maintenance mode. Last saved ${formatDateTime(settings.updated_at)}.`
+    : 'Site identity, contact details and maintenance mode.';
+
   return (
     <div className="space-y-6">
-      <PageHeader 
-        title="Site Settings" 
-        subtitle="Manage your platform configuration and global defaults" 
-        backHref="/admin" 
-      />
+      <PageHeader title="Settings" subtitle={subtitle} backHref="/admin" />
 
       {settings ? (
-        <SettingsForm settings={settings as any} />
+        <SettingsForm settings={settings} />
       ) : (
-        <div className="border-4 border-black bg-white p-12 text-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-          <p className="text-xs font-black tracking-wider text-red-500">
-            Error loading settings. Please try again later.
-          </p>
-        </div>
+        <AdminCard>
+          <EmptyState
+            icon={<AlertCircle />}
+            title="Settings couldn’t be loaded"
+            description="The database didn’t respond. Reload the page to try again."
+          />
+        </AdminCard>
       )}
     </div>
   );

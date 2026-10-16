@@ -1,45 +1,38 @@
-'use client';
-
-import { motion } from 'framer-motion';
+import { formatPercent } from '@/lib/admin/format';
+import { cn } from '@/lib/utils';
 
 interface ProgressBarProps {
-  value: number;
+  value: number | null | undefined;
   max?: number;
+  /** Tailwind background class for the fill. Defaults to the admin accent. */
   color?: string;
   label?: string;
   showPercentage?: boolean;
 }
 
-export default function ProgressBar({
-  value,
-  max = 100,
-  color = 'bg-yellow-400',
-  label,
-  showPercentage = true,
-}: ProgressBarProps) {
-  const percentage = Math.min(Math.round((value / max) * 100), 100);
+/** A thin bar with the percentage beside it. A missing value shows "—" and an empty track. */
+export default function ProgressBar({ value, max = 100, color = 'bg-mkt-violet', label, showPercentage = true }: ProgressBarProps) {
+  const known = typeof value === 'number' && Number.isFinite(value) && max > 0;
+  const pct = known ? Math.min(100, Math.max(0, (value / max) * 100)) : 0;
 
   return (
     <div className="w-full">
-      {(label || showPercentage) && (
-        <div className="mb-1.5 flex items-center justify-between">
-          {label && (
-            <span className="text-[9px] font-black tracking-wider text-black/40">
-              {label}
-            </span>
-          )}
-          {showPercentage && (
-            <span className="text-[10px] font-black text-black/60">{percentage}%</span>
-          )}
+      {label || showPercentage ? (
+        <div className="mb-1.5 flex items-baseline justify-between gap-3">
+          {label ? <span className="text-[13px] text-mkt-muted">{label}</span> : <span />}
+          {showPercentage ? (
+            <span className="text-[13px] font-medium tabular-nums text-mkt-ink">{known ? formatPercent(pct) : '—'}</span>
+          ) : null}
         </div>
-      )}
-      <div className="h-3 w-full border-2 border-black bg-gray-100">
-        <motion.div
-          className={`h-full ${color}`}
-          initial={{ width: 0 }}
-          animate={{ width: `${percentage}%` }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
-        />
+      ) : null}
+      <div
+        className="h-1.5 w-full overflow-hidden rounded-full bg-mkt-ink/[0.08]"
+        role="progressbar"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={known ? Math.round(pct) : undefined}
+      >
+        <div className={cn('h-full rounded-full transition-[width] duration-500', color)} style={{ width: `${pct}%` }} />
       </div>
     </div>
   );

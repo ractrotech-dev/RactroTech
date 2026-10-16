@@ -6,6 +6,19 @@ import DatabaseError from "@/components/admin/DatabaseError";
 import AdminAccessDenied from "@/components/admin/AdminAccessDenied";
 import { isEmailVerified } from "@/lib/auth/verification";
 import { redirect } from "next/navigation";
+import { count, eq } from "drizzle-orm";
+import { db } from "@/utils/db/db";
+import { notificationsTable } from "@/utils/db/schema";
+
+/** The header bell's number. Null — no badge — when it cannot be read, never a guess. */
+async function unreadNotificationCount(): Promise<number | null> {
+  try {
+    const [row] = await db.select({ value: count() }).from(notificationsTable).where(eq(notificationsTable.read, false));
+    return Number(row?.value ?? 0);
+  } catch {
+    return null;
+  }
+}
 
 export const metadata = constructMetadata({
   title: "Admin Dashboard",
@@ -38,7 +51,7 @@ export default async function AdminLayout({
     adminUser = await getAdminUser();
   } catch (error: any) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50">
+      <div className="flex min-h-screen items-center justify-center bg-mkt-surface">
         <DatabaseError message={error.message} />
       </div>
     );
@@ -48,10 +61,13 @@ export default async function AdminLayout({
     return <AdminAccessDenied email={user.email ?? "unknown"} />;
   }
 
+  const unreadCount = await unreadNotificationCount();
+
   return (
     <AdminShell
       adminEmail={adminUser.email ?? 'admin'}
       adminRole={adminUser.dbRole}
+      unreadCount={unreadCount}
     >
       {children}
     </AdminShell>

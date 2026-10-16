@@ -1,45 +1,38 @@
 import Link from 'next/link';
-import { LucideIcon } from 'lucide-react';
+import { ChevronLeft, type LucideIcon } from 'lucide-react';
 
 interface PageHeaderProps {
   title: string;
   subtitle?: string;
   backHref?: string;
+  /** Where the back link goes, e.g. "Projects". A leading "←" is tolerated and dropped. */
   backLabel?: string;
+  /** Accepted for older call sites; the header no longer shows an icon. */
   icon?: LucideIcon;
   actions?: React.ReactNode;
 }
 
-export default function PageHeader({
-  title,
-  subtitle,
-  backHref,
-  backLabel = '← Dashboard',
-  actions,
-}: PageHeaderProps) {
+/** Page title, one line of context, and the page's own actions on the right. */
+export default function PageHeader({ title, subtitle, backHref, backLabel = 'Dashboard', actions }: PageHeaderProps) {
+  const back = backLabel.replace(/^←\s*/, '');
   return (
-    <div className="flex flex-wrap items-center justify-between gap-4">
-      <div>
-        <h1 className="text-2xl font-black tracking-wider md:text-3xl">
-          {title}
-        </h1>
-        {subtitle && (
-          <p className="mt-1 text-xs font-bold tracking-wider text-black/40">
-            {subtitle}
-          </p>
-        )}
-      </div>
-      <div className="flex items-center gap-3">
-        {actions}
-        {backHref && (
+    <div className="flex flex-wrap items-end justify-between gap-4">
+      <div className="min-w-0">
+        {backHref ? (
           <Link
             href={backHref}
-            className="border-2 border-black px-4 py-2 text-[10px] font-black tracking-widest transition-all hover:-translate-y-0.5 hover:bg-black hover:text-white"
+            className="mb-2 inline-flex items-center gap-1 text-[13px] font-medium text-mkt-muted transition-colors hover:text-mkt-ink"
           >
-            {backLabel}
+            <ChevronLeft className="h-4 w-4" aria-hidden />
+            {back}
           </Link>
-        )}
+        ) : null}
+        <h1 className="font-display text-[26px] font-semibold leading-tight tracking-[-0.02em] text-mkt-ink md:text-[28px]">
+          {title}
+        </h1>
+        {subtitle ? <p className="mt-1 max-w-2xl text-[14px] leading-6 text-mkt-muted">{subtitle}</p> : null}
       </div>
+      {actions ? <div className="flex flex-wrap items-center gap-2">{actions}</div> : null}
     </div>
   );
 }
