@@ -214,6 +214,7 @@ export const NAV: NavEntry[] = [
       },
     ],
   },
+  { kind: 'link', href: '/dsa', label: 'Learn DSA' },
   { kind: 'link', href: '/blog', label: 'Blog' },
 ];
 

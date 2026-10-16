@@ -6,6 +6,7 @@ import ProviderSigninBlock from '@/components/ProviderSigninBlock';
 import { AuthDivider, AuthShell } from '@/components/marketing/auth-shell';
 import { constructMetadata, sitePath } from '@/lib/seo';
 import { getEnabledOAuthProviders } from '@/lib/oauth/enabled-providers';
+import { safeNextPath } from '@/lib/auth/next-path';
 
 export const metadata = constructMetadata({
   title: 'Login',
@@ -14,8 +15,9 @@ export const metadata = constructMetadata({
   noIndex: true,
 });
 
-export default function Login({ searchParams }: { searchParams: { error?: string } }) {
+export default function Login({ searchParams }: { searchParams: { error?: string; next?: string } }) {
   const oauthProviders = getEnabledOAuthProviders();
+  const next = safeNextPath(searchParams?.next) ?? undefined;
 
   return (
     <AuthShell
@@ -53,9 +55,9 @@ export default function Login({ searchParams }: { searchParams: { error?: string
         </div>
       ) : null}
 
-      <LoginForm />
+      <LoginForm next={next} />
       <AuthDivider />
-      <ProviderSigninBlock providers={oauthProviders} />
+      <ProviderSigninBlock providers={oauthProviders} next={next} />
     </AuthShell>
   );
 }

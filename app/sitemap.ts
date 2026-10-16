@@ -1,5 +1,7 @@
 import { MetadataRoute } from "next";
 
+import { WRITTEN } from "@/lib/dsa/lang-course";
+import { LESSONS } from "@/lib/dsa/lessons/library";
 import { siteConfig } from "@/lib/seo";
 
 const STATIC_ROUTES = [
@@ -71,7 +73,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: route === "" ? 1 : route.startsWith("/saas") || route.includes("development") ? 0.9 : 0.8,
   }));
 
+  const dsaRoutes = [
+    "/dsa",
+    "/dsa/learn/intro",
+    "/dsa/learn/language",
+    ...LESSONS.map((lesson) => `/dsa/learn/topic/${lesson.id}`),
+    ...WRITTEN.map((topic) => `/dsa/learn/language/${topic.id}`),
+  ];
+  const dsaEntries: MetadataRoute.Sitemap = dsaRoutes.map((route) => ({
+    url: `${base}${route}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: route === "/dsa" ? 0.8 : 0.6,
+  }));
+
   const postEntries = await fetchBlogEntries(base, now);
 
-  return [...staticEntries, ...postEntries];
+  return [...staticEntries, ...dsaEntries, ...postEntries];
 }

@@ -1,11 +1,16 @@
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { createClient } from "@/utils/supabase/server";
 import { ensureAuthUserInDb } from "@/utils/auth-user-sync";
+import { OAUTH_NEXT_COOKIE, safeNextPath } from "@/lib/auth/next-path";
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
-  const next = searchParams.get("next") ?? "/";
+  // Set by the OAuth sign-in actions when the login page was opened with ?next=.
+  const rememberedNext = safeNextPath(cookies().get(OAUTH_NEXT_COOKIE)?.value);
+  if (rememberedNext) cookies().delete({ name: OAUTH_NEXT_COOKIE, path: "/auth/callback" });
+  const next = searchParams.get("next") ?? rememberedNext ?? "/";
 
   if (code) {
     const supabase = createClient();

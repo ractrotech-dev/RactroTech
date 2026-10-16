@@ -18,6 +18,7 @@
     "format:check": "prettier --check .",
     "stripe:setup": "tsx --env-file=.env stripeSetup.ts",
     "stripe:listen": "stripe listen --forward-to localhost:3000/webhook/stripe",
+    "dsa:check": "tsx scripts/dsa/squash.test.ts && tsx scripts/dsa/check-lessons.ts",
     "library:generate": "tsx scripts/component-library/generate.ts",
     "library:migrate": "tsx --env-file=.env scripts/component-library/seed/apply-migration.ts",
     "library:seed:categories": "tsx --env-file=.env scripts/component-library/seed/seed-categories.ts",

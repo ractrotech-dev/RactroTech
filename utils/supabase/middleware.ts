@@ -11,9 +11,14 @@ function isProtectedPath(pathname: string): boolean {
     )
 }
 
+/** Learn DSA pages that only make sense signed in; the lessons themselves stay public. */
+function isDsaAccountPath(pathname: string): boolean {
+    return pathname.startsWith('/dsa/profile') || pathname.startsWith('/dsa/welcome')
+}
+
 function requiresMiddlewareAuth(pathname: string): boolean {
     if (pathname === '/admin/login') return false
-    return pathname.startsWith('/dashboard') || pathname.startsWith('/admin')
+    return pathname.startsWith('/dashboard') || pathname.startsWith('/admin') || isDsaAccountPath(pathname)
 }
 
 export async function updateSession(request: NextRequest) {
@@ -84,6 +89,11 @@ export async function updateSession(request: NextRequest) {
 
     if (!user && requiresMiddlewareAuth(request.nextUrl.pathname)) {
         url.pathname = request.nextUrl.pathname.startsWith('/admin') ? '/admin/login' : '/login'
+        if (isDsaAccountPath(request.nextUrl.pathname)) {
+            // Back to the course after signing in, not the site home page.
+            url.search = ''
+            url.searchParams.set('next', request.nextUrl.pathname)
+        }
         const redirectResponse = NextResponse.redirect(url)
         supabaseResponse.cookies.getAll().forEach(({ name, value }) => {
             redirectResponse.cookies.set(name, value)

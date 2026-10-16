@@ -33,6 +33,11 @@ const HOVER_CLOSE_MS = 160;
 
 const SPRING = { type: 'spring', stiffness: 420, damping: 36, mass: 0.8 } as const;
 
+/* Capsule item sizing. The capsule is absolutely centred, so between lg and xl its right
+   edge runs into the auth group unless the items tighten up; at 1024px the full-size
+   capsule overlapped "Log in" by ~30px once the bar gained a sixth entry. */
+const ITEM_FIT = 'px-2.5 text-[13px] xl:px-3.5 xl:text-[14px]';
+
 const TONE = {
   canvas: {
     barScrolled: 'bg-mkt-canvas/80 backdrop-blur-xl',
@@ -188,7 +193,8 @@ export function SiteHeader({ tone = 'canvas' }: { tone?: HeaderTone }) {
                     href={entry.href}
                     onMouseEnter={requestClose}
                     className={cn(
-                      'rounded-full px-3.5 py-1.5 text-[14px] font-medium transition-colors duration-200',
+                      'whitespace-nowrap rounded-full py-1.5 font-medium transition-colors duration-200',
+                      ITEM_FIT,
                       t.item
                     )}
                   >
@@ -211,7 +217,8 @@ export function SiteHeader({ tone = 'canvas' }: { tone?: HeaderTone }) {
                   onFocus={() => requestOpen(entry.id)}
                   onClick={() => (isOpen ? closeNow() : requestOpen(entry.id))}
                   className={cn(
-                    'flex items-center gap-1 rounded-full px-3.5 py-1.5 text-[14px] font-medium transition-colors duration-200',
+                    'flex items-center gap-1 whitespace-nowrap rounded-full py-1.5 font-medium transition-colors duration-200',
+                    ITEM_FIT,
                     isOpen ? t.itemOpen : t.item
                   )}
                 >

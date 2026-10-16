@@ -11,16 +11,20 @@ const providerIcons = {
 
 type ProviderSigninBlockProps = {
   providers: OAuthProviders;
+  /** Already-validated same-site path to land on after the OAuth round trip. */
+  next?: string;
 };
 
-export default function ProviderSigninBlock({ providers }: ProviderSigninBlockProps) {
+export default function ProviderSigninBlock({ providers, next }: ProviderSigninBlockProps) {
   const { google: isGoogleEnabled, github: isGithubEnabled, facebook: isFacebookEnabled } =
     providers;
+  const nextField = next ? <input type="hidden" name="next" value={next} /> : null;
 
   return (
     <div className="grid gap-2">
       {isGoogleEnabled && (
         <form action={signInWithGoogle} className="w-full">
+          {nextField}
           <Button
             variant="outline"
             aria-label="Continue with Google"
@@ -34,6 +38,7 @@ export default function ProviderSigninBlock({ providers }: ProviderSigninBlockPr
       )}
       {isFacebookEnabled && (
         <form action={signInWithFacebook} className="w-full">
+          {nextField}
           <Button
             variant="outline"
             aria-label="Continue with Facebook"
@@ -47,6 +52,7 @@ export default function ProviderSigninBlock({ providers }: ProviderSigninBlockPr
       )}
       {isGithubEnabled && (
         <form action={signInWithGithub} className="w-full">
+          {nextField}
           <Button
             variant="outline"
             aria-label="Continue with Github"

@@ -1,6 +1,7 @@
 "use server"
 
 import { createClient } from '@/utils/supabase/server'
+import { cookies } from 'next/headers'
 import { redirect } from "next/navigation"
 import { revalidatePath } from 'next/cache'
 import { getClientIp } from '@/lib/auth/client-ip'
@@ -16,6 +17,7 @@ import { parseFormData } from '@/lib/validation/parse-form'
 import { loginSchema, signupSchema } from '@/lib/validation/schemas'
 import { sanitizePlainText } from '@/lib/validation/sanitize'
 import { isEmailVerified } from '@/lib/auth/verification'
+import { OAUTH_NEXT_COOKIE, safeNextPath } from '@/lib/auth/next-path'
 import { ensureAuthUserInDb } from '@/utils/auth-user-sync'
 
 import { getSiteUrl } from "@/lib/seo";
@@ -202,7 +204,7 @@ export async function loginUser(_currentState: AuthFormState, formData: FormData
 
   logSecurityEvent({ type: 'auth_attempt', success: true, ip, action: 'login', email })
   revalidatePath('/', 'layout')
-  redirect('/?welcome=1')
+  redirect(safeNextPath(formData.get('next')) ?? '/?welcome=1')
 }
 
 export async function syncCurrentUser() {
@@ -225,7 +227,25 @@ export async function logout() {
   redirect('/?signed_out=1')
 }
 
-export async function signInWithGoogle() {
+/**
+ * `next` rides in a short-lived cookie rather than on redirectTo: a query string on the
+ * callback URL would have to match the Supabase redirect allow-list, and a mismatch there
+ * silently drops the user on the Site URL instead.
+ */
+function rememberOAuthNext(formData?: FormData) {
+  const next = safeNextPath(formData?.get('next'))
+  if (!next) return
+  cookies().set(OAUTH_NEXT_COOKIE, next, {
+    httpOnly: true,
+    sameSite: 'lax',
+    secure: process.env.NODE_ENV === 'production',
+    path: '/auth/callback',
+    maxAge: 600,
+  })
+}
+
+export async function signInWithGoogle(formData?: FormData) {
+  rememberOAuthNext(formData)
   const supabase = createClient()
   const { data } = await supabase.auth.signInWithOAuth({
     provider: 'google',
@@ -239,7 +259,8 @@ export async function signInWithGoogle() {
   }
 }
 
-export async function signInWithGithub() {
+export async function signInWithGithub(formData?: FormData) {
+  rememberOAuthNext(formData)
   const supabase = createClient()
   const { data } = await supabase.auth.signInWithOAuth({
     provider: 'github',
@@ -253,7 +274,8 @@ export async function signInWithGithub() {
   }
 }
 
-export async function signInWithFacebook() {
+export async function signInWithFacebook(formData?: FormData) {
+  rememberOAuthNext(formData)
   const supabase = createClient()
   const { data } = await supabase.auth.signInWithOAuth({
     provider: 'facebook',

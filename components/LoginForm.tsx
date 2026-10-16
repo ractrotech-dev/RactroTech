@@ -23,7 +23,8 @@ function LoginSubmitButton() {
   );
 }
 
-export default function LoginForm() {
+/** `next` is an already-validated same-site path (see lib/auth/next-path.ts). */
+export default function LoginForm({ next }: { next?: string }) {
   const initialState = {
     message: '',
   };
@@ -31,6 +32,7 @@ export default function LoginForm() {
 
   return (
     <form action={formAction} className="space-y-5">
+      {next ? <input type="hidden" name="next" value={next} /> : null}
       <div>
         <Label htmlFor="email" className={authLabelClass}>
           Email
