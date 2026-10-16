@@ -41,6 +41,21 @@ const TONE: Record<string, BadgeTone> = {
   cancelled: 'red',
   churned: 'red',
   rejected: 'red',
+  // Lead finder: leads, campaign emails, Apify search runs.
+  contacted: 'amber',
+  replied: 'violet',
+  bounced: 'red',
+  unsubscribed: 'neutral',
+  sending: 'amber',
+  sent: 'green',
+  failed: 'red',
+  skipped: 'neutral',
+  paused: 'amber',
+  ready: 'blue',
+  running: 'amber',
+  succeeded: 'green',
+  aborted: 'red',
+  'timed-out': 'red',
 };
 
 export default function StatusBadge({ status }: StatusBadgeProps) {

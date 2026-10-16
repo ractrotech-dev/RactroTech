@@ -19,38 +19,8 @@ import {
 } from '@/utils/db/schema';
 import { and, eq, desc, ilike, or, sql } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
-import { getAdminUser } from '@/utils/admin';
-import { getClientIp } from '@/lib/auth/client-ip';
-import { logSecurityEvent } from '@/lib/security/logger';
-import { checkAdminActionRateLimit } from '@/lib/security/rate-limit';
+import { logActivity, requireAdmin } from '@/lib/admin/guard';
 import { adminSearchSchema } from '@/lib/validation/schemas';
-
-// ─── Helper ────────────────────────────────────────────────────────────────────
-async function requireAdmin() {
-  const admin = await getAdminUser();
-  if (!admin) throw new Error('Unauthorized');
-
-  const ip = getClientIp();
-  if (!checkAdminActionRateLimit(ip, admin.id)) {
-    logSecurityEvent({ type: 'rate_limit', ip, path: '/admin', action: 'admin_action' });
-    throw new Error('Too many requests. Please slow down.');
-  }
-
-  return admin;
-}
-
-async function logActivity(userId: string, action: string, entityType: string, entityId?: string) {
-  try {
-    await db.insert(activityLogsTable).values({
-      user_id: userId,
-      action,
-      entity_type: entityType,
-      entity_id: entityId,
-    });
-  } catch {
-    // Silently fail if table doesn't exist yet
-  }
-}
 
 // ─── Inquiry Actions ───────────────────────────────────────────────────────────
 

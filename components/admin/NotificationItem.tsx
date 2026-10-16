@@ -1,7 +1,7 @@
 'use client';
 
 import { useTransition } from 'react';
-import { AlertCircle, Bell, FolderKanban, Inbox, Settings, Users, type LucideIcon } from 'lucide-react';
+import { AlertCircle, Bell, FolderKanban, Inbox, MessageSquareReply, Settings, Users, type LucideIcon } from 'lucide-react';
 
 import { markNotificationRead } from '@/app/admin/actions';
 import { formatDateTime, formatRelative } from '@/lib/admin/format';
@@ -19,6 +19,7 @@ const ICON: Record<string, LucideIcon> = {
   team: Users,
   system: Settings,
   alert: AlertCircle,
+  lead: MessageSquareReply,
 };
 
 export interface NotificationItemData {

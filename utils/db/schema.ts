@@ -1,4 +1,19 @@
-import { integer, pgEnum, pgTable, text, timestamp, boolean, real } from 'drizzle-orm/pg-core';
+import { sql } from 'drizzle-orm';
+import {
+  integer,
+  pgEnum,
+  pgTable,
+  text,
+  timestamp,
+  boolean,
+  real,
+  bigint,
+  bigserial,
+  jsonb,
+  numeric,
+  unique,
+  uuid,
+} from 'drizzle-orm/pg-core';
 
 // ─── Role Enums ────────────────────────────────────────────────────────────────
 export const userRoleEnum = pgEnum('user_role', [
@@ -64,6 +79,7 @@ export const notificationTypeEnum = pgEnum('notification_type', [
   'team',
   'system',
   'alert',
+  'lead',
 ]);
 
 export const postStatusEnum = pgEnum('post_status', [
@@ -305,3 +321,132 @@ export type InsertPost = typeof postsTable.$inferInsert;
 export type SelectPost = typeof postsTable.$inferSelect;
 export type InsertMediaAsset = typeof mediaAssetsTable.$inferInsert;
 export type SelectMediaAsset = typeof mediaAssetsTable.$inferSelect;
+
+// ─── Lead Finder (Admin → Lead finder) ─────────────────────────────────────────
+// Google Maps lead scraping (Apify) and cold-email campaigns, moved from the standalone
+// lead-finder app. Ids stay bigint so migrated rows keep their ids and the unsubscribe
+// tokens already sent out stay valid. SQL: utils/db/migrations/0021_lead_finder.sql.
+// Server-only: RLS is on with no policies, so only DATABASE_URL (table owner) reads these.
+
+export const leadScrapeJobsTable = pgTable('lead_scrape_jobs', {
+  id: bigserial('id', { mode: 'number' }).primaryKey(),
+  country: text('country').notNull(), // ISO code, e.g. 'us'
+  city: text('city'),
+  category: text('category').notNull(), // label from lib/outreach/taxonomy.ts
+  query: text('query').notNull(), // search term sent to Google Maps
+  max_results: integer('max_results').notNull(),
+  apify_run_id: text('apify_run_id'),
+  dataset_id: text('dataset_id'),
+  status: text('status').notNull().default('PENDING'), // Apify run status: READY | RUNNING | SUCCEEDED | FAILED | ABORTED | TIMED-OUT
+  lead_count: integer('lead_count').notNull().default(0),
+  error: text('error'),
+  created_at: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  finished_at: timestamp('finished_at', { withTimezone: true }),
+});
+
+export type LeadSocials = Partial<Record<'facebook' | 'instagram' | 'linkedin' | 'twitter', string>>;
+
+export const leadsTable = pgTable('leads', {
+  id: bigserial('id', { mode: 'number' }).primaryKey(),
+  place_id: text('place_id').unique(),
+  name: text('name').notNull(), // as listed on Google Maps
+  site_name: text('site_name'), // name taken from the business website, used in emails
+  category_group: text('category_group'),
+  category: text('category'),
+  google_category: text('google_category'),
+  country: text('country'),
+  city: text('city'),
+  address: text('address'),
+  phone: text('phone'),
+  website: text('website'),
+  email: text('email'), // primary email (first found)
+  emails: text('emails').array().notNull().default(sql`'{}'::text[]`),
+  socials: jsonb('socials').$type<LeadSocials>().notNull().default({}),
+  rating: numeric('rating'),
+  reviews_count: integer('reviews_count'),
+  maps_url: text('maps_url'),
+  status: text('status').notNull().default('new'), // new | contacted | replied | bounced | unsubscribed
+  notes: text('notes'),
+  job_id: bigint('job_id', { mode: 'number' }).references(() => leadScrapeJobsTable.id, { onDelete: 'set null' }),
+  client_id: text('client_id').references(() => clientsTable.id, { onDelete: 'set null' }), // set by "Convert to client"
+  crawled_at: timestamp('crawled_at', { withTimezone: true }),
+  created_at: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  updated_at: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const outreachTemplatesTable = pgTable('outreach_templates', {
+  id: bigserial('id', { mode: 'number' }).primaryKey(),
+  name: text('name').notNull(),
+  subject: text('subject').notNull(),
+  body: text('body').notNull(),
+  created_at: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+});
+
+/** Connected Gmail / Workspace senders. The refresh token is AES-GCM encrypted with ENCRYPTION_KEY. */
+export const outreachMailAccountsTable = pgTable('outreach_mail_accounts', {
+  id: bigserial('id', { mode: 'number' }).primaryKey(),
+  email: text('email').notNull().unique(),
+  from_name: text('from_name'),
+  refresh_token_enc: text('refresh_token_enc').notNull(),
+  daily_limit: integer('daily_limit').notNull().default(400), // Gmail ~500/day, Workspace ~2000/day
+  created_at: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const outreachCampaignsTable = pgTable('outreach_campaigns', {
+  id: bigserial('id', { mode: 'number' }).primaryKey(),
+  name: text('name').notNull(),
+  template_id: bigint('template_id', { mode: 'number' })
+    .notNull()
+    .references(() => outreachTemplatesTable.id),
+  account_id: bigint('account_id', { mode: 'number' }).references(() => outreachMailAccountsTable.id, {
+    onDelete: 'set null',
+  }), // null = SMTP from env
+  status: text('status').notNull().default('draft'), // draft | active | paused | done
+  created_at: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const outreachRecipientsTable = pgTable(
+  'outreach_recipients',
+  {
+    id: bigserial('id', { mode: 'number' }).primaryKey(),
+    campaign_id: bigint('campaign_id', { mode: 'number' })
+      .notNull()
+      .references(() => outreachCampaignsTable.id, { onDelete: 'cascade' }),
+    lead_id: bigint('lead_id', { mode: 'number' })
+      .notNull()
+      .references(() => leadsTable.id, { onDelete: 'cascade' }),
+    email: text('email').notNull(),
+    token: uuid('token').notNull().defaultRandom(), // unsubscribe token
+    status: text('status').notNull().default('pending'), // pending | sending | sent | failed | skipped
+    error: text('error'),
+    sent_at: timestamp('sent_at', { withTimezone: true }),
+    account_id: bigint('account_id', { mode: 'number' }).references(() => outreachMailAccountsTable.id, {
+      onDelete: 'set null',
+    }),
+    message_id: text('message_id'),
+    thread_id: text('thread_id'),
+    replied_at: timestamp('replied_at', { withTimezone: true }),
+    reply_notified_at: timestamp('reply_notified_at', { withTimezone: true }),
+  },
+  (t) => ({ campaignLead: unique().on(t.campaign_id, t.lead_id) })
+);
+
+/** Never email these again (unsubscribed or bounced). Stored lower-case. */
+export const outreachSuppressionsTable = pgTable('outreach_suppressions', {
+  email: text('email').primaryKey(),
+  reason: text('reason'),
+  created_at: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+});
+
+/** Team addresses emailed when a lead replies. */
+export const outreachNotifyEmailsTable = pgTable('outreach_notify_emails', {
+  email: text('email').primaryKey(),
+  created_at: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+});
+
+export type SelectLead = typeof leadsTable.$inferSelect;
+export type SelectLeadScrapeJob = typeof leadScrapeJobsTable.$inferSelect;
+export type SelectOutreachTemplate = typeof outreachTemplatesTable.$inferSelect;
+export type SelectOutreachMailAccount = typeof outreachMailAccountsTable.$inferSelect;
+export type SelectOutreachCampaign = typeof outreachCampaignsTable.$inferSelect;
+export type SelectOutreachRecipient = typeof outreachRecipientsTable.$inferSelect;
