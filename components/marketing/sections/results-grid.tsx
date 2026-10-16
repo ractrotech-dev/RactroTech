@@ -1,6 +1,6 @@
 import { CalendarClock, MessagesSquare, LayoutGrid, ReceiptText, Handshake } from 'lucide-react';
 
-import { Reveal, RevealGroup, RevealItem } from '@/components/marketing/reveal';
+import { ScrollReveal, ScrollStagger, ScrollStaggerItem } from '@/components/marketing/motion';
 import { StatCard } from '@/components/marketing/tone-card';
 import { RESULTS, type ResultCard } from '@/lib/marketing/home-content';
 import { cn } from '@/lib/utils';
@@ -41,7 +41,7 @@ export function ResultsGrid() {
   return (
     <section className="py-20 lg:py-28">
       <div className="mkt-shell">
-        <Reveal className="mx-auto max-w-2xl text-center">
+        <ScrollReveal className="mx-auto max-w-2xl text-center">
           <span className="mkt-eyebrow-onDark">
             <span className="h-1.5 w-1.5 rounded-full bg-white/70" />
             What you can count on
@@ -53,14 +53,14 @@ export function ResultsGrid() {
             Hiring a dev team is stressful. Here is exactly what we hold ourselves to on every
             project.
           </p>
-        </Reveal>
+        </ScrollReveal>
 
-        <RevealGroup
+        <ScrollStagger
           as="ul"
           className="mt-12 grid auto-rows-auto gap-4 sm:grid-cols-2 lg:grid-cols-3"
         >
           {RESULTS.map((card, i) => (
-            <RevealItem key={card.label} as="li" className={cn(i === 0 && 'lg:col-span-2')}>
+            <ScrollStaggerItem key={card.label} as="li" className={cn(i === 0 && 'lg:col-span-2')}>
               <StatCard
                 tone={card.tone}
                 stat={card.stat}
@@ -71,9 +71,9 @@ export function ResultsGrid() {
                 // The wide lead card carries the largest figure in the block.
                 statClassName={cn(i === 0 && 'lg:text-[64px]')}
               />
-            </RevealItem>
+            </ScrollStaggerItem>
           ))}
-        </RevealGroup>
+        </ScrollStagger>
       </div>
     </section>
   );

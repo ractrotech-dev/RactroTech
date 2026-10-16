@@ -1,6 +1,6 @@
 # Learn DSA (`/dsa`)
 
-A free data structures and algorithms course, linked from the site header as **Learn DSA**.
+A free data structures and algorithms course, linked from the site header's **Learn** menu.
 It was ported from the standalone "DSA from Day 1" app (Next 16) into this app (Next 14),
 restyled to the marketing theme, and moved onto Ractrotech accounts.
 

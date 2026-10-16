@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 
-import { Reveal, RevealGroup, RevealItem } from '@/components/marketing/reveal';
+import { ScrollReveal, ScrollStagger, ScrollStaggerItem } from '@/components/marketing/motion';
 import { Squiggle } from '@/components/marketing/mockups/doodles';
 import { AUDIENCES } from '@/lib/marketing/home-content';
 import { cn } from '@/lib/utils';
@@ -61,7 +61,7 @@ export function AudienceGrid() {
   return (
     <section className="bg-mkt-cream py-20 lg:py-28 text-mkt-ink">
       <div className="mkt-shell">
-        <Reveal className="mx-auto max-w-2xl text-center">
+        <ScrollReveal className="mx-auto max-w-2xl text-center">
           <span className="mkt-eyebrow">
             <span className="h-1.5 w-1.5 rounded-full bg-mkt-violet" />
             Who we work with
@@ -73,11 +73,11 @@ export function AudienceGrid() {
             Whether you have a napkin sketch or a roadmap and no bandwidth, we meet you where
             you are.
           </p>
-        </Reveal>
+        </ScrollReveal>
 
-        <RevealGroup as="ul" className="mt-12 grid gap-5 md:grid-cols-3">
+        <ScrollStagger as="ul" className="mt-12 grid gap-5 md:grid-cols-3">
           {AUDIENCES.map((item) => (
-            <RevealItem
+            <ScrollStaggerItem
               key={item.title}
               as="li"
               className="flex flex-col rounded-3xl border border-mkt-line bg-mkt-surface p-5 text-mkt-ink"
@@ -92,9 +92,9 @@ export function AudienceGrid() {
                 {item.cta.label}
                 <ArrowRight className="h-4 w-4" />
               </Link>
-            </RevealItem>
+            </ScrollStaggerItem>
           ))}
-        </RevealGroup>
+        </ScrollStagger>
       </div>
     </section>
   );

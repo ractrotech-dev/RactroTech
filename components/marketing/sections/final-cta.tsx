@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 
-import { Reveal } from '@/components/marketing/reveal';
-import { Circle } from '@/components/marketing/mockups/doodles';
+import { ScrollReveal } from '@/components/marketing/motion';
+import { DrawnCircle } from '@/components/marketing/mockups/drawn-doodles';
 import { FINAL_CTA } from '@/lib/marketing/home-content';
 
 export function FinalCta() {
@@ -18,16 +18,13 @@ export function FinalCta() {
       />
 
       <div className="mkt-shell relative text-center">
-        <Reveal>
+        <ScrollReveal>
           <h2 className="font-display text-[42px] font-black uppercase leading-[0.95] tracking-[-0.02em] sm:text-[68px] lg:text-[86px]">
             {FINAL_CTA.headline}
             <br />
             <span className="relative inline-block">
               {FINAL_CTA.headlineAccent}
-              <Circle
-                className="absolute -inset-x-6 -inset-y-3 h-[calc(100%+1.5rem)] w-[calc(100%+3rem)] text-mkt-violet-soft/70"
-                aria-hidden
-              />
+              <DrawnCircle className="absolute -inset-x-6 -inset-y-3 h-[calc(100%+1.5rem)] w-[calc(100%+3rem)] text-mkt-violet-soft/70" />
             </span>
           </h2>
 
@@ -49,7 +46,7 @@ export function FinalCta() {
           </div>
 
           <p className="mt-8 text-[13px] text-white/35">{FINAL_CTA.note}</p>
-        </Reveal>
+        </ScrollReveal>
       </div>
     </section>
   );

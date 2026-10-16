@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 
 import { Marquee } from '@/components/marketing/marquee';
-import { Reveal } from '@/components/marketing/reveal';
+import { ScrollReveal } from '@/components/marketing/motion';
 import { BrowserFrame } from '@/components/marketing/mockups/browser-frame';
 import { DashboardMock } from '@/components/marketing/mockups/dashboard-mock';
 import { KanbanMock } from '@/components/marketing/mockups/kanban-mock';
@@ -75,7 +75,7 @@ export function ProjectShowcase() {
   return (
     <section className="py-20 lg:py-28" aria-labelledby="showcase-heading">
       <div className="mkt-shell">
-        <Reveal className="mx-auto max-w-2xl text-center">
+        <ScrollReveal className="mx-auto max-w-2xl text-center">
           <span className="mkt-eyebrow">
             <span className="h-1.5 w-1.5 rounded-full bg-mkt-violet" />
             Project showcase
@@ -90,7 +90,7 @@ export function ProjectShowcase() {
             SaaS platforms, MVPs, marketing sites, stores and internal tools — the kinds of
             builds we take from idea to production.
           </p>
-        </Reveal>
+        </ScrollReveal>
       </div>
 
       <div className="mt-12 lg:mt-16">

@@ -29,7 +29,13 @@ const ACTIVITY = [
 /** Deterministic bar heights — no Math.random, so SSR and client markup match. */
 const BARS = [38, 52, 44, 68, 58, 82, 71, 94, 76, 88];
 
-export function DashboardMock({ className }: { className?: string }) {
+/**
+ * `animated` grows the velocity bars and fills the progress rows once, on load — pure CSS
+ * (`.mkt-grow-y` / `.mkt-grow-x` in globals.css), so the hero shot never waits on
+ * JavaScript. Off by default: the same mock also sits in the looping project marquee,
+ * where replaying it on every copy would just be noise.
+ */
+export function DashboardMock({ className, animated = false }: { className?: string; animated?: boolean }) {
   return (
     <div className={cn('flex bg-mkt-surface text-mkt-ink', className)} aria-hidden>
       {/* Sidebar */}
@@ -88,9 +94,10 @@ export function DashboardMock({ className }: { className?: string }) {
                   key={i}
                   className={cn(
                     'flex-1 rounded-sm',
-                    i >= BARS.length - 3 ? 'bg-mkt-violet' : 'bg-mkt-lavender-deep'
+                    i >= BARS.length - 3 ? 'bg-mkt-violet' : 'bg-mkt-lavender-deep',
+                    animated && 'mkt-grow-y'
                   )}
-                  style={{ height: `${h}%` }}
+                  style={{ height: `${h}%`, animationDelay: animated ? `${1 + i * 0.05}s` : undefined }}
                 />
               ))}
             </div>
@@ -130,7 +137,10 @@ export function DashboardMock({ className }: { className?: string }) {
                 <div className="text-[9px] text-mkt-muted">{p.phase}</div>
               </div>
               <div className="hidden h-1.5 w-24 overflow-hidden rounded-full bg-mkt-lavender sm:block text-mkt-ink">
-                <div className={cn('h-full rounded-full', p.tone)} style={{ width: `${p.progress}%` }} />
+                <div
+                  className={cn('h-full rounded-full', p.tone, animated && 'mkt-grow-x')}
+                  style={{ width: `${p.progress}%`, animationDelay: animated ? `${1.25 + i * 0.12}s` : undefined }}
+                />
               </div>
               <div className="w-8 shrink-0 text-right text-[10px] font-semibold tabular-nums">
                 {p.progress}%

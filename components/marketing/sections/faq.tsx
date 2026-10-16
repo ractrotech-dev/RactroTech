@@ -4,7 +4,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { Reveal } from '@/components/marketing/reveal';
+import { ScrollReveal } from '@/components/marketing/motion';
 import { HOMEPAGE_FAQS } from '@/lib/marketing/service-pages';
 
 /**
@@ -15,7 +15,7 @@ export function Faq() {
   return (
     <section id="faq" className="py-20 lg:py-28">
       <div className="mkt-shell max-w-3xl">
-        <Reveal className="text-center">
+        <ScrollReveal className="text-center">
           <span className="mkt-eyebrow">
             <span className="h-1.5 w-1.5 rounded-full bg-mkt-violet" />
             FAQ
@@ -23,12 +23,12 @@ export function Faq() {
           <h2 className="mkt-display mt-6 text-[32px] leading-[1.1] sm:text-[44px]">
             Questions, answered
           </h2>
-        </Reveal>
+        </ScrollReveal>
 
         {/* On its own surface rather than naked on the canvas: question rows are set in
             near-black ink, which does not clear contrast on the violet. Giving the list a
             card also matches how the rest of the page puts content on a surface. */}
-        <Reveal className="mkt-card mt-10 px-6 py-2 sm:px-8" delay={0.1}>
+        <ScrollReveal className="mkt-card mt-10 px-6 py-2 sm:px-8" delay={0.1}>
           <Accordion type="single" collapsible className="w-full">
             {HOMEPAGE_FAQS.map((faq, i) => (
               <AccordionItem
@@ -45,7 +45,7 @@ export function Faq() {
               </AccordionItem>
             ))}
           </Accordion>
-        </Reveal>
+        </ScrollReveal>
       </div>
     </section>
   );

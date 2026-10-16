@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 
-import { Reveal, RevealGroup, RevealItem } from '@/components/marketing/reveal';
+import { ScrollReveal, ScrollStagger, ScrollStaggerItem, StaggerConnector } from '@/components/marketing/motion';
 import { BrowserFrame } from '@/components/marketing/mockups/browser-frame';
 import { KanbanMock } from '@/components/marketing/mockups/kanban-mock';
 import { PROCESS } from '@/lib/marketing/home-content';
@@ -20,7 +20,7 @@ export function ProcessShowcase() {
       />
 
       <div className="mkt-shell relative">
-        <Reveal className="mx-auto max-w-2xl text-center">
+        <ScrollReveal className="mx-auto max-w-2xl text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-[13px] font-medium text-white/70">
             <span className="h-1.5 w-1.5 rounded-full bg-mkt-violet-soft" />
             {PROCESS.eyebrow}
@@ -31,40 +31,44 @@ export function ProcessShowcase() {
           <p className="mx-auto mt-5 max-w-xl text-[17px] leading-relaxed text-white/55">
             {PROCESS.subhead}
           </p>
-        </Reveal>
+        </ScrollReveal>
 
-        <Reveal className="mx-auto mt-12 max-w-4xl" delay={0.1}>
+        <ScrollReveal className="mx-auto mt-12 max-w-4xl" delay={0.1}>
           <BrowserFrame tone="dark" url="app.ractrotech.com/board">
-            <KanbanMock />
+            <KanbanMock live />
           </BrowserFrame>
-        </Reveal>
+        </ScrollReveal>
 
-        <Reveal className="mt-10 flex flex-wrap justify-center gap-2.5" delay={0.15}>
+        <ScrollStagger className="mt-10 flex flex-wrap justify-center gap-2.5" stagger={0.05}>
           {PROCESS.pills.map((pill) => (
-            <span
+            <ScrollStaggerItem
               key={pill}
+              as="span"
               className="rounded-full border border-white/12 bg-white/[0.04] px-4 py-2 text-[14px] text-white/70"
             >
               {pill}
-            </span>
+            </ScrollStaggerItem>
           ))}
-        </Reveal>
+        </ScrollStagger>
 
-        <RevealGroup className="mt-16 grid gap-8 sm:grid-cols-3">
+        <ScrollStagger className="relative mt-16 grid gap-8 sm:grid-cols-3" stagger={0.14}>
+          {/* Badge centre to badge centre: two columns plus two 2rem gaps. Only drawn where the
+              steps sit side by side; stacked, the numbers already read as a sequence. */}
+          <StaggerConnector className="left-[18px] top-[18px] hidden h-px w-[calc(66.667%+1.333rem)] bg-gradient-to-r from-mkt-violet-soft/70 via-white/25 to-white/10 sm:block" />
           {PROCESS.steps.map((step, i) => (
-            <RevealItem key={step.title}>
-              <div className="mb-4 flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/5 text-[14px] font-semibold tabular-nums text-white/80">
+            <ScrollStaggerItem key={step.title}>
+              <div className="relative mb-4 flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-mkt-contrast text-[14px] font-semibold tabular-nums text-white/80">
                 {i + 1}
               </div>
               <h3 className="font-display text-[19px] font-semibold tracking-[-0.02em]">
                 {step.title}
               </h3>
               <p className="mt-2.5 text-[15px] leading-relaxed text-white/55">{step.body}</p>
-            </RevealItem>
+            </ScrollStaggerItem>
           ))}
-        </RevealGroup>
+        </ScrollStagger>
 
-        <Reveal className="mt-14 text-center">
+        <ScrollReveal className="mt-14 text-center">
           <Link
             href="/start-project"
             className="mkt-btn-onDark"
@@ -72,7 +76,7 @@ export function ProcessShowcase() {
             Scope your project
             <ArrowRight className="h-4 w-4" />
           </Link>
-        </Reveal>
+        </ScrollReveal>
       </div>
     </section>
   );

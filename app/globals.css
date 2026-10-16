@@ -405,11 +405,122 @@
   }
 }
 
+/* Home hero load sequence (components/marketing/sections/hero.tsx). Pure CSS for the same
+   reason as .mkt-reveal: the headline is above the fold and must never wait on JS. */
+@keyframes mkt-word-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 0.42em, 0);
+    filter: blur(6px);
+  }
+}
+
+.mkt-word {
+  display: inline-block;
+  animation: mkt-word-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* `translate` / `scale`, not `transform`, so these compose with a doodle's own rotate-*
+   utility instead of replacing it for the length of the animation. */
+@keyframes mkt-float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -7px;
+  }
+}
+
+.mkt-float {
+  animation: mkt-float 7s ease-in-out infinite;
+}
+
+.mkt-float-late {
+  animation-delay: -3.5s;
+}
+
+@keyframes mkt-twinkle {
+  0%,
+  100% {
+    opacity: 1;
+    scale: 1;
+  }
+  50% {
+    opacity: 0.45;
+    scale: 0.75;
+  }
+}
+
+.mkt-twinkle {
+  animation: mkt-twinkle 4.5s ease-in-out infinite;
+}
+
+.mkt-twinkle-late {
+  animation-delay: -2.2s;
+}
+
+/* The hero dashboard's chart bars and progress rows, filled once on load. */
+@keyframes mkt-grow-y {
+  from {
+    transform: scaleY(0);
+  }
+}
+
+@keyframes mkt-grow-x {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+.mkt-grow-y {
+  transform-origin: bottom;
+  animation: mkt-grow-y 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.mkt-grow-x {
+  transform-origin: left;
+  animation: mkt-grow-x 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Call-to-action arrows lean toward where they go. Keyed to lucide's own icon classes so a
+   spinner or any other trailing icon in a button is left alone. */
+:is(.mkt-btn, .mkt-btn-primary, .mkt-btn-ghost, .mkt-btn-onDark) :is(.lucide-arrow-right, .lucide-arrow-up-right) {
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+:is(.mkt-btn, .mkt-btn-primary, .mkt-btn-ghost, .mkt-btn-onDark):hover .lucide-arrow-right {
+  transform: translateX(3px);
+}
+
+:is(.mkt-btn, .mkt-btn-primary, .mkt-btn-ghost, .mkt-btn-onDark):hover .lucide-arrow-up-right {
+  transform: translate(2px, -2px);
+}
+
+/* Anything components/marketing/motion.tsx is holding back for a scroll entrance would
+   otherwise print as a blank gap. framer-motion writes inline styles, hence !important. */
+@media print {
+  [data-motion] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .mkt-marquee-track,
   .mkt-reveal,
-  .mkt-reveal-group > * {
+  .mkt-reveal-group > *,
+  .mkt-word,
+  .mkt-float,
+  .mkt-twinkle,
+  .mkt-grow-y,
+  .mkt-grow-x {
     animation: none !important;
+    transform: none !important;
+  }
+
+  /* The hero shot's scroll tilt (HeroTilt in components/marketing/motion.tsx). */
+  .mkt-tilt {
     transform: none !important;
   }
 }

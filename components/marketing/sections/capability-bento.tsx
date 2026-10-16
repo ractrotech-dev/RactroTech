@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
 
-import { Reveal, RevealGroup, RevealItem } from '@/components/marketing/reveal';
+import { ScrollReveal, ScrollStagger, ScrollStaggerItem } from '@/components/marketing/motion';
 import {
   ChatPanelMock,
   CheckoutPanelMock,
@@ -28,8 +28,9 @@ function Panel({ panel }: { panel: Capability['panel'] }) {
 
 function Card({ item }: { item: Capability }) {
   return (
-    <RevealItem
+    <ScrollStaggerItem
       as="li"
+      interactive
       className={cn(
         'group relative flex flex-col overflow-hidden rounded-3xl border border-mkt-line bg-mkt-surface p-6 transition-shadow duration-200 hover:shadow-[0_18px_44px_-26px_rgba(11,11,16,0.4)] sm:p-7',
         item.size === 'feature' && 'sm:col-span-2'
@@ -57,7 +58,7 @@ function Card({ item }: { item: Capability }) {
           </div>
         ) : null}
       </Link>
-    </RevealItem>
+    </ScrollStaggerItem>
   );
 }
 
@@ -65,7 +66,7 @@ export function CapabilityBento() {
   return (
     <section className="bg-mkt-lavender py-20 lg:py-28 text-mkt-ink">
       <div className="mkt-shell">
-        <Reveal className="mx-auto max-w-2xl text-center">
+        <ScrollReveal className="mx-auto max-w-2xl text-center">
           <span className="mkt-eyebrow">
             <span className="h-1.5 w-1.5 rounded-full bg-mkt-violet" />
             What we build
@@ -77,11 +78,11 @@ export function CapabilityBento() {
             Design, engineering, payments and infrastructure under one roof — so what gets
             designed is what actually gets built.
           </p>
-        </Reveal>
+        </ScrollReveal>
 
         {/* Dense flow lets the single-column tiles backfill the gap the two-column
             feature cards would otherwise leave mid-grid. */}
-        <RevealGroup
+        <ScrollStagger
           as="ul"
           className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:grid-flow-row-dense"
         >
@@ -89,7 +90,7 @@ export function CapabilityBento() {
             <Card key={item.href + item.name} item={item} />
           ))}
 
-          <RevealItem
+          <ScrollStaggerItem
             as="li"
             className="flex flex-col justify-between rounded-3xl border border-dashed border-mkt-ink/15 bg-transparent p-6 sm:p-7 sm:col-span-2 lg:col-span-1"
           >
@@ -107,10 +108,10 @@ export function CapabilityBento() {
               View all services
               <ArrowRight className="h-4 w-4" />
             </Link>
-          </RevealItem>
-        </RevealGroup>
+          </ScrollStaggerItem>
+        </ScrollStagger>
 
-        <Reveal className="mt-12 flex flex-col items-center justify-center gap-3 text-center sm:flex-row">
+        <ScrollReveal className="mt-12 flex flex-col items-center justify-center gap-3 text-center sm:flex-row">
           <Link href="/start-project" className="mkt-btn-primary w-full sm:w-auto">
             Tell us your idea
             <ArrowRight className="h-4 w-4" />
@@ -118,7 +119,7 @@ export function CapabilityBento() {
           <Link href="/services" className="mkt-btn-ghost w-full sm:w-auto">
             Explore all services
           </Link>
-        </Reveal>
+        </ScrollReveal>
       </div>
     </section>
   );

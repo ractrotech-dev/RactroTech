@@ -1,7 +1,7 @@
 import { Star } from 'lucide-react';
 
 import { Marquee } from '@/components/marketing/marquee';
-import { Reveal, RevealGroup, RevealItem } from '@/components/marketing/reveal';
+import { ScrollReveal, ScrollStagger, ScrollStaggerItem } from '@/components/marketing/motion';
 import type { MarketingReview } from '@/components/marketing/review-types';
 import { QuoteCard, QuoteMark, ToneCard, TONE_MUTED } from '@/components/marketing/tone-card';
 import { toneFor } from '@/lib/marketing/tones';
@@ -114,7 +114,7 @@ export function TestimonialWall({ featured, reviews, googleReviewUrl }: Props) {
   return (
     <section className="overflow-hidden py-20 lg:py-28">
       <div className="mkt-shell">
-        <Reveal className="mx-auto max-w-2xl text-center">
+        <ScrollReveal className="mx-auto max-w-2xl text-center">
           <span className="mkt-eyebrow-onDark">
             <span className="h-1.5 w-1.5 rounded-full bg-white/70" />
             Client reviews
@@ -128,12 +128,12 @@ export function TestimonialWall({ featured, reviews, googleReviewUrl }: Props) {
               : 'We are collecting reviews from clients we have worked with. Be among the first to share your experience.'}
           </p>
           {rated.length > 0 ? <RatingStrip rated={rated} /> : null}
-        </Reveal>
+        </ScrollReveal>
       </div>
 
       {featured ? (
         <div className="mkt-shell">
-          <Reveal>
+          <ScrollReveal>
             <ToneCard tone="butter" className="mx-auto mt-12 max-w-3xl p-8 text-center sm:p-10">
               <blockquote>
                 <p className="mkt-display text-[22px] font-normal leading-[1.35] text-[rgb(var(--tone-ink))] sm:text-[28px]">
@@ -148,7 +148,7 @@ export function TestimonialWall({ featured, reviews, googleReviewUrl }: Props) {
                 </footer>
               </blockquote>
             </ToneCard>
-          </Reveal>
+          </ScrollReveal>
         </div>
       ) : null}
 
@@ -156,7 +156,7 @@ export function TestimonialWall({ featured, reviews, googleReviewUrl }: Props) {
         useMarquee ? (
           // Full-bleed and counter-scrolling: the wall runs past the shell's edges so it
           // reads as a moving field of colour rather than a boxed-in carousel.
-          <Reveal className="mt-10 flex flex-col gap-4">
+          <ScrollReveal className="mt-10 flex flex-col gap-4">
             <Marquee align="stretch" durationSeconds={64}>
               {rowA.map(({ review, index }, i) => (
                 <WallCard key={`${review.id}-${i}`} review={review} index={index} />
@@ -167,12 +167,12 @@ export function TestimonialWall({ featured, reviews, googleReviewUrl }: Props) {
                 <WallCard key={`${review.id}-${i}`} review={review} index={index} />
               ))}
             </Marquee>
-          </Reveal>
+          </ScrollReveal>
         ) : (
           <div className="mkt-shell">
-            <RevealGroup as="ul" className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <ScrollStagger as="ul" className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {reviews.map((review, index) => (
-                <RevealItem key={review.id} as="li" className="h-full">
+                <ScrollStaggerItem key={review.id} as="li" className="h-full">
                   <QuoteCard
                     tone={toneFor(index)}
                     quote={review.text}
@@ -182,15 +182,15 @@ export function TestimonialWall({ featured, reviews, googleReviewUrl }: Props) {
                     avatarUrl={review.imageUrl}
                     className="h-full"
                   />
-                </RevealItem>
+                </ScrollStaggerItem>
               ))}
-            </RevealGroup>
+            </ScrollStagger>
           </div>
         )
       ) : null}
 
       <div className="mkt-shell">
-        <Reveal className="mt-12 flex flex-wrap items-center justify-center gap-3">
+        <ScrollReveal className="mt-12 flex flex-wrap items-center justify-center gap-3">
           <a href="/review" className="mkt-btn bg-white px-6 py-3 text-mkt-ink hover:bg-white/90">
             Leave a review
           </a>
@@ -204,7 +204,7 @@ export function TestimonialWall({ featured, reviews, googleReviewUrl }: Props) {
               Rate on Google
             </a>
           ) : null}
-        </Reveal>
+        </ScrollReveal>
       </div>
     </section>
   );

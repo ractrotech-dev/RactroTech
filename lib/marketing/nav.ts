@@ -3,13 +3,16 @@ import {
   BookOpen,
   Boxes,
   Building2,
+  Code2,
   Layers,
   LayoutTemplate,
+  ListTree,
   Mail,
   MessageSquareQuote,
   PenTool,
   Server,
   Sparkles,
+  TrendingUp,
   Users,
   type LucideIcon,
 } from 'lucide-react';
@@ -33,7 +36,7 @@ import type { Tone } from '@/lib/marketing/tones';
  */
 
 /** Key into the decorative marks in components/marketing/nav-art.tsx. */
-export type NavArt = 'stack' | 'orbit' | 'window' | 'pillar' | 'bloom' | 'flags';
+export type NavArt = 'stack' | 'orbit' | 'window' | 'pillar' | 'bloom' | 'flags' | 'tree';
 
 /** A compact row inside a panel column: icon, label, hairline rule beneath. */
 export type NavLink = {
@@ -214,7 +217,34 @@ export const NAV: NavEntry[] = [
       },
     ],
   },
-  { kind: 'link', href: '/dsa', label: 'Learn DSA' },
+  {
+    kind: 'panel',
+    id: 'learn',
+    href: '/dsa',
+    label: 'Learn',
+    tone: 'lilac',
+    columns: [
+      {
+        eyebrow: 'Free courses',
+        features: [
+          {
+            href: '/dsa',
+            label: 'Learn DSA',
+            blurb: 'Data structures and algorithms from day one, with live diagrams in six languages',
+            art: 'tree',
+          },
+        ],
+      },
+      {
+        eyebrow: 'Inside the course',
+        links: [
+          { href: '/dsa/learn/intro', label: 'The full syllabus', icon: ListTree },
+          { href: '/dsa/learn/language', label: 'Learn the language', icon: Code2 },
+          { href: '/dsa/profile', label: 'Your progress', icon: TrendingUp },
+        ],
+      },
+    ],
+  },
   { kind: 'link', href: '/blog', label: 'Blog' },
 ];
 

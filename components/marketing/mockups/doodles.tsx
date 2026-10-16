@@ -9,6 +9,11 @@ type DoodleProps = { className?: string };
 
 const base = 'pointer-events-none select-none';
 
+/** Shared with drawn-doodles.tsx, which draws the same strokes on with framer-motion. */
+export const UNDERLINE_PATH = 'M3 9c34-6 68-8 102-6 33 2 62 5 92 8';
+export const CIRCLE_PATH =
+  'M120 6C64 2 12 14 6 40c-6 27 52 40 108 38 50-2 100-16 100-40 0-19-32-30-72-32';
+
 export function CurvedArrow({ className }: DoodleProps) {
   return (
     <svg
@@ -91,7 +96,7 @@ export function Underline({ className }: DoodleProps) {
       aria-hidden
     >
       <path
-        d="M3 9c34-6 68-8 102-6 33 2 62 5 92 8"
+        d={UNDERLINE_PATH}
         stroke="currentColor"
         strokeWidth="4"
         strokeLinecap="round"
@@ -111,7 +116,7 @@ export function Circle({ className }: DoodleProps) {
       aria-hidden
     >
       <path
-        d="M120 6C64 2 12 14 6 40c-6 27 52 40 108 38 50-2 100-16 100-40 0-19-32-30-72-32"
+        d={CIRCLE_PATH}
         stroke="currentColor"
         strokeWidth="3"
         strokeLinecap="round"

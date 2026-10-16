@@ -103,6 +103,23 @@ function Flags() {
   );
 }
 
+/** A small binary tree, for the Learn DSA course. The lit path is a search walking down. */
+function Tree() {
+  return (
+    <>
+      <path d="M44 22L24 46M44 22L64 46M24 46L14 68M24 46L34 68M64 46L74 68" stroke={ink(0.3)} strokeWidth="3" strokeLinecap="round" />
+      <path d="M44 22L64 46L74 68" stroke={INK} strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx="44" cy="22" r="9" fill={INK} stroke={FILL} strokeWidth="2.5" />
+      <circle cx="24" cy="46" r="7.5" fill={ink(0.4)} stroke={FILL} strokeWidth="2.5" />
+      <circle cx="64" cy="46" r="7.5" fill={INK} stroke={FILL} strokeWidth="2.5" />
+      <circle cx="14" cy="68" r="6" fill={ink(0.25)} stroke={FILL} strokeWidth="2" />
+      <circle cx="34" cy="68" r="6" fill={ink(0.25)} stroke={FILL} strokeWidth="2" />
+      <circle cx="74" cy="68" r="6.5" fill={INK} stroke={FILL} strokeWidth="2" />
+      <circle cx="44" cy="22" r="3" fill={FILL} />
+    </>
+  );
+}
+
 const MARKS: Record<NavArt, () => JSX.Element> = {
   stack: Stack,
   orbit: Orbit,
@@ -110,6 +127,7 @@ const MARKS: Record<NavArt, () => JSX.Element> = {
   pillar: Pillar,
   bloom: Bloom,
   flags: Flags,
+  tree: Tree,
 };
 
 export function NavArtMark({ art, className }: { art: NavArt; className?: string }) {
